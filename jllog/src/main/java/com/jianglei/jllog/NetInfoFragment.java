@@ -56,12 +56,28 @@ public class NetInfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_net_info, container, false);
         rvNet = view.findViewById(R.id.rv_net);
+        view.findViewById(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                netInfoVos.clear();
+                adapter.notifyDataSetChanged();
+                JlLog.clearNetInfo();
+            }
+        });
         rvNet.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NetInfoAdapter(getActivity(), netInfoVos);
+        adapter.setItemClickListener(new NetInfoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(NetInfoVo netInfoVo) {
+                Intent intent = new Intent(getActivity(),NetRequestShowActivity.class);
+                intent.putExtra("netInfoVo",netInfoVo);
+                startActivity(intent);
+            }
+        });
         rvNet.setAdapter(adapter);
         IntentFilter filter = new IntentFilter();
         filter.addAction("updateUI");

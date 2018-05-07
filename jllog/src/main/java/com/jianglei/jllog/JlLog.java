@@ -107,6 +107,24 @@ public class JlLog {
         }
     }
 
+    public static void clearNetInfo() {
+        try {
+            if (logInterface != null) {
+                logInterface.clearNetInfo();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void clearCrash() {
+        try {
+            if (logInterface != null) {
+                logInterface.clearCrash();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void exit() {
         application.unbindService(serviceConnection);

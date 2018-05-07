@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,15 +16,15 @@ public class NetInfoVo implements Parcelable{
     /**
      *请求头部数据
      */
-    private Map<String,String>requestHeader;
+    private Map<String,String>requestHeader=new HashMap<>();
     /**
      * url上带的参数
      */
-    private Map<String,String>requsetUrlParams;
+    private Map<String,String>requsetUrlParams = new HashMap<>();
     /**
      * 请求表单数据
      */
-    private Map<String,String>requestForm;
+    private Map<String,String>requestForm = new HashMap<>();
 
     /**
      * 返回的json数据
@@ -33,9 +34,13 @@ public class NetInfoVo implements Parcelable{
     public NetInfoVo(){
 
     }
+
     protected NetInfoVo(Parcel in) {
         url = in.readString();
         responseJson = in.readString();
+        in.readMap(requestHeader,NetInfoVo.class.getClassLoader());
+        in.readMap(requsetUrlParams,NetInfoVo.class.getClassLoader());
+        in.readMap(requestForm,NetInfoVo.class.getClassLoader());
     }
 
     public static final Creator<NetInfoVo> CREATOR = new Creator<NetInfoVo>() {
@@ -91,18 +96,21 @@ public class NetInfoVo implements Parcelable{
     }
 
     @Override
+    public String toString() {
+        return url+"   "+getResponseJson();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(url);
-        parcel.writeString(responseJson);
-    }
-
-    @Override
-    public String toString() {
-        return url+"   "+getResponseJson();
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(url);
+        dest.writeString(responseJson);
+        dest.writeMap(requestHeader);
+        dest.writeMap(requsetUrlParams);
+        dest.writeMap(requestForm);
     }
 }

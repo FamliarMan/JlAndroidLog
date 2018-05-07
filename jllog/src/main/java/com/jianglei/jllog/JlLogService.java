@@ -70,6 +70,15 @@ public class JlLogService extends Service {
             return crashVos;
         }
 
+        @Override
+        public void clearNetInfo(){
+            netInfoVos.clear();
+        }
+        @Override
+        public void clearCrash(){
+            crashVos.clear();
+        }
+
     };
 
     private void updateUi(NetInfoVo netInfoVo) {

@@ -10,6 +10,9 @@ interface ILogInterface {
     void notifyNetInfo(in NetInfoVo netInfoVo);
     //通知有新的crash
     void notifyCrash(in CrashVo crashVo);
+
+    void clearNetInfo();
+    void clearCrash();
     List<NetInfoVo> getNetInfoVos();
     List<CrashVo> getCrashVos();
 }
