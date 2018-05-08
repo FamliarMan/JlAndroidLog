@@ -1,12 +1,20 @@
 apply plugin: 'com.android.library'
 
+allprojects{
+    repositories {
+        maven {                                  // <-- Add this
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+    }
+}
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion 14
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
 
@@ -31,9 +39,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:27.1.1'
-    compile 'com.android.support:design:27.1.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:27.+'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
+    provided 'com.squareup.okhttp3:okhttp:3.10.0'
     testCompile 'junit:junit:4.12'
 }

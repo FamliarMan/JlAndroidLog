@@ -51,7 +51,7 @@ public class CrashFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crash, container, false);
-        rvCrash = view.findViewById(R.id.rv_crash);
+        rvCrash = (RecyclerView)view.findViewById(R.id.rv_crash);
         rvCrash.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CrashAdapter(getActivity(), crashVos);
         rvCrash.setAdapter(adapter);

@@ -108,7 +108,7 @@ public class JlLogService extends Service {
         clickIntent.setAction(Long.toString(System.currentTimeMillis()));
         int requestCode = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, requestCode, clickIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        Notification notification = new NotificationCompat.Builder(application, "jlLog")
+        Notification notification = new NotificationCompat.Builder(application )
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("日志帮助")
                 .setContentText("触摸查看详细日志")

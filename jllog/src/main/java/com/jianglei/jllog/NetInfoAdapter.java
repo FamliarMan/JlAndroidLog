@@ -74,8 +74,8 @@ public class NetInfoAdapter extends RecyclerView.Adapter<NetInfoAdapter.NetInfoV
 
         public NetInfoViewHolder(View itemView) {
             super(itemView);
-            tvUrl = itemView.findViewById(R.id.tv_url);
-            mainLayout = itemView.findViewById(R.id.layout_main);
+            tvUrl = (TextView)itemView.findViewById(R.id.tv_url);
+            mainLayout = (LinearLayout)itemView.findViewById(R.id.layout_main);
         }
     }
 

@@ -59,7 +59,7 @@ public class NetInfoFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_net_info, container, false);
-        rvNet = view.findViewById(R.id.rv_net);
+        rvNet = (RecyclerView)view.findViewById(R.id.rv_net);
         view.findViewById(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,13 +7,16 @@
         android:supportsRtl="true">
         <activity
             android:name=".LogShowActivity"
-            android:taskAffinity="" />
+            android:taskAffinity=""
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
             android:name=".JlLogService"
             android:process=":Log" />
 
-        <activity android:name=".NetRequestShowActivity"></activity>
+        <activity
+            android:name=".NetRequestShowActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
