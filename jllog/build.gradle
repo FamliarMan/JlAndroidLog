@@ -1,11 +1,19 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.novoda.bintray-release'
 allprojects {
     repositories {
         maven {                                  // <-- Add this
             url 'https://maven.google.com/'
             name 'Google'
         }
+    }
+}
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.6.1'
     }
 }
 android {
@@ -27,6 +35,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/aidl']
@@ -44,4 +59,14 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     provided 'com.squareup.okhttp3:okhttp:3.10.0'
+}
+
+publish {
+    userOrg = 'famliarman'
+    groupId = 'com.jianglei'//jcenter上的路径
+    artifactId = 'jllog'//项目名称
+    publishVersion = '0.1'//版本号
+    desc = 'A library that can monitor http and crash infomation'
+    website = 'https://github.com/FamliarMan/JlAndroidLog'
+    repoName ='Android-lib'
 }
