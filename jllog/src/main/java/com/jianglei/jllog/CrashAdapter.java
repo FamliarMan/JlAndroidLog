@@ -38,6 +38,10 @@ public class CrashAdapter extends RecyclerView.Adapter<CrashAdapter.NetInfoViewH
         this.crashVos = crashVos;
     }
 
+    public void notifyDataChange(List<CrashVo>data){
+        this.crashVos = data;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public NetInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

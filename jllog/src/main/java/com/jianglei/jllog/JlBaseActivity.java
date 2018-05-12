@@ -38,18 +38,4 @@ public class JlBaseActivity extends AppCompatActivity {
         mainLayout.addView(view);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.jl_log_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.jl_menu_exit) {
-            JlLog.exit();
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

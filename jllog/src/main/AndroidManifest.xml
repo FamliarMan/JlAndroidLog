@@ -7,6 +7,7 @@
         android:supportsRtl="true">
         <activity
             android:name=".LogShowActivity"
+            android:process=":Log"
             android:taskAffinity=""
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
@@ -15,8 +16,10 @@
             android:process=":Log" />
 
         <activity
-            android:name=".NetRequestShowActivity"
+            android:name=".NetDetailActivity"
+            android:process=":Log"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".CrashDetailActivity"></activity>
     </application>
 
 </manifest>

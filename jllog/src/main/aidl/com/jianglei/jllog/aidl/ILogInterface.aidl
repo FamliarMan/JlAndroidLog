@@ -11,6 +11,9 @@ interface ILogInterface {
     //通知有新的crash
     void notifyCrash(in CrashVo crashVo);
 
+    //退出服务
+    void exit();
+
     void clearNetInfo();
     void clearCrash();
     List<NetInfoVo> getNetInfoVos();

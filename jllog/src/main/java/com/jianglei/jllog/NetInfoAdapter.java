@@ -26,6 +26,10 @@ public class NetInfoAdapter extends RecyclerView.Adapter<NetInfoAdapter.NetInfoV
         this.itemClickListener = itemClickListener;
     }
 
+    public void notifyDataChange(List<NetInfoVo>data){
+        this.netInfoVos= data;
+        notifyDataSetChanged();
+    }
     public NetInfoAdapter(Context context) {
         this.context = context;
     }

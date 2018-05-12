@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.FormBody;
@@ -69,8 +70,8 @@ public class JlLogInterceptor implements Interceptor {
             MediaType mediaType = responseBody.contentType();
             if (mediaType == null) {
                 netInfoVo.setResponseJson("No content-type!");
-            } else if (mediaType.toString().toLowerCase().contains("text/plain") ||
-                    mediaType.toString().toLowerCase().contains("application/json")) {
+            } else if (mediaType.toString().toLowerCase(Locale.getDefault()).contains("text/plain") ||
+                    mediaType.toString().toLowerCase(Locale.getDefault()).contains("application/json")) {
                 BufferedSource source = responseBody.source();
                 source.request(Long.MAX_VALUE); // Buffer the entire body.
                 Buffer buffer = source.buffer();

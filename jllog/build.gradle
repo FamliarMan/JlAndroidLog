@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-allprojects{
+allprojects {
     repositories {
         maven {                                  // <-- Add this
             url 'https://maven.google.com/'
@@ -41,6 +41,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:design:25.3.0'
-    provided 'com.squareup.okhttp3:okhttp:3.10.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    provided 'com.squareup.okhttp3:okhttp:3.10.0'
 }

@@ -9,10 +9,7 @@ import android.os.RemoteException;
 
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
-import com.jianglei.jllog.aidl.IUICallback;
 import com.jianglei.jllog.aidl.NetInfoVo;
-
-import java.util.List;
 
 /**
  * 控制中心
@@ -30,7 +27,6 @@ public class JlLog {
      */
     private static int maxCrashRecord = 100;
 
-    private static Application application;
 
     private static ILogInterface logInterface;
 
@@ -57,7 +53,7 @@ public class JlLog {
 
 
     public static void start(Application application) {
-        JlLog.application = application;
+        JlCrashHandler.getInstance().init(application);
         Intent intent = new Intent(application, JlLogService.class);
         application.startService(intent);
         application.bindService(intent, serviceConnection, 0);
@@ -82,54 +78,4 @@ public class JlLog {
             }
         }
     }
-
-    public static List<NetInfoVo> getNetInfoVos() {
-        try {
-            if (logInterface != null) {
-                return logInterface.getNetInfoVos();
-            }
-            return null;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static List<CrashVo> getCrashVos() {
-        try {
-            if (logInterface != null) {
-                return logInterface.getCrashVos();
-            }
-            return null;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static void clearNetInfo() {
-        try {
-            if (logInterface != null) {
-                logInterface.clearNetInfo();
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void clearCrash() {
-        try {
-            if (logInterface != null) {
-                logInterface.clearCrash();
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void exit() {
-        application.unbindService(serviceConnection);
-        Intent intent = new Intent(application, JlLogService.class);
-        application.stopService(intent);
-    }
-
 }

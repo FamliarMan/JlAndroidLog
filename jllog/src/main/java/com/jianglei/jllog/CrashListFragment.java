@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,46 +15,70 @@ import android.view.ViewGroup;
 import com.jianglei.jllog.aidl.CrashVo;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
-public class CrashFragment extends Fragment {
-    private List<CrashVo> crashVos;
+public class CrashListFragment extends Fragment {
+    private List<CrashVo> crashVos = new ArrayList<>();
 
     private CrashAdapter adapter;
     private UIReceiver receiver;
     private RecyclerView rvCrash;
+    private ILogShowActivity logShowActivity;
 
-    public CrashFragment() {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ILogShowActivity) {
+            logShowActivity = (ILogShowActivity) context;
+        }
+    }
+
+    public CrashListFragment() {
         // Required empty public constructor
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle == null) {
-            return;
+        if (logShowActivity == null) {
+            crashVos = new LinkedList<>();
+        } else {
+            crashVos = logShowActivity.getCrashVo();
         }
-        crashVos = bundle.getParcelableArrayList("crashVos");
     }
 
-    public static CrashFragment newInstance(List<CrashVo> crashVos) {
-        CrashFragment fragment = new CrashFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("crashVos", (ArrayList<? extends Parcelable>) crashVos);
-        fragment.setArguments(bundle);
-        return fragment;
+    public static CrashListFragment newInstance() {
+        return new CrashListFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crash, container, false);
-        rvCrash = (RecyclerView)view.findViewById(R.id.rv_crash);
+        rvCrash = (RecyclerView) view.findViewById(R.id.rv_crash);
         rvCrash.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CrashAdapter(getActivity(), crashVos);
         rvCrash.setAdapter(adapter);
+        adapter.setItemClickListener(new CrashAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(CrashVo crashVo) {
+                Intent intent = new Intent(getActivity(),CrashDetailActivity.class);
+                intent.putExtra("crashVo",crashVo);
+                startActivity(intent);
+            }
+        });
 
+        view.findViewById(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crashVos.clear();
+                adapter.notifyDataSetChanged();
+                if (logShowActivity != null) {
+                    logShowActivity.clearNet();
+                }
+            }
+        });
         IntentFilter filter = new IntentFilter();
         filter.addAction("updateUI");
         receiver = new UIReceiver();
@@ -78,16 +101,11 @@ public class CrashFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             CrashVo crashVo = intent.getParcelableExtra("crashVo");
-            if(crashVo == null){
+            if (crashVo == null) {
                 return;
             }
-            crashVos.add(crashVo);
-            if (crashVos.size() == JlLog.getMaxNetRecord()) {
-                crashVos.remove(0);
-                adapter.notifyDataSetChanged();
-            } else {
-                adapter.notifyItemInserted(crashVos.size() - 1);
-            }
+            //数据在service中已经更新，此处直接更新界面即可
+            adapter.notifyDataSetChanged();
             rvCrash.scrollToPosition(crashVos.size() - 1);
 
         }

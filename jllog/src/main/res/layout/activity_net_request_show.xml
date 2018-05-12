@@ -4,20 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jianglei.jllog.NetRequestShowActivity">
+    tools:context="com.jianglei.jllog.NetDetailActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="20dp"
+
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/jl_header"
-            />
-        <TextView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:text="@string/jl_header"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/tv_header_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_header_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+        </RelativeLayout>
+        <com.jianglei.jllog.JustifyTextView
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,14 +52,41 @@
             android:textIsSelectable="true"
             android:layout_marginTop="10dp"
             />
-        <TextView
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/jl_query_params"
-            />
-        <TextView
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_query_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:text="@string/jl_query_params"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/tv_query_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_query_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+        </RelativeLayout>
+        <com.jianglei.jllog.JustifyTextView
             android:id="@+id/tv_query_params"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,14 +96,40 @@
             android:layout_marginTop="10dp"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/jl_post_params"
-            />
-        <TextView
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_post_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:text="@string/jl_post_params"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/tv_post_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_post_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+        </RelativeLayout>
+        <com.jianglei.jllog.JustifyTextView
             android:id="@+id/tv_post_params"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,22 +138,50 @@
             tools:text="key1:value1\nkey2:value2"
             android:layout_marginTop="10dp"
             />
-        <TextView
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/jl_response"
-            />
-        <TextView
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_response_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:text="@string/jl_response"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/tv_response_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_response_title"
+                android:background="@color/jl_grey_cccccc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                />
+        </RelativeLayout>
+        <com.jianglei.jllog.JustifyTextView
             android:id="@+id/tv_response"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:layout_margin="10dp"
             android:layout_gravity="center_horizontal"
             android:textIsSelectable="true"
             tools:text="key1:value1\nkey2:value2"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             />
     </LinearLayout>
 

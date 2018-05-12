@@ -2,6 +2,7 @@ package com.jianglei.jllog;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.jianglei.jllog.aidl.NetInfoVo;
@@ -14,18 +15,18 @@ import java.util.Map;
 
 import static android.icu.lang.UCharacter.LineBreak.SPACE;
 
-public class NetRequestShowActivity extends AppCompatActivity {
+public class NetDetailActivity extends JlBaseActivity {
 
-    private TextView tvHeader, tvQueryParams, tvPostParams, tvResponse;
+    private JustifyTextView tvHeader, tvQueryParams, tvPostParams, tvResponse;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net_request_show);
-        tvHeader = (TextView) findViewById(R.id.tv_header);
-        tvQueryParams = (TextView) findViewById(R.id.tv_query_params);
-        tvPostParams = (TextView) findViewById(R.id.tv_post_params);
-        tvResponse = (TextView) findViewById(R.id.tv_response);
+        tvHeader = (JustifyTextView) findViewById(R.id.tv_header);
+        tvQueryParams = (JustifyTextView) findViewById(R.id.tv_query_params);
+        tvPostParams = (JustifyTextView) findViewById(R.id.tv_post_params);
+        tvResponse = (JustifyTextView) findViewById(R.id.tv_response);
         NetInfoVo netInfoVo = getIntent().getParcelableExtra("netInfoVo");
         showNetInfo(netInfoVo);
     }
@@ -34,7 +35,23 @@ public class NetRequestShowActivity extends AppCompatActivity {
         tvHeader.setText(formatKeyValue(netInfoVo.getRequestHeader()));
         tvQueryParams.setText(formatKeyValue(netInfoVo.getRequsetUrlParams()));
         tvPostParams.setText(formatKeyValue(netInfoVo.getRequestForm()));
-        tvResponse.setText(formatJson(netInfoVo.getResponseJson()));
+        try {
+            //这样做是为了处理json中unicode编码问题，jsonobject会自动解码
+            String json = netInfoVo.getResponseJson();
+            if (TextUtils.isEmpty(json)) {
+                return;
+            }
+            if (json.startsWith("[")) {
+                JSONArray jsonArray = new JSONArray(json);
+                tvResponse.setText(formatJson(jsonArray.toString()));
+            } else {
+                JSONObject jsonObject = new JSONObject(netInfoVo.getResponseJson());
+                tvResponse.setText(formatJson(jsonObject.toString()));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            tvResponse.setText(formatJson(netInfoVo.getResponseJson()));
+        }
 
     }
 
@@ -55,28 +72,25 @@ public class NetRequestShowActivity extends AppCompatActivity {
      * @param json 未格式化的JSON字符串。
      * @return 格式化的JSON字符串。
      */
-    public String formatJson(String json)
-    {
+    public String formatJson(String json) {
         StringBuffer result = new StringBuffer();
 
         int length = json.length();
         int number = 0;
         char key = 0;
         //遍历输入字符串。
-        for (int i = 0; i < length; i++)
-        {
+        for (int i = 0; i < length; i++) {
             //1、获取当前字符。
             key = json.charAt(i);
 
             //2、如果当前字符是前方括号、前花括号做如下处理：
-            if((key == '[') || (key == '{') )
-            {
-                //（1）如果前面还有字符，并且字符为“：”，打印：换行和缩进字符字符串。
-                if((i - 1 > 0) && (json.charAt(i - 1) == ':'))
-                {
-                    result.append('\n');
-                    result.append(indent(number));
-                }
+            if ((key == '[') || (key == '{')) {
+//                //（1）如果前面还有字符，并且字符为“：”，打印：换行和缩进字符字符串。
+//                if((i - 1 > 0) && (json.charAt(i - 1) == ':'))
+//                {
+//                    result.append('\n');
+//                    result.append(indent(number));
+//                }
 
                 //（2）打印：当前字符。
                 result.append(key);
@@ -93,8 +107,7 @@ public class NetRequestShowActivity extends AppCompatActivity {
             }
 
             //3、如果当前字符是后方括号、后花括号做如下处理：
-            if((key == ']') || (key == '}') )
-            {
+            if ((key == ']') || (key == '}')) {
                 //（1）后方括号、后花括号，的前面必须换行。打印：换行。
                 result.append('\n');
 
@@ -106,8 +119,7 @@ public class NetRequestShowActivity extends AppCompatActivity {
                 result.append(key);
 
                 //（4）如果当前字符后面还有字符，并且字符不为“，”，打印：换行。
-                if(((i + 1) < length) && (json.charAt(i + 1) != ','))
-                {
+                if (((i + 1) < length) && (json.charAt(i + 1) != ',')) {
                     result.append('\n');
                 }
 
@@ -116,8 +128,7 @@ public class NetRequestShowActivity extends AppCompatActivity {
             }
 
             //4、如果当前字符是逗号。逗号后面换行，并缩进，不改变缩进次数。
-            if((key == ','))
-            {
+            if ((key == ',')) {
                 result.append(key);
                 result.append('\n');
                 result.append(indent(number));
@@ -137,15 +148,14 @@ public class NetRequestShowActivity extends AppCompatActivity {
      * @param number 缩进次数。
      * @return 指定缩进次数的字符串。
      */
-    private String indent(int number)
-    {
+    private String indent(int number) {
         StringBuffer result = new StringBuffer();
-        for(int i = 0; i < number; i++)
-        {
+        for (int i = 0; i < number; i++) {
             result.append("   ");
         }
         return result.toString();
     }
+
     private String formatJson2(String jsonStr) {
         if (null == jsonStr || "".equals(jsonStr)) return "";
         StringBuilder sb = new StringBuilder();

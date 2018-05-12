@@ -14,44 +14,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-    private Handler handler;
-    private Runnable runnable;
-    int k = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         JlLog.start(getApplication());
-        findViewById(R.id.tv_test).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_net).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NetInfoVo netInfoVo = getNetInfo();
                 JlLog.notifyNetInfo(netInfoVo);
             }
         });
-        handler = new Handler(Looper.myLooper());
-        runnable = new Runnable() {
+        findViewById(R.id.btn_crash).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-//                CrashVo crashVo = new CrashVo(System.currentTimeMillis());
-//                crashVo.setCrashInfo("haha,崩溃了");
-                NetInfoVo netInfoVo = getNetInfo();
-                JlLog.notifyNetInfo(netInfoVo);
-//                JlLog.notifyCrash(crashVo);
-                k++;
-                handler.postDelayed(runnable,2000);
+            public void onClick(View view) {
+                CrashVo crashVo = new CrashVo(System.currentTimeMillis());
+                crashVo.setCrashInfo("haha,崩溃了");
+                JlLog.notifyCrash(crashVo);
             }
-        };
-//        handler.postDelayed(runnable,2000);
+        });
     }
 
-    private NetInfoVo getNetInfo(){
+    private NetInfoVo getNetInfo() {
         NetInfoVo netInfoVo = new NetInfoVo();
-        netInfoVo.setUrl("www.baidu.com  "+k);
-        Map<String,String>header = new HashMap<>();
-        header.put("count",String.valueOf(k));
-        header.put("name","lei");
+        netInfoVo.setUrl("http://www.baidu.com");
+        Map<String, String> header = new HashMap<>();
+        header.put("name", "lei");
         netInfoVo.setRequestHeader(header);
         netInfoVo.setRequestForm(header);
         netInfoVo.setRequsetUrlParams(header);
@@ -92,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         netInfoVo.setResponseJson(json);
         return netInfoVo;
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(runnable);
     }
 }
