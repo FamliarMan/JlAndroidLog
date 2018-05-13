@@ -36,14 +36,6 @@ JlLog.notifyNetInfo(netInfoVo);
 ```
 
 ## 效果展示
-![jllog][http://7xpxx3.com1.z0.glb.clouddn.com/jpg/blog/jllog_notify.png]
-
-![jllog][http://7xpxx3.com1.z0.glb.clouddn.com/jpg/blog/jllog_1.png]
-
-![jllog][http://7xpxx3.com1.z0.glb.clouddn.com/jpg/blog/jllog_2.png]
-
-![jllog][http://7xpxx3.com1.z0.glb.clouddn.com/jpg/blog/jllog_3.png]
-
-![jllog][http://7xpxx3.com1.z0.glb.clouddn.com/jpg/blog/jllog_4.png]
+![演示](http://7xpxx3.com1.z0.glb.clouddn.com/gif/blog/jllog.gif)
 
 
