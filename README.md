@@ -1,6 +1,14 @@
 # JlLog使用
 ## 依赖引入
-（待续，等待jcenter审核）
+如果你的app适配了android 8.0，那么使用
+```
+compile('com.jianglei:jllog:1.0')
+```
+如果没有，则使用:
+```
+compile('com.jianglei:jllog:0.2')
+```
+之所以有两个版本，是因为8.0的适配用到了27的support包
 
 ## 初始化
 ```
