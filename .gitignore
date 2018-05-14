@@ -1,6 +1,7 @@
 *.iml
 .gradle
 /local.properties
+.idea/
 /.idea
 .DS_Store
 /build
@@ -10,7 +11,6 @@
 # Built application files
 *.apk
 *.ap_
-
 # Files for the ART/Dalvik VM
 *.dex
 
@@ -41,12 +41,6 @@ proguard/
 # Android Studio captures folder
 captures/
 
-# Intellij
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/dictionaries
-.idea/libraries
 
 # Keystore files
 *.jks
