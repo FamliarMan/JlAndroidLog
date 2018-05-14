@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion "27.0.2"
     defaultConfig {
         applicationId "com.jianglei.jlandroidlog"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,6 +29,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 //    compile project(':jllog')
-    compile('com.jianglei:jllog:0.2')
+    compile('com.jianglei:jllog:1.0')
     testCompile 'junit:junit:4.12'
 }

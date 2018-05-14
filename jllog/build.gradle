@@ -17,12 +17,12 @@ buildscript {
     }
 }
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion "25.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -54,8 +54,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    api 'com.android.support:appcompat-v7:25.4.0'
-    api 'com.android.support:design:25.4.0'
+    api 'com.android.support:appcompat-v7:27.1.1'
+    api 'com.android.support:design:27.1.1'
     api 'com.android.support.constraint:constraint-layout:1.1.0'
     testCompile 'junit:junit:4.12'
     compileOnly 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -65,7 +65,7 @@ publish {
     userOrg = 'famliarman'
     groupId = 'com.jianglei'//jcenter上的路径
     artifactId = 'jllog'//项目名称
-    publishVersion = '0.2'//版本号
+    publishVersion = '1.0'//版本号
     desc = 'A library that can monitor http and crash infomation'
     website = 'https://github.com/FamliarMan/JlAndroidLog'
     repoName ='Android-lib'
