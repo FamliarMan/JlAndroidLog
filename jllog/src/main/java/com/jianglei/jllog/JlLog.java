@@ -27,6 +27,8 @@ public class JlLog {
      */
     private static int maxCrashRecord = 100;
 
+    private static boolean isDebug;
+
 
     private static ILogInterface logInterface;
 
@@ -52,7 +54,17 @@ public class JlLog {
     }
 
 
-    public static void start(Application application) {
+    /**
+     * 开始日志监控
+     *
+     * @param application application
+     * @param isDebug     当前是否是调试环境
+     */
+    public static void start(Application application, boolean isDebug) {
+        JlLog.isDebug = isDebug;
+        if (!isDebug) {
+            return;
+        }
         JlCrashHandler.getInstance().init(application);
         Intent intent = new Intent(application, JlLogService.class);
         application.startService(intent);
@@ -60,6 +72,9 @@ public class JlLog {
     }
 
     public static void notifyCrash(CrashVo crashVo) {
+        if (!isDebug) {
+            return;
+        }
         if (logInterface != null) {
             try {
                 logInterface.notifyCrash(crashVo);
@@ -70,6 +85,9 @@ public class JlLog {
     }
 
     public static void notifyNetInfo(NetInfoVo netInfoVo) {
+        if (!isDebug) {
+            return;
+        }
         if (logInterface != null) {
             try {
                 logInterface.notifyNetInfo(netInfoVo);
@@ -77,5 +95,9 @@ public class JlLog {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static boolean isIsDebug() {
+        return isDebug;
     }
 }
