@@ -47,10 +47,11 @@
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             tools:text="key1:value1\nkey2:value2"
             android:textIsSelectable="true"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             />
 
         <RelativeLayout
@@ -90,7 +91,8 @@
             android:id="@+id/tv_query_params"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             tools:text="key1:value1\nkey2:value2"
             android:textIsSelectable="true"
             android:layout_marginTop="10dp"
@@ -133,8 +135,9 @@
             android:id="@+id/tv_post_params"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:textIsSelectable="true"
-            android:layout_gravity="center_horizontal"
             tools:text="key1:value1\nkey2:value2"
             android:layout_marginTop="10dp"
             />
@@ -177,9 +180,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal"
             android:textIsSelectable="true"
+            android:layout_marginStart="15dp"
             tools:text="key1:value1\nkey2:value2"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             />

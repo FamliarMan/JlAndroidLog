@@ -16,6 +16,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven{
+            url 'https://dl.bintray.com/famliarman/Android-lib'
+        }
         maven {                                  // <-- Add this
             url 'https://maven.google.com/'
             name 'Google'

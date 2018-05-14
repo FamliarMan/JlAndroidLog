@@ -33,6 +33,9 @@ public class JlLogInterceptor implements Interceptor {
         Request request = chain.request();  //获取request
         Response response;
         response = chain.proceed(request); //OkHttp链式调用
+        if(!JlLog.isIsDebug()){
+            return response;
+        }
         NetInfoVo netInfoVo = new NetInfoVo();
         HttpUrl httpUrl = request.url();
         //设置url
