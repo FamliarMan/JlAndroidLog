@@ -3,7 +3,7 @@ package com.jianglei.jllog;
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.app.Notification;
-import android.app.NotificationChannel;
+//import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -143,13 +143,13 @@ public class JlLogService extends Service {
         clickIntent.setAction(Long.toString(System.currentTimeMillis()));
         int requestCode = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, requestCode, clickIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "log";
-            String channelName = getString(R.string.jl_log_system);
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            createNotificationChannel(channelId, channelName, importance);
-        }
-        return new NotificationCompat.Builder(application,"log")
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            String channelId = "log";
+//            String channelName = getString(R.string.jl_log_system);
+//            int importance = NotificationManager.IMPORTANCE_LOW;
+//            createNotificationChannel(channelId, channelName, importance);
+//        }
+        return new NotificationCompat.Builder(application)
                 .setSmallIcon(getAppIconRes())
                 .setContentTitle(getString(R.string.jl_log_system))
                 .setContentText(getString(R.string.jl_log_title, netInfoVos.size(), crashVos.size()))
@@ -170,14 +170,14 @@ public class JlLogService extends Service {
         return 0;
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
-    private void createNotificationChannel(String channelId, String channelName, int importance) {
-        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(
-                NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
+//    @TargetApi(Build.VERSION_CODES.O)
+//    private void createNotificationChannel(String channelId, String channelName, int importance) {
+//        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(
+//                NOTIFICATION_SERVICE);
+//        if (notificationManager != null) {
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//    }
 
 }
