@@ -12,8 +12,9 @@ compile('com.jianglei:jllog:0.2')
 
 ## 初始化
 ```
-JlLog.start(getApplication());
+JlLog.start(getApplication(),true);
 ```
+第二个参数注意，如果当前是开发版本就传true,日志工具此时会生效，如果是发布版本就传false，日志工具不会启动。
 ## 监控crash
 这一步已经封装好，无需手动调用，当然，如果想主动发出crash信息也是可以的：
 ```
