@@ -86,6 +86,7 @@ public class JlLogService extends Service {
 
         @Override
         public void exit() {
+            stopForeground(true);
             stopSelf();
         }
 
@@ -121,13 +122,11 @@ public class JlLogService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
-//        return null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopForeground(true);
     }
 
     public void updateNotification() {
