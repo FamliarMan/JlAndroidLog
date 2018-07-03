@@ -1,14 +1,12 @@
 # JlLog使用
 ## 依赖引入
-如果你的app适配了android 8.0，那么使用
 ```
-compile('com.jianglei:jllog:1.0')
+compile('com.jianglei:jllog:1.1')
 ```
-如果没有，则使用:
+如果出现support包冲突无法解决，首选升级buildtool 到26，如果实在不想升级可用下列版本，该版本不再继续维护
 ```
 compile('com.jianglei:jllog:0.2')
 ```
-之所以有两个版本，是因为8.0的适配用到了27的support包
 
 ## 初始化
 ```
@@ -27,7 +25,7 @@ JlLog.start(getApplication(),true);
 ```
  okHttpClient.addInterceptor(new JlLogInterceptor());
 ```
-如果你的app没有使用okhttp，那么你需要在自己的网路层手动调用监控方法：
+如果你的app没有使用okhttp，那么你需要在自己的网络层手动调用监控方法：
 ```
 NetInfoVo netInfoVo = new NetInfoVo();
 //设置url
