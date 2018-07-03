@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by jianglei on 5/5/18.
+ * @author jianglei
  */
 
 public class CrashAdapter extends RecyclerView.Adapter<CrashAdapter.NetInfoViewHolder> {
@@ -85,6 +85,10 @@ public class CrashAdapter extends RecyclerView.Adapter<CrashAdapter.NetInfoViewH
     }
 
     public interface OnItemClickListener {
+        /**
+         * 列表点击事件
+         * @param crashVo crash详细信息
+         */
         void onItemClick(CrashVo crashVo);
     }
 }

@@ -3,12 +3,11 @@ package com.jianglei.jllog.aidl;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by jianglei on 5/5/18.
+ * @author jianglei
  */
 
 public class NetInfoVo implements Parcelable{

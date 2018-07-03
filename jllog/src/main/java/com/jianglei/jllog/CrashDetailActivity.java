@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import com.jianglei.jllog.aidl.CrashVo;
 
+/**
+ * @author jianglei
+ */
 public class CrashDetailActivity extends JlBaseActivity{
 
     @Override

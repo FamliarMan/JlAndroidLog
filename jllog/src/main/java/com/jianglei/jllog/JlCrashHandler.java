@@ -9,16 +9,20 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- * Created by jianglei on 5/10/18.
+ * @author jianglei
  */
 
 public class JlCrashHandler implements Thread.UncaughtExceptionHandler {
 
-    // 系统默认的UncaughtException处理类
+    /**
+     * 系统默认的UncaughtException处理类
+     */
     private Thread.UncaughtExceptionHandler mDefaultHandler;
-    private Context mContext;
 
-    private static JlCrashHandler instance;  //单例引用，这里我们做成单例的，因为我们一个应用程序里面只需要一个UncaughtExceptionHandler实例
+    /**
+     * 单例引用，这里我们做成单例的，因为我们一个应用程序里面只需要一个UncaughtExceptionHandler实例
+     */
+    private static JlCrashHandler instance;
 
     private JlCrashHandler() {
     }
@@ -33,10 +37,9 @@ public class JlCrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 初始化
      *
-     * @param context
+     * @param context 上下文
      */
     public void init(Context context) {
-        mContext = context;
         // 获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         // 设置该CrashHandler为程序的默认处理器
@@ -50,7 +53,7 @@ public class JlCrashHandler implements Thread.UncaughtExceptionHandler {
 
     }
 
-    // 处理异常
+
     private void handleException(Throwable ex) {
         if (ex == null) {
             return;

@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author jianglei
+ */
 public class LogShowActivity extends JlBaseActivity implements ILogShowActivity {
 
     private TabLayout tabLayout;

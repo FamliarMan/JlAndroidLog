@@ -6,7 +6,7 @@ import com.jianglei.jllog.aidl.NetInfoVo;
 import java.util.List;
 
 /**
- * Created by jianglei on 5/12/18.
+ * @author jianglei
  */
 
 public interface  ILogShowActivity {
@@ -20,6 +20,15 @@ public interface  ILogShowActivity {
      */
     void clearCrash();
 
+    /**
+     * 获取所有网络日志信息
+     * @return 返回list对象
+     */
     List<NetInfoVo> getNetInfo();
+
+    /**
+     * 获取所有crash信息
+     * @return 返回list对象
+     */
     List<CrashVo> getCrashVo();
 }

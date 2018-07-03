@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 /**
- * Created by ccheng on 3/18/14.
+ * @author ccheng
  */
 public class JustifyTextView extends TextView {
 

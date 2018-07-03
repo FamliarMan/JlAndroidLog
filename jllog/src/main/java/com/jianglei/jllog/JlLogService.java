@@ -27,11 +27,11 @@ import java.util.List;
 
 /**
  * 核心日志监控服务
- * Created by jianglei on 5/5/18.
+ * @author jianglei
  */
 
 public class JlLogService extends Service {
-    private int NOTIFICATION_ID = 101;
+    private static int NOTIFICATION_ID = 101;
     /**
      * 最多缓存100条
      */

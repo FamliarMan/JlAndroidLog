@@ -18,12 +18,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+/**
+ * @author jianglei
+ */
 public class NetInfoFragment extends Fragment {
     private List<NetInfoVo> netInfoVos = new LinkedList<>();
 
     private NetInfoAdapter adapter;
     private RecyclerView rvNet;
-    private UIReceiver receiver;
+    private UiReceiver receiver;
     private ILogShowActivity logShowActivity;
 
     public NetInfoFragment() {
@@ -38,6 +41,7 @@ public class NetInfoFragment extends Fragment {
         }
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (logShowActivity != null) {
@@ -62,7 +66,6 @@ public class NetInfoFragment extends Fragment {
             public void onClick(View v) {
                 netInfoVos.clear();
                 adapter.notifyDataSetChanged();
-//                JlLog.clearNetInfo();
                 if (logShowActivity != null) {
                     logShowActivity.clearNet();
                 }
@@ -81,7 +84,7 @@ public class NetInfoFragment extends Fragment {
         rvNet.setAdapter(adapter);
         IntentFilter filter = new IntentFilter();
         filter.addAction("updateUI");
-        receiver = new UIReceiver();
+        receiver = new UiReceiver();
         if (getActivity() != null) {
             getActivity().registerReceiver(receiver, filter);
         }
@@ -96,7 +99,7 @@ public class NetInfoFragment extends Fragment {
         }
     }
 
-    class UIReceiver extends BroadcastReceiver {
+    class UiReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             NetInfoVo netInfoVo = intent.getParcelableExtra("netInfoVo");

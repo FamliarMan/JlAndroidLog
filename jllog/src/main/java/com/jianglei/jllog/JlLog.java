@@ -13,19 +13,19 @@ import com.jianglei.jllog.aidl.NetInfoVo;
 
 /**
  * 控制中心
- * Created by jianglei on 5/5/18.
+ * @author jianglei
  */
 
 public class JlLog {
     /**
      * 最多记录网络信息条数
      */
-    private static int maxNetRecord = 100;
+    private static int MAX_NET_RECORD = 100;
 
     /**
      * 最多记录崩溃次数
      */
-    private static int maxCrashRecord = 100;
+    private static int MAX_CRASH_RECORD = 100;
 
     private static boolean isDebug;
 
@@ -45,12 +45,12 @@ public class JlLog {
     };
 
     public static int getMaxNetRecord() {
-        return maxNetRecord;
+        return MAX_NET_RECORD;
     }
 
 
     public static int getMaxCrashRecord() {
-        return maxCrashRecord;
+        return MAX_CRASH_RECORD;
     }
 
 

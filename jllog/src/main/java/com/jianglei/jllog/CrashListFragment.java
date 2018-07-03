@@ -19,11 +19,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+/**
+ * @author jianglei
+ */
 public class CrashListFragment extends Fragment {
     private List<CrashVo> crashVos = new ArrayList<>();
 
     private CrashAdapter adapter;
-    private UIReceiver receiver;
+    private UiReceiver receiver;
     private RecyclerView rvCrash;
     private ILogShowActivity logShowActivity;
 
@@ -39,6 +42,7 @@ public class CrashListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (logShowActivity == null) {
@@ -81,7 +85,7 @@ public class CrashListFragment extends Fragment {
         });
         IntentFilter filter = new IntentFilter();
         filter.addAction("updateUI");
-        receiver = new UIReceiver();
+        receiver = new UiReceiver();
         if (getActivity() != null) {
             getActivity().registerReceiver(receiver, filter);
         }
@@ -97,7 +101,7 @@ public class CrashListFragment extends Fragment {
         }
     }
 
-    class UIReceiver extends BroadcastReceiver {
+    class UiReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             CrashVo crashVo = intent.getParcelableExtra("crashVo");

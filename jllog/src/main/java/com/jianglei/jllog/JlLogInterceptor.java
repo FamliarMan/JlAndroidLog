@@ -24,16 +24,17 @@ import okio.Buffer;
 import okio.BufferedSource;
 
 /**
- * Created by jianglei on 5/8/18.
+ * @author jianglei
+ *         为okhttp提供拦截器
  */
 
 public class JlLogInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();  //获取request
+        Request request = chain.request();
         Response response;
-        response = chain.proceed(request); //OkHttp链式调用
-        if(!JlLog.isIsDebug()){
+        response = chain.proceed(request);
+        if (!JlLog.isIsDebug()) {
             return response;
         }
         NetInfoVo netInfoVo = new NetInfoVo();
@@ -41,13 +42,13 @@ public class JlLogInterceptor implements Interceptor {
         //设置url
         netInfoVo.setUrl(httpUrl.toString());
         //设置Query参数
-        Map<String, String> queryParams = new HashMap<>();
+        Map<String, String> queryParams = new HashMap<>(5);
         for (int i = 0; i < httpUrl.querySize(); ++i) {
             queryParams.put(httpUrl.queryParameterName(i), httpUrl.queryParameterValue(i));
         }
         netInfoVo.setRequsetUrlParams(queryParams);
         //设置Header
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>(5);
         for (String name : request.headers().names()) {
             headers.put(name, request.header(name));
         }
@@ -56,7 +57,7 @@ public class JlLogInterceptor implements Interceptor {
         //设置post参数
         RequestBody requestBody = request.body();
         if (requestBody != null && requestBody instanceof FormBody) {
-            Map<String, String> postParams = new HashMap<>();
+            Map<String, String> postParams = new HashMap<>(5);
             FormBody formRequestBody = (FormBody) requestBody;
 
             for (int i = 0; i < formRequestBody.size(); ++i) {
@@ -76,7 +77,7 @@ public class JlLogInterceptor implements Interceptor {
             } else if (mediaType.toString().toLowerCase(Locale.getDefault()).contains("text/plain") ||
                     mediaType.toString().toLowerCase(Locale.getDefault()).contains("application/json")) {
                 BufferedSource source = responseBody.source();
-                source.request(Long.MAX_VALUE); // Buffer the entire body.
+                source.request(Long.MAX_VALUE);
                 Buffer buffer = source.buffer();
                 netInfoVo.setResponseJson(buffer.clone().readString(Charset.forName("UTF-8")));
                 JlLog.notifyNetInfo(netInfoVo);

@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * crash记录信息
- * Created by jianglei on 5/5/18.
+ * @author jianglei
  */
 
 public class CrashVo implements Parcelable {

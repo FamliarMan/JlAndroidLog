@@ -14,7 +14,7 @@ import com.jianglei.jllog.aidl.NetInfoVo;
 import java.util.List;
 
 /**
- * Created by jianglei on 5/5/18.
+ * @author jianglei
  */
 
 public class NetInfoAdapter extends RecyclerView.Adapter<NetInfoAdapter.NetInfoViewHolder> {
@@ -84,6 +84,10 @@ public class NetInfoAdapter extends RecyclerView.Adapter<NetInfoAdapter.NetInfoV
     }
 
     public interface  OnItemClickListener{
+        /**
+         * 列表点击事件
+         * @param netInfoVo 网络信息
+         */
         void onItemClick(NetInfoVo netInfoVo);
     }
 }
