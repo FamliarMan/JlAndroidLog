@@ -32,15 +32,12 @@ public class JlLogInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        Response response;
-        response = chain.proceed(request);
-        if (!JlLog.isIsDebug()) {
-            return response;
-        }
+
         NetInfoVo netInfoVo = new NetInfoVo();
+        netInfoVo.setSuccessful(true);
         HttpUrl httpUrl = request.url();
         //设置url
-        netInfoVo.setUrl(httpUrl.toString());
+        netInfoVo.setUrl(httpUrl.toString().split("\\?")[0]);
         //设置Query参数
         Map<String, String> queryParams = new HashMap<>(5);
         for (int i = 0; i < httpUrl.querySize(); ++i) {
@@ -64,6 +61,20 @@ public class JlLogInterceptor implements Interceptor {
                 postParams.put(formRequestBody.name(i), formRequestBody.value(i));
             }
             netInfoVo.setRequestForm(postParams);
+        }
+        Response response;
+
+        try {
+            response = chain.proceed(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+            netInfoVo.setErrorMsg(e.getMessage());
+            netInfoVo.setSuccessful(false);
+            JlLog.notifyNetInfo(netInfoVo);
+            throw new IOException(e);
+        }
+        if (!JlLog.isIsDebug()) {
+            return response;
         }
 
         //设置返回信息json

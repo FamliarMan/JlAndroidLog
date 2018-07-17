@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,6 +57,7 @@ public class NetInfoAdapter extends RecyclerView.Adapter<NetInfoAdapter.NetInfoV
             return;
         }
         holder.tvUrl.setText(netInfoVo.getUrl());
+        holder.ivIcon.setImageResource(netInfoVo.isSuccessful() ? R.mipmap.jl_right : R.mipmap.jl_error);
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,11 +77,13 @@ public class NetInfoAdapter extends RecyclerView.Adapter<NetInfoAdapter.NetInfoV
     class NetInfoViewHolder extends RecyclerView.ViewHolder {
         TextView tvUrl;
         LinearLayout mainLayout;
+        ImageView ivIcon;
 
         public NetInfoViewHolder(View itemView) {
             super(itemView);
             tvUrl = (TextView)itemView.findViewById(R.id.tv_url);
             mainLayout = (LinearLayout)itemView.findViewById(R.id.layout_main);
+            ivIcon = itemView.findViewById(R.id.iv_icon);
         }
     }
 

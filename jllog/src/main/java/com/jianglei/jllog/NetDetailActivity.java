@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-import static android.icu.lang.UCharacter.LineBreak.SPACE;
 
 /**
  * 显示网络详细信息的activity
@@ -21,7 +20,8 @@ import static android.icu.lang.UCharacter.LineBreak.SPACE;
  */
 public class NetDetailActivity extends JlBaseActivity {
 
-    private JustifyTextView tvHeader, tvQueryParams, tvPostParams, tvResponse;
+    private JustifyTextView tvHeader, tvQueryParams, tvPostParams;
+    private TextView tvResponse;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class NetDetailActivity extends JlBaseActivity {
         tvHeader = (JustifyTextView) findViewById(R.id.tv_header);
         tvQueryParams = (JustifyTextView) findViewById(R.id.tv_query_params);
         tvPostParams = (JustifyTextView) findViewById(R.id.tv_post_params);
-        tvResponse = (JustifyTextView) findViewById(R.id.tv_response);
+        tvResponse =  findViewById(R.id.tv_response);
         NetInfoVo netInfoVo = getIntent().getParcelableExtra("netInfoVo");
         showNetInfo(netInfoVo);
     }
@@ -39,6 +39,10 @@ public class NetDetailActivity extends JlBaseActivity {
         tvHeader.setText(formatKeyValue(netInfoVo.getRequestHeader()));
         tvQueryParams.setText(formatKeyValue(netInfoVo.getRequsetUrlParams()));
         tvPostParams.setText(formatKeyValue(netInfoVo.getRequestForm()));
+        if(!netInfoVo.isSuccessful()){
+            tvResponse.setText(netInfoVo.getErrorMsg());
+            return;
+        }
         try {
             //这样做是为了处理json中unicode编码问题，jsonobject会自动解码
             String json = netInfoVo.getResponseJson();

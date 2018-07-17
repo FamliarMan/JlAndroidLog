@@ -138,7 +138,7 @@ public class JlLogService extends Service {
     public Notification getNotification() {
         Application application = getApplication();
         Intent clickIntent = new Intent(this, LogShowActivity.class);
-        clickIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        clickIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         clickIntent.setAction(Long.toString(System.currentTimeMillis()));
         int requestCode = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, requestCode, clickIntent, PendingIntent.FLAG_CANCEL_CURRENT);

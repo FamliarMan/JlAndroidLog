@@ -12,14 +12,20 @@
         android:id="@+id/btn_net"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create json" />
+        android:text="模拟网络正常请求" />
+    <Button
+        android:id="@+id/btn_net_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="模拟网络异常请求" />
 
     <Button
         android:id="@+id/btn_crash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Create crash" />
+        android:text="模拟crash" />
 
 
 </LinearLayout>

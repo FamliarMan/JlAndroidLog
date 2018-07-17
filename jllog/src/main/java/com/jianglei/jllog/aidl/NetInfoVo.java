@@ -30,13 +30,45 @@ public class NetInfoVo implements Parcelable{
      */
     private String responseJson;
 
+    /**
+     * 请求是否成功
+     */
+    private boolean isSuccessful;
+
+    /**
+     * 错误信息
+     */
+    private String errorMsg;
+
+    public boolean isSuccessful() {
+        return isSuccessful;
+    }
+
+    public void setSuccessful(boolean successful) {
+        isSuccessful = successful;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
     public NetInfoVo(){
+
+    }
+    public NetInfoVo(boolean isSuccessful){
+        this.isSuccessful = isSuccessful;
 
     }
 
     protected NetInfoVo(Parcel in) {
         url = in.readString();
         responseJson = in.readString();
+        isSuccessful = in.readInt() == 1;
+        errorMsg = in.readString();
         in.readMap(requestHeader,NetInfoVo.class.getClassLoader());
         in.readMap(requsetUrlParams,NetInfoVo.class.getClassLoader());
         in.readMap(requestForm,NetInfoVo.class.getClassLoader());
@@ -108,6 +140,8 @@ public class NetInfoVo implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(url);
         dest.writeString(responseJson);
+        dest.writeInt(isSuccessful?1:0);
+        dest.writeString(errorMsg);
         dest.writeMap(requestHeader);
         dest.writeMap(requsetUrlParams);
         dest.writeMap(requestForm);

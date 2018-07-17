@@ -8,7 +8,7 @@
         <activity
             android:name=".LogShowActivity"
             android:process=":Log"
-            android:taskAffinity=""
+            android:taskAffinity="com.jianglei.jllog"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
@@ -18,8 +18,11 @@
         <activity
             android:name=".NetDetailActivity"
             android:process=":Log"
+            android:taskAffinity="com.jianglei.jllog"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".CrashDetailActivity"></activity>
+        <activity
+            android:name=".CrashDetailActivity"
+            android:taskAffinity="com.jianglei.jllog" />
     </application>
 
 </manifest>

@@ -22,28 +22,54 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_net).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NetInfoVo netInfoVo = getNetInfo();
+                NetInfoVo netInfoVo = getNetInfo(true);
+
                 JlLog.notifyNetInfo(netInfoVo);
             }
         });
         findViewById(R.id.btn_crash).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                CrashVo crashVo = new CrashVo(System.currentTimeMillis());
-                crashVo.setCrashInfo("haha,崩溃了");
-                JlLog.notifyCrash(crashVo);
+                NetInfoVo netInfoVo = null;
+                netInfoVo.isSuccessful();
+            }
+        });
+
+        findViewById(R.id.btn_net_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetInfoVo netInfoVo = getNetInfo(false);
+                JlLog.notifyNetInfo(netInfoVo);
             }
         });
     }
 
-    private NetInfoVo getNetInfo() {
-        NetInfoVo netInfoVo = new NetInfoVo();
+    private NetInfoVo getNetInfo(boolean isSuccessful) {
+        NetInfoVo netInfoVo = new NetInfoVo(isSuccessful);
         netInfoVo.setUrl("http://www.baidu.com");
         Map<String, String> header = new HashMap<>();
         header.put("name", "lei");
         netInfoVo.setRequestHeader(header);
         netInfoVo.setRequestForm(header);
         netInfoVo.setRequsetUrlParams(header);
+        if(!isSuccessful){
+            String error = "java.lang.RuntimeException: level 2 exception\n" +
+                    "    at com.msh.demo.exceptionStack.Test.fun2(Test.java:17)\n" +
+                    "    at com.msh.demo.exceptionStack.Test.main(Test.java:24)\n" +
+                    "    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n" +
+                    "    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n" +
+                    "    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n" +
+                    "    at java.lang.reflect.Method.invoke(Method.java:498)\n" +
+                    "    at com.intellij.rt.execution.application.AppMain.main(AppMain.java:147)\n" +
+                    "Caused by: java.io.IOException: level 1 exception\n" +
+                    "    at com.msh.demo.exceptionStack.Test.fun1(Test.java:10)\n" +
+                    "    at com.msh.demo.exceptionStack.Test.fun2(Test.java:15)\n" +
+                    "    ... 6 more";
+            netInfoVo.setErrorMsg(error);
+            return netInfoVo;
+
+        }
         String json = "[\n" +
                 "                {\n" +
                 "                    date: \"今天（周三）\",\n" +

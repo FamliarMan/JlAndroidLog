@@ -28,7 +28,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-//    compile project(':jllog')
-    compile('com.jianglei:jllog:1.0')
+    compile project(':jllog')
+//    compile('com.jianglei:jllog:1.0')
     testCompile 'junit:junit:4.12'
 }
