@@ -29,6 +29,7 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
     private ViewPager viewPager;
 
     private ILogInterface logInterface;
+    private boolean isUnbind;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -125,7 +126,7 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(serviceConnection);
+        unBindService();
     }
 
     @Override
@@ -139,6 +140,7 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
         if (item.getItemId() == R.id.jl_menu_exit) {
             if (logInterface != null) {
                 try {
+                    unBindService();
                     logInterface.exit();
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -147,5 +149,13 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void unBindService() {
+        if (isUnbind) {
+            return;
+        }
+        unbindService(serviceConnection);
+        isUnbind = true;
     }
 }

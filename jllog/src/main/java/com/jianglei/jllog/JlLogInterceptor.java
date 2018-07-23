@@ -5,6 +5,9 @@ import android.provider.MediaStore;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -67,8 +70,7 @@ public class JlLogInterceptor implements Interceptor {
         try {
             response = chain.proceed(request);
         } catch (IOException e) {
-            e.printStackTrace();
-            netInfoVo.setErrorMsg(e.getMessage());
+            netInfoVo.setErrorMsg(getErrorMsg(e));
             netInfoVo.setSuccessful(false);
             JlLog.notifyNetInfo(netInfoVo);
             throw new IOException(e);
@@ -112,5 +114,19 @@ public class JlLogInterceptor implements Interceptor {
         } catch (final IOException e) {
             return "did not work";
         }
+    }
+
+    private String getErrorMsg(Throwable e){
+        Writer writer = new StringWriter();
+        PrintWriter pw = new PrintWriter(writer);
+        e.printStackTrace(pw);
+        Throwable cause = e.getCause();
+        // 循环着把所有的异常信息写入writer中
+        while (cause != null) {
+            cause.printStackTrace(pw);
+            cause = cause.getCause();
+        }
+        pw.close();// 记得关闭
+        return writer.toString();
     }
 }
