@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
+import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.util.ArrayList;
@@ -60,9 +61,11 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
         CrashListFragment crashListFragment = CrashListFragment.newInstance();
         fragments.add(netInfoFragment);
         fragments.add(crashListFragment);
+        fragments.add(LifeCyclerFragment.newInstance());
         List<String> tab = new ArrayList<>();
         tab.add(getString(R.string.jl_http_request));
         tab.add(getString(R.string.jl_crash_info));
+        tab.add(getString(R.string.jl_life));
         viewPager.setAdapter(new LogFragmentAdapter(getSupportFragmentManager(), tab, fragments));
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -110,6 +113,32 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
         }
         try {
             return logInterface.getCrashVos();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return new LinkedList<>();
+        }
+    }
+
+    @Override
+    public void clearLife() {
+        if (logInterface == null) {
+            return;
+        }
+        try {
+            logInterface.clearLife();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public List<LifeVo> getLifeVos() {
+        if (logInterface == null) {
+            return new LinkedList<>();
+        }
+        try {
+            return logInterface.getLifeVos();
         } catch (RemoteException e) {
             e.printStackTrace();
             return new LinkedList<>();

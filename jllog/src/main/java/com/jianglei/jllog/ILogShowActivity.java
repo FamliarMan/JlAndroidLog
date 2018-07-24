@@ -1,11 +1,13 @@
 package com.jianglei.jllog;
 
 import com.jianglei.jllog.aidl.CrashVo;
+import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.util.List;
 
 /**
+ * fragment和activity通信
  * @author jianglei
  */
 
@@ -31,4 +33,14 @@ public interface  ILogShowActivity {
      * @return 返回list对象
      */
     List<CrashVo> getCrashVo();
+
+    /**
+     * 清除生命周期信息
+     */
+    void clearLife();
+
+    /**
+     * 获取所有生命周期信息
+     */
+    List<LifeVo> getLifeVos();
 }

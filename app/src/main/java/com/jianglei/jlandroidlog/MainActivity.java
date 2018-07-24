@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.jianglei.jllog.JlBaseActivity;
 import com.jianglei.jllog.JlLog;
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
@@ -13,12 +14,11 @@ import com.jianglei.jllog.aidl.NetInfoVo;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends JlBaseActivity{
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        JlLog.start(getApplication(),true);
         findViewById(R.id.btn_net).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

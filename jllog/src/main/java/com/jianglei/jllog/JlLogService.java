@@ -16,10 +16,12 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 import android.widget.Button;
 
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
+import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.util.LinkedList;
@@ -27,6 +29,7 @@ import java.util.List;
 
 /**
  * 核心日志监控服务
+ *
  * @author jianglei
  */
 
@@ -40,6 +43,7 @@ public class JlLogService extends Service {
      * 最多缓存100条
      */
     private LinkedList<NetInfoVo> netInfoVos = new LinkedList<>();
+    private LinkedList<LifeVo> lifeVos = new LinkedList<>();
     private ILogInterface.Stub mBinder = new ILogInterface.Stub() {
         @Override
         public void notifyNetInfo(NetInfoVo netInfoVo) throws RemoteException {
@@ -70,6 +74,26 @@ public class JlLogService extends Service {
         @Override
         public List<CrashVo> getCrashVos() throws RemoteException {
             return crashVos;
+        }
+
+        @Override
+        public void notifyLife(LifeVo lifeVo) throws RemoteException {
+            Log.d("longyi","notify life: "+lifeVo.toString());
+            if (lifeVos.size() == JlLog.getMaxCrashRecord()) {
+                lifeVos.remove(0);
+            }
+            lifeVos.add(lifeVo);
+            //生命周期不会在后台更新，所以此处无需发送广播实时更新页面
+        }
+
+        @Override
+        public void clearLife() throws RemoteException {
+            lifeVos.clear();
+        }
+
+        @Override
+        public List<LifeVo> getLifeVos() throws RemoteException {
+            return lifeVos;
         }
 
         @Override
@@ -148,7 +172,7 @@ public class JlLogService extends Service {
             int importance = NotificationManager.IMPORTANCE_LOW;
             createNotificationChannel(channelId, channelName, importance);
         }
-        return new NotificationCompat.Builder(application,"log")
+        return new NotificationCompat.Builder(application, "log")
                 .setSmallIcon(getAppIconRes())
                 .setContentTitle(getString(R.string.jl_log_system))
                 .setContentText(getString(R.string.jl_log_title, netInfoVos.size(), crashVos.size()))

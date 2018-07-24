@@ -6,13 +6,20 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
+import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 控制中心
+ *
  * @author jianglei
  */
 
@@ -32,6 +39,10 @@ public class JlLog {
 
     private static ILogInterface logInterface;
 
+    /**
+     * 刚开始服务有可能还没启动起来，会导致有些生命周期信息丢失，这里用来存储这些丢失的信息
+     */
+    private static List<LifeVo> mPendingLifes = new ArrayList<>();
     private static ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -94,6 +105,32 @@ public class JlLog {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void notifyLife(LifeVo lifeVo) {
+        Log.d("longyi", lifeVo.toString());
+        if (!isDebug) {
+            return;
+        }
+        if (logInterface != null) {
+            try {
+                if (mPendingLifes.size() != 0) {
+                    for (LifeVo vo : mPendingLifes) {
+                        logInterface.notifyLife(vo);
+                    }
+                    mPendingLifes.clear();
+                }
+                logInterface.notifyLife(lifeVo);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //有可能服务还没启动起来，所以先暂存
+            if (mPendingLifes.size() == MAX_NET_RECORD) {
+                return;
+            }
+            mPendingLifes.add(lifeVo);
         }
     }
 

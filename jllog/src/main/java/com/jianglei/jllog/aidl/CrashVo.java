@@ -3,7 +3,6 @@ package com.jianglei.jllog.aidl;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 
 /**
  * crash记录信息

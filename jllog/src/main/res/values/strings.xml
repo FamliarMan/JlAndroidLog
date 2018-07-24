@@ -3,6 +3,7 @@
     <string name="jl_crash_item">%s 奔溃</string>
     <string name="jl_http_request">http请求</string>
     <string name="jl_crash_info">崩溃</string>
+    <string name="jl_life">生命周期</string>
     <string name="jl_exit">退出日志</string>
     <string name="jl_header">header</string>
     <string name="jl_query_params">query params</string>
