@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.jianglei.stubplugin'
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -23,6 +23,16 @@ android {
 
 }
 
+buildscript{
+    repositories {
+        maven {
+            url 'https://dl.bintray.com/famliarman/Android-lib'
+        }
+    }
+    dependencies{
+        classpath 'com.jianglei:jllog-plugin:0.3'
+    }
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
