@@ -1,7 +1,7 @@
 # JlLog使用
 ## 依赖引入
 ```
-compile('com.jianglei:jllog:1.2')
+compile('com.jianglei:jllog:1.3')
 ```
 如果出现support包冲突无法解决，首选升级buildtool 到26，如果实在不想升级可用下列版本，该版本不再继续维护
 ```

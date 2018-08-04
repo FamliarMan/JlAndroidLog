@@ -23,7 +23,7 @@ public class JlBaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState );
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.setContentView(R.layout.jl_activity_base);
         JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_CREATE,getClass().getName()));
         mainLayout = (LinearLayout) findViewById(R.id.parent);
