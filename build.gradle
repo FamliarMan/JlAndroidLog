@@ -2,6 +2,9 @@
 
 buildscript {
     repositories {
+        maven {
+            url 'file://home/jianglei/maven/'
+        }
         jcenter()
         google()
         maven{

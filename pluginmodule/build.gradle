@@ -5,6 +5,11 @@ apply plugin: 'com.novoda.bintray-release'
 dependencies {
     compile gradleApi()
     compile localGroovy()
+
+    compile 'com.android.tools.build:gradle:3.0.1'
+    compile 'com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api'
+    compile 'org.javassist:javassist:3.20.0-GA'
+    compile 'commons-io:commons-io:2.5'
 }
 
 buildscript {
@@ -17,6 +22,15 @@ buildscript {
 }
 repositories {
     jcenter()
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: uri('/home/jianglei/maven'))
+        pom.groupId = 'com.jianglei'//包名
+        pom.artifactId = 'jllog-plugin-test'//在需要引用插件时用到
+        pom.version = '0.2'
+    }
 }
 publish {
     userOrg = 'famliarman'
