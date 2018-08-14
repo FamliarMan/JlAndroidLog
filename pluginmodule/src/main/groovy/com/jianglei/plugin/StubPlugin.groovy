@@ -13,17 +13,17 @@ public class StubPlugin implements Plugin<Project> {
         System.out.println("========================");
         def android = project.extensions.findByType(AppExtension.class)
         //注册一个Transform
-        def applicationId
-        android.applicationVariants.all {variant ->
-            applicationId = [variant.mergedFlavor.applicationId, variant.buildType.applicationIdSuffix].findAll().join()
-            println("buildtype: "+ variant.buildType)
-            println("applicationId: "+ applicationId)
-        }
+        def applicationId = android.getDefaultConfig().getApplicationId()
+//        android.applicationVariants.all {variant ->
+//            applicationId = [variant.mergedFlavor.applicationId, variant.buildType.applicationIdSuffix].findAll().join()
+//            println("buildtype: "+ variant.buildType)
+//            println("applicationId: "+ applicationId)
+//        }
         println("applicationId last: "+ applicationId)
 //        if(applicationId == null || applicationId.size() == 0){
 //            throw new IllegalArgumentException("Sorry,you should specify an application id in your build file")
 //        }
-        def classTransform = new StubTransform(project,"com/jianglei/jlandroidlog");
+        def classTransform = new StubTransform(project,applicationId.replace(".","/"));
         android.registerTransform(classTransform);
 
     }

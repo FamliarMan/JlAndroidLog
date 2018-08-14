@@ -1,13 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-allprojects {
-    repositories {
-        maven {                                  // <-- Add this
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
-    }
-}
 buildscript {
     repositories {
         jcenter()

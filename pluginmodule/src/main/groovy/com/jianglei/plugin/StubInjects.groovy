@@ -1,5 +1,6 @@
 package com.jianglei.plugin
 
+import com.android.build.api.transform.JarInput
 import javassist.ClassPool
 import javassist.CtClass
 import javassist.CtMethod
@@ -15,25 +16,42 @@ public class StubInjects {
 
     private static ClassPool pool = new ClassPool(true)
 
-    public static void injectJar(String path) {
+    public static File injectJar(JarInput jarInput,Project project,String applicationId) {
+        def path = jarInput.file.getAbsolutePath()
+        def jarName = jarInput.name
+
         //将所有jar包的类路径加入
         def classPath = new JarClassPath(path)
         pool.appendClassPath(classPath)
+        if (!jarName.startsWith(":")) {
+            //说明该jar包是依赖的其他第三方包
+            return jarInput.file
+        }
+
+        def unzipFilePath = path + "-unzip"
+        ZipUtil.unzip(path, unzipFilePath)
+        inject(unzipFilePath,project,applicationId)
+        //将该目录重新压缩成jar包
+        String newJarPath = path+"-zip.jar"
+        ZipUtil.zip(unzipFilePath,newJarPath)
+        println("unzip jar: "+ newJarPath)
+        return new File(newJarPath)
     }
 
+
     public static void inject(String path, Project project, String applicationId) {
-        //将当前路径加入类池,不然找不到这个类
-        pool.appendClassPath(path);
         //project.android.bootClasspath 加入android.jar，不然找不到android相关的所有类
         pool.appendClassPath(project.android.bootClasspath[0].toString());
         //引入android.os.Bundle包，因为onCreate方法参数有Bundle
         pool.importPackage("android.os.Bundle");
-        pool.importPackage("com.jianglei.jllog.aidl.LifeVo")
+        //将当前路径加入类池,不然找不到这个类
+        pool.appendClassPath(path);
         File dir = new File(path);
         if (dir.isDirectory()) {
             //遍历文件夹
             dir.eachFileRecurse { File file ->
                 def filePath = file.absolutePath
+                println("file = " + filePath)
                 def name = file.getName()
                 if (name.endsWith(".class") && !name.startsWith("R\$") &&
                         !"R.class".equals(name) && !"BuildConfig.class".equals(name)) {
@@ -48,6 +66,8 @@ public class StubInjects {
                     }
                 }
             }
+        } else {
+            println("file = " + dir.getAbsolutePath())
         }
 
     }

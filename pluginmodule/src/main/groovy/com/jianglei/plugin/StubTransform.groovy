@@ -8,6 +8,7 @@ import com.android.build.api.transform.TransformException
 import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.google.common.collect.Sets
 import org.apache.commons.io.FileUtils
 import org.apache.commons.codec.digest.DigestUtils
 import com.android.build.api.transform.Format
@@ -58,15 +59,16 @@ public  class StubTransform extends Transform{
 
             ////遍历jar文件 对jar不操作，但是要输出到out路径
             input.jarInputs.each { JarInput jarInput ->
-                StubInjects.injectJar(jarInput.file.getAbsolutePath())
                 // 重命名输出文件（同目录copyFile会冲突）
                 def jarName = jarInput.name
+                println("ja = "+jarName+"   "+jarInput.file.getAbsolutePath())
+                def jarFile = StubInjects.injectJar(jarInput,mProject,applicationId)
                 def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
                 if (jarName.endsWith(".jar")) {
                     jarName = jarName.substring(0, jarName.length() - 4)
                 }
                 def dest = transformInvocation.getOutputProvider().getContentLocation(jarName + md5Name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
-                FileUtils.copyFile(jarInput.file, dest)
+                FileUtils.copyFile(jarFile, dest)
             }
             //遍历文件夹
             input.directoryInputs.each { DirectoryInput directoryInput ->
