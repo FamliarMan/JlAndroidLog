@@ -8,18 +8,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 public class ZipUtil {
  
-	public static void main(String[] args) {
- 
-		String dir = "D:\\workspace\\runtime-com.qz.meta.product\\xxxx\\.image";
-        String zippath = "D:\\test2.zip";
-		ZipUtil.zip(dir, zippath);
- 
-		String unzipdir = "D:\\test2";
-		String unzipfile = "D:\\test2.zip";
-		ZipUtil.unzip(unzipfile, unzipdir);
-		
-		System.out.println("success!");
-	} 
 	/**
 	 * zip压缩文件
 	 * @param dir

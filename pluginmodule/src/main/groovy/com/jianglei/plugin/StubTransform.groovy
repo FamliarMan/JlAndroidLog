@@ -1,31 +1,17 @@
 package com.jianglei.plugin
 
-import com.android.build.api.transform.DirectoryInput
-import com.android.build.api.transform.JarInput
-import com.android.build.api.transform.QualifiedContent
-import com.android.build.api.transform.Transform
-import com.android.build.api.transform.TransformException
-import com.android.build.api.transform.TransformInput
-import com.android.build.api.transform.TransformInvocation
+import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.google.common.collect.Sets
-import org.apache.commons.io.FileUtils
 import org.apache.commons.codec.digest.DigestUtils
-import com.android.build.api.transform.Format
+import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
-
-public  class StubTransform extends Transform{
+public class StubTransform extends Transform {
 
     private Project mProject
-    /**
-     * 应用id
-     */
-    private String applicationId;
 
-    StubTransform(Project mProject,String applicationId) {
+    StubTransform(Project mProject) {
         this.mProject = mProject
-        this.applicationId = applicationId;
     }
 
     @Override
@@ -51,18 +37,18 @@ public  class StubTransform extends Transform{
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation)
+        println("--------------------- start to insert log ------------------------------------")
         //遍历input
 
         def inputs = transformInvocation.inputs
 
         inputs.each { TransformInput input ->
 
-            ////遍历jar文件 对jar不操作，但是要输出到out路径
+            ////遍历jar文件 对jar不操作,只是将jar的路径加入类池，但是要输出到out路径
             input.jarInputs.each { JarInput jarInput ->
                 // 重命名输出文件（同目录copyFile会冲突）
                 def jarName = jarInput.name
-                println("ja = "+jarName+"   "+jarInput.file.getAbsolutePath())
-                def jarFile = StubInjects.injectJar(jarInput,mProject,applicationId)
+                File jarFile = StubInjects.injectJar(jarInput, mProject)
                 def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
                 if (jarName.endsWith(".jar")) {
                     jarName = jarName.substring(0, jarName.length() - 4)
@@ -73,17 +59,14 @@ public  class StubTransform extends Transform{
             //遍历文件夹
             input.directoryInputs.each { DirectoryInput directoryInput ->
                 //注入代码
-                StubInjects.inject(directoryInput.file.absolutePath, mProject,applicationId)
-
+                StubInjects.inject(directoryInput.file.absolutePath, mProject)
                 // 获取output目录
                 def dest = transformInvocation.getOutputProvider().getContentLocation(directoryInput.name,
                         directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
-
                 // 将input的目录复制到output指定目录
                 FileUtils.copyDirectory(directoryInput.file, dest)
             }
-
         }
-        System.out.println("--------------结束transform了----------------")
+        println("--------------------- finish inserting log ------------------------------------")
     }
 }

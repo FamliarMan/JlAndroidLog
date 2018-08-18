@@ -17,7 +17,7 @@ import com.jianglei.jllog.aidl.LifeVo;
  * @author jianglei
  */
 
-public class JlBaseActivity extends AppCompatActivity {
+public abstract  class JlBaseActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
 
     @Override
