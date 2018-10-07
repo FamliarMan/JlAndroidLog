@@ -10,7 +10,7 @@ import java.lang.reflect.Modifier
 
 class CommonUtils {
 
-    static boolean isActivity(CtClass ctClass,ClassPool pool) {
+    static boolean isActivity(CtClass ctClass, ClassPool pool) {
         def activity = pool.getCtClass(MethodConstants.ACTIVITY)
         return ctClass.subclassOf(activity)
     }
@@ -22,7 +22,7 @@ class CommonUtils {
             CtMethod method = new CtMethod(CtClass.voidType, methodName, params, activity)
             method.setModifiers(activity.getModifiers() & ~Modifier.ABSTRACT)
             StringBuilder body = new StringBuilder()
-            insertStr = insertStr.substring(1,insertStr.length()-1)
+            insertStr = insertStr.substring(1, insertStr.length() - 1)
             body.append("{super.onCreate(\$1);\n").append(insertStr).append("}")
             method.setBody(body.toString())
             return method
@@ -30,7 +30,7 @@ class CommonUtils {
             CtMethod method = new CtMethod(CtClass.voidType, methodName, null, activity)
             method.setModifiers(activity.getModifiers() & ~Modifier.ABSTRACT)
             StringBuilder body = new StringBuilder()
-            insertStr = insertStr.substring(1,insertStr.length()-1)
+            insertStr = insertStr.substring(1, insertStr.length() - 1)
             body.append("{super.").append(methodName).append("();").append("\n").append(insertStr).append("}")
             method.setBody(body.toString())
             return method
@@ -38,7 +38,7 @@ class CommonUtils {
     }
 
     static boolean containMethod(List<CtMethod> methods, CtMethod method) {
-        if(methods == null){
+        if (methods == null) {
             return false
         }
         for (CtMethod m : methods) {
@@ -50,18 +50,14 @@ class CommonUtils {
     }
 
     /**
-     * 探测某个方法是否包含某句代码
-     * @param method 要探测的方法
-     * @param insert  是否被包含的语句
-     * @return 如果包含，返回true，否则返回false
+     * 判断某个类是否需要注入代码
      */
-    static boolean isNeedInsert(CtMethod  method,Bytecode insertStrCode){
+    static boolean isNeedInsert(CtClass ctClass) {
 
-        def methodInfo = method.getMethodInfo2()
-        def attribute = methodInfo.getCodeAttribute()
-        def iterator = attribute.iterator()
-        while(iterator.hasNext()){
-            println(++iterator.toString() +"  "+ insertStrCode.toString())
+        if (ctClass.getSuperclass().getName() == (MethodConstants.ACTIVITY)
+                || ctClass.getSuperclass().getName() == MethodConstants.FragmentActivity
+                || ctClass.getSuperclass().getName() == MethodConstants.APPCompatActivity) {
+            return true
         }
         return false
 

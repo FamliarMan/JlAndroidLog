@@ -12,12 +12,8 @@ class StubInjects {
     private static boolean isInit = false
     //初始化类池
 
-    private static ClassPool pool = ClassPool.getDefault();
+    private static ClassPool pool = ClassPool.getDefault()
 
-    /**
-     * 已经注入过的类
-     */
-    private static Set<String> insertedClass = new HashSet<>();
 
     private static void initPool(Project project) {
         if (isInit) {
@@ -30,7 +26,7 @@ class StubInjects {
         isInit = true
     }
 
-    static File injectJar(JarInput jarInput,Project project) {
+    static File injectJar(JarInput jarInput, Project project) {
         //将所有jar包的类路径加入
         pool.appendClassPath(jarInput.file.path)
         def jarName = jarInput.name
@@ -40,12 +36,17 @@ class StubInjects {
             return jarInput.file
         }
 
-        def unzipFilePath = path.substring(0,path.length()-4) + "-unzip"
+        def unzipFilePath = path.substring(0, path.length() - 4) + "-unzip"
         ZipUtil.unzip(path, unzipFilePath)
-        inject(unzipFilePath,project)
+        def hasInject = injectPath(unzipFilePath, project)
+        if (!hasInject) {
+            //该jar包没有内容需要插桩，直接返回原来的jar即可
+            FileUtils.deleteDirectory(new File(unzipFilePath))
+            return jarInput.file
+        }
         FileUtils.forceDelete(jarInput.file)
         //将该目录重新压缩成jar包,并放回原位置
-        ZipUtil.zip(unzipFilePath,path)
+        ZipUtil.zip(unzipFilePath, path)
         FileUtils.deleteDirectory(new File(unzipFilePath))
         return new File(path)
 
@@ -55,16 +56,17 @@ class StubInjects {
      * 对一个地址进行注入
      * @param path 路径
      * @param project project对象
+     * @return 是否有注入
      */
-    static void inject(String path, Project project) {
+    static boolean injectPath(String path, Project project) {
         initPool(project)
         //将当前路径加入类池,不然找不到这个类
         pool.appendClassPath(path)
-        println("---"+path)
         def dir = new File(path)
         if (!dir.isDirectory()) {
-            return
+            return false
         }
+        boolean hasInject = false
         //遍历文件夹
         dir.eachFileRecurse { File file ->
             def filePath = file.absolutePath
@@ -73,27 +75,29 @@ class StubInjects {
                     "R.class" == name || "BuildConfig.class" == name) {
                 return
             }
+
             def fin = new BufferedInputStream(new FileInputStream(filePath))
             def classFile = new ClassFile(new DataInputStream(fin))
             CtClass ctClass = pool.makeClass(classFile)
             //该类必须是activity且之前未被注入过才能注入
-            if (CommonUtils.isActivity(ctClass, pool) && (!isInserted(ctClass))) {
+            if (CommonUtils.isActivity(ctClass, pool) && CommonUtils.isNeedInsert(ctClass)) {
                 println("jllog:activity = " + ctClass.getName())
                 realInsert(ctClass, path)
+                hasInject = true
             }
             fin.close()
-        }
 
+        }
+        return hasInject
     }
 
     /**
      * 对该activity真正插入代码
      * @param activity 要插入代码的activity
      * @param path activity的具体路径
-     * @return  无
+     * @return 无
      */
     static realInsert(CtClass activity, String path) {
-        insertedClass.add(path)
         if (activity.isFrozen()) {
             activity.defrost()
         }
@@ -124,26 +128,4 @@ class StubInjects {
         activity.detach()
     }
 
-    /**
-     * 判断该类或父类是否被注入过代码
-     * @param ctClass 要判断的类
-     * @return 如果该类或父类已经被注入过，返回true，否则返回false
-     */
-    private static boolean isInserted(CtClass ctClass){
-        if(insertedClass.contains(ctClass.getName())){
-            return true
-        }
-        if(ctClass.getName() == MethodConstants.ACTIVITY){
-            return false
-        }
-        CtClass parent = ctClass.getSuperclass()
-        if(parent == null){
-            return false
-        }
-        return isInserted(parent)
-    }
-
-    public static release(){
-        insertedClass.clear()
-    }
 }

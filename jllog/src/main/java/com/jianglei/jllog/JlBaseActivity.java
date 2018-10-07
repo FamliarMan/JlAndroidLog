@@ -22,6 +22,7 @@ public abstract  class JlBaseActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState );
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.setContentView(R.layout.jl_activity_base);

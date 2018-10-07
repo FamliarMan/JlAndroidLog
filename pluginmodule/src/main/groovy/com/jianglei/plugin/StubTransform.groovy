@@ -59,7 +59,7 @@ public class StubTransform extends Transform {
             //遍历文件夹
             input.directoryInputs.each { DirectoryInput directoryInput ->
                 //注入代码
-                StubInjects.inject(directoryInput.file.absolutePath, mProject)
+                StubInjects.injectPath(directoryInput.file.absolutePath, mProject)
                 // 获取output目录
                 def dest = transformInvocation.getOutputProvider().getContentLocation(directoryInput.name,
                         directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
@@ -67,7 +67,6 @@ public class StubTransform extends Transform {
                 FileUtils.copyDirectory(directoryInput.file, dest)
             }
         }
-        StubInjects.release()
         println("--------------------- finish inserting log ------------------------------------")
     }
 }

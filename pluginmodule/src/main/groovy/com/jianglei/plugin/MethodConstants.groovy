@@ -16,5 +16,7 @@ public class MethodConstants {
      */
     public static String ACTIVITY = "android.app.Activity";
 
+    public static String APPCompatActivity = "android.support.v7.app.AppCompatActivity"
 
+    public static String FragmentActivity = "android.support.v4.app.FragmentActivity"
 }
