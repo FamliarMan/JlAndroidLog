@@ -1,14 +1,10 @@
 package com.jianglei.jlandroidlog;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.jianglei.jllog.JlBaseActivity;
 import com.jianglei.jllog.JlLog;
-import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.util.HashMap;

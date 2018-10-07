@@ -8,7 +8,7 @@ dependencies {
 
     compile 'com.android.tools.build:gradle:3.0.1'
     compile 'com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api'
-    compile 'org.javassist:javassist:3.20.0-GA'
+    compile 'org.javassist:javassist:3.23.1-GA'
     compile 'commons-io:commons-io:2.5'
 }
 

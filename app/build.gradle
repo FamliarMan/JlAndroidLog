@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -46,5 +47,6 @@ dependencies {
     compile project(':jllog')
 //    compile('com.jianglei:jllog:1.2')
     testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
 }
 apply plugin: 'com.jianglei.stubplugin'

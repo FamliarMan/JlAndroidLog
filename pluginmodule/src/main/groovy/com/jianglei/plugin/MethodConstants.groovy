@@ -11,6 +11,10 @@ public class MethodConstants {
      */
     public static String noParamsDescriptor = "()V"
 
+    /**
+     * activity全路径
+     */
+    public static String ACTIVITY = "android.app.Activity";
 
 
 }

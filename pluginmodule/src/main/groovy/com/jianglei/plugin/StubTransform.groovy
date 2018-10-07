@@ -67,6 +67,7 @@ public class StubTransform extends Transform {
                 FileUtils.copyDirectory(directoryInput.file, dest)
             }
         }
+        StubInjects.release()
         println("--------------------- finish inserting log ------------------------------------")
     }
 }
