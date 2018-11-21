@@ -3,14 +3,13 @@ package com.jianglei.jlandroidlog;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jianglei.jllog.JlBaseActivity;
 import com.jianglei.jllog.JlLog;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends JlBaseActivity{
+public class MainActivity extends AbstractActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

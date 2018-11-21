@@ -41,7 +41,15 @@ netInfoVo.setResponseJson(rsponJson);
 //将信息通知给监控服务
 JlLog.notifyNetInfo(netInfoVo);
 ```
+## 监控生命周期
+#### 手动监控
+在基类activity的生命周期中加入下面的代码，注意，其中LifeVo.TYPE_ON_XXX要根据不同生命周期方法做出改变
+```
+        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_START,getClass().getName()));
 
+```
+#### 自动插桩
+目前支持自动插桩，上面的代码无需手动写，只需要引入一个gradle插件
 ## 效果展示
 ![演示](http://7xpxx3.com1.z0.glb.clouddn.com/gif/blog/jllog.gif)
 
