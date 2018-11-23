@@ -40,6 +40,16 @@ public class NetInfoVo implements Parcelable{
      */
     private String errorMsg;
 
+    private long time;
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
     public boolean isSuccessful() {
         return isSuccessful;
     }
@@ -69,9 +79,10 @@ public class NetInfoVo implements Parcelable{
         responseJson = in.readString();
         isSuccessful = in.readInt() == 1;
         errorMsg = in.readString();
-        in.readMap(requestHeader,NetInfoVo.class.getClassLoader());
-        in.readMap(requsetUrlParams,NetInfoVo.class.getClassLoader());
-        in.readMap(requestForm,NetInfoVo.class.getClassLoader());
+        time = in.readLong();
+        in.readMap(requestHeader,TransformData.class.getClassLoader());
+        in.readMap(requsetUrlParams,TransformData.class.getClassLoader());
+        in.readMap(requestForm,TransformData.class.getClassLoader());
     }
 
     public static final Creator<NetInfoVo> CREATOR = new Creator<NetInfoVo>() {
@@ -142,6 +153,7 @@ public class NetInfoVo implements Parcelable{
         dest.writeString(responseJson);
         dest.writeInt(isSuccessful?1:0);
         dest.writeString(errorMsg);
+        dest.writeLong(time);
         dest.writeMap(requestHeader);
         dest.writeMap(requsetUrlParams);
         dest.writeMap(requestForm);

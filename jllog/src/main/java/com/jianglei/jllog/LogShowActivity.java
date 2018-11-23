@@ -72,77 +72,32 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
 
     @Override
     public void clearNet() {
-        if (logInterface != null) {
-            try {
-                logInterface.clearNetInfo();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
+        DataCenter.getInstance().clearNetInfo();
     }
 
     @Override
     public void clearCrash() {
-        if (logInterface == null) {
-            return;
-        }
-        try {
-            logInterface.clearCrash();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        DataCenter.getInstance().clearCrash();
     }
 
     @Override
     public List<NetInfoVo> getNetInfo() {
-        if (logInterface == null) {
-            return new LinkedList<>();
-        }
-        try {
-            return logInterface.getNetInfoVos();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            return new LinkedList<>();
-        }
+        return DataCenter.getInstance().getNetInfoVos();
     }
 
     @Override
     public List<CrashVo> getCrashVo() {
-        if (logInterface == null) {
-            return new LinkedList<>();
-        }
-        try {
-            return logInterface.getCrashVos();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            return new LinkedList<>();
-        }
+        return DataCenter.getInstance().getCrashVos();
     }
 
     @Override
     public void clearLife() {
-        if (logInterface == null) {
-            return;
-        }
-        try {
-            logInterface.clearLife();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
+        DataCenter.getInstance().clearLife();
     }
 
     @Override
     public List<LifeVo> getLifeVos() {
-        if (logInterface == null) {
-            return new LinkedList<>();
-        }
-        try {
-            return logInterface.getLifeVos();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            return new LinkedList<>();
-        }
+        return DataCenter.getInstance().getLifeVos();
     }
 
 

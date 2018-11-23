@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jianglei.jllog.JlLog;
+import com.jianglei.jllog.aidl.CrashVo;
+import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.util.HashMap;
@@ -28,6 +30,11 @@ public class MainActivity extends AbstractActivity{
             public void onClick(View view) {
                 NetInfoVo netInfoVo = null;
                 netInfoVo.isSuccessful();
+//                CrashVo crashVo = new CrashVo(System.currentTimeMillis());
+//                crashVo.setCrashInfo("name");
+//                JlLog.notifyCrash(crashVo);
+//                LifeVo lifeVo = new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_DESTROY,"name");
+//                JlLog.notifyLife(lifeVo);
             }
         });
 

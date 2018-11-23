@@ -12,6 +12,7 @@ import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+import com.jianglei.jllog.aidl.TransformData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,12 +28,13 @@ public class JlLog {
     /**
      * 最多记录网络信息条数
      */
-    private static int MAX_NET_RECORD = 100;
+    public static int MAX_NET_RECORD = 100;
 
     /**
      * 最多记录崩溃次数
      */
-    private static int MAX_CRASH_RECORD = 100;
+    public static int MAX_CRASH_RECORD = 100;
+    public static int MAX_LIFE_RECORD = 1000;
 
     private static boolean isDebug;
 
@@ -88,7 +90,8 @@ public class JlLog {
         }
         if (logInterface != null) {
             try {
-                logInterface.notifyCrash(crashVo);
+                TransformData transformData = new TransformData(crashVo);
+                logInterface.notifyData(transformData);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -101,7 +104,8 @@ public class JlLog {
         }
         if (logInterface != null) {
             try {
-                logInterface.notifyNetInfo(netInfoVo);
+                TransformData transformData = new TransformData(netInfoVo);
+                logInterface.notifyData(transformData);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -117,11 +121,13 @@ public class JlLog {
             try {
                 if (mPendingLifes.size() != 0) {
                     for (LifeVo vo : mPendingLifes) {
-                        logInterface.notifyLife(vo);
+                        TransformData transformData = new TransformData(vo);
+                        logInterface.notifyData(transformData);
                     }
                     mPendingLifes.clear();
                 }
-                logInterface.notifyLife(lifeVo);
+                TransformData transformData = new TransformData(lifeVo);
+                logInterface.notifyData(transformData);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

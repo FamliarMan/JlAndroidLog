@@ -8,8 +8,31 @@ import android.os.Parcelable;
  */
 
 public class TransformData implements Parcelable{
+    public static final int TYPE_CRASH = 1;
+    public static final int TYPE_LIFE = 2;
+    public static final int TYPE_NET = 3;
     private int type;
     private Parcelable realData;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public Parcelable getRealData() {
+        return realData;
+    }
+
+    public void setRealData(Parcelable realData) {
+        this.realData = realData;
+    }
+
+    public TransformData(Parcelable realData) {
+        this.realData = realData;
+    }
 
     protected TransformData(Parcel in) {
         type = in.readInt();
@@ -36,6 +59,6 @@ public class TransformData implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(type);
-        realData.writeToParcel(dest,flags);
+        dest.writeParcelable(realData,flags);
     }
 }
