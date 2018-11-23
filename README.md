@@ -1,11 +1,7 @@
 # JlLog使用
 ## 依赖引入
 ```
-compile('com.jianglei:jllog:1.2')
-```
-如果出现support包冲突无法解决，首选升级buildtool 到26，如果实在不想升级可用下列版本，该版本不再继续维护
-```
-compile('com.jianglei:jllog:0.2')
+compile('com.jianglei:jllog:1.4')
 ```
 
 ## 初始化
@@ -49,12 +45,28 @@ JlLog.notifyNetInfo(netInfoVo);
 
 ```
 #### 自动插桩
-目前支持自动插桩，上面的代码无需手动写，只需要引入一个gradle插件
+目前支持自动插桩，上面的代码无需手动写，只需要引入一个gradle插件,首先在app模块的build文件中引入这个依赖：
+```
+
+buildscript {
+    ……
+    dependencies {
+        ……
+        classpath 'com.jianglei:jllog-plugin:0.1'
+    }
+}
+```
+然后加上这个插件：
+```
+apply plugin: 'com.jianglei.jllog'
+```
+**该插件只支持app以及它的submodule模块中直接父类为AppCompatActivity,FragmentActivity,Activity的activity插入监控生命周期的代码**
 ## 效果展示
 ![演示](http://7xpxx3.com1.z0.glb.clouddn.com/gif/blog/jllog.gif)
 
 ## 更新记录
-
+#### 1.4
+增加了生命周期的监控
 #### 1.2
 增加了网络异常的展示，优化了activity任务栈
 
