@@ -28,6 +28,12 @@ public class CrashDataHandler implements IDataHandler {
         NotifyManager.updateNotification(context);
     }
 
+    @Override
+    public void clear(Context context) {
+        DataCenter.getInstance().clearCrash();
+        NotifyManager.updateNotification(context);
+    }
+
     public static CrashDataHandler getInstance() {
         if(instance == null){
             instance = new CrashDataHandler();

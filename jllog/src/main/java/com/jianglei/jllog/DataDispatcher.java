@@ -29,20 +29,25 @@ public class DataDispatcher {
         dataHandler.handle(data, context);
     }
 
-    public void dispatchClear(int type) {
+    public void dispatchClear(int type,Context context) {
+        IDataHandler dataHandler = null;
         switch (type) {
             case TransformData.TYPE_CRASH:
-                DataCenter.getInstance().clearCrash();
+                dataHandler = CrashDataHandler.getInstance();
                 break;
             case TransformData.TYPE_NET:
-                DataCenter.getInstance().clearNetInfo();
+                dataHandler = NetDataHandler.getInstance();
                 break;
             case TransformData.TYPE_LIFE:
-                DataCenter.getInstance().clearNetInfo();
+                dataHandler = LifeDataHandler.getInstance();
                 break;
             default:
                 break;
         }
+        if(dataHandler == null){
+            return;
+        }
+        dataHandler.clear(context);
     }
 
 }

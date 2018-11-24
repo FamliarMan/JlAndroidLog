@@ -26,6 +26,12 @@ public class NetDataHandler implements IDataHandler {
         NotifyManager.updateNotification(context);
     }
 
+    @Override
+    public void clear(Context context) {
+        DataCenter.getInstance().clearNetInfo();
+        NotifyManager.updateNotification(context);
+    }
+
     public static NetDataHandler getInstance() {
         if(instance == null){
             instance = new NetDataHandler();

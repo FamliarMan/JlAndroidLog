@@ -14,4 +14,9 @@ public interface IDataHandler {
      * @param context  Android上下文
      */
     void handle(Parcelable parcelable,Context context);
+
+    /**
+     * 清空所有信息
+     */
+    void clear(Context context);
 }

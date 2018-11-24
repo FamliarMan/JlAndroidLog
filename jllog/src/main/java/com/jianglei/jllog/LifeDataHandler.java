@@ -21,6 +21,11 @@ public class LifeDataHandler implements IDataHandler {
         //生命周期的更新无需更新任何ui信息，因为这个不可能给会在后台更新
     }
 
+    @Override
+    public void clear(Context context) {
+        DataCenter.getInstance().clearLife();
+    }
+
     public static LifeDataHandler getInstance() {
         if(instance == null){
             instance = new LifeDataHandler();

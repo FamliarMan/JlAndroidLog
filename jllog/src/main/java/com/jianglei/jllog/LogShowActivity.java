@@ -16,6 +16,7 @@ import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+import com.jianglei.jllog.aidl.TransformData;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -72,12 +73,25 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
 
     @Override
     public void clearNet() {
-        DataCenter.getInstance().clearNetInfo();
+        if (logInterface != null) {
+            try {
+                logInterface.clearData(TransformData.TYPE_NET);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void clearCrash() {
-        DataCenter.getInstance().clearCrash();
+        if (logInterface == null) {
+            return;
+        }
+        try {
+            logInterface.clearData(TransformData.TYPE_CRASH);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -92,7 +106,15 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
 
     @Override
     public void clearLife() {
-        DataCenter.getInstance().clearLife();
+        if (logInterface == null) {
+            return;
+        }
+        try {
+            logInterface.clearData(TransformData.TYPE_LIFE);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

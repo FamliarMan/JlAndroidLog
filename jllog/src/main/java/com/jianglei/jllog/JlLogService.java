@@ -41,7 +41,7 @@ public class JlLogService extends Service {
 
         @Override
         public void clearData(int type) throws RemoteException {
-            dataDispatcher.dispatchClear(type);
+            dataDispatcher.dispatchClear(type,getApplicationContext());
         }
 
     };
