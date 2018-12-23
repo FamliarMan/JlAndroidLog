@@ -43,7 +43,7 @@ JlLog.notifyNetInfo(netInfoVo);
 
 ## 效果展示
 
-<img src="other/example.gif' width="320" height="480"/>
+<img src="other/example.gif" width="320" height="480"/>
 
 
 ## 更新记录
