@@ -1,8 +1,10 @@
-package com.jianglei.jllog;
+package com.jianglei.jllog.life;
 
 import android.content.Context;
 import android.os.Parcelable;
 
+import com.jianglei.jllog.DataCenter;
+import com.jianglei.jllog.IDataHandler;
 import com.jianglei.jllog.aidl.LifeVo;
 
 /**

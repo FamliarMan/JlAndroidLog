@@ -36,9 +36,7 @@ buildscript {
         google()
 
     }
-    dependencies{
-
-        classpath 'com.jianglei:jllog-plugin-test:0.2'
+    dependencies {
     }
 }
 dependencies {
@@ -51,4 +49,3 @@ dependencies {
     testCompile 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:27.1.1'
 }
-apply plugin:'com.jianglei.jllog'

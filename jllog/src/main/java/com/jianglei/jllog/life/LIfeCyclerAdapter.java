@@ -1,4 +1,4 @@
-package com.jianglei.jllog;
+package com.jianglei.jllog.life;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jianglei.jllog.R;
 import com.jianglei.jllog.aidl.LifeVo;
 
 import java.text.SimpleDateFormat;

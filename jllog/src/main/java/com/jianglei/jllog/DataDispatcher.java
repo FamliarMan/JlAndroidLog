@@ -7,6 +7,7 @@ import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
+import com.jianglei.jllog.life.LifeDataHandler;
 import com.jianglei.jllog.uiblock.UITracerHandler;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 

@@ -12,6 +12,7 @@ import com.jianglei.jllog.aidl.ILogInterface;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
+import com.jianglei.jllog.life.LifeTracer;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 import com.jianglei.jllog.uiblock.UiTracer;
 
@@ -88,6 +89,7 @@ public class JlLog {
         application.startService(intent);
         application.bindService(intent, serviceConnection, 0);
         UiTracer.start(uiBlockTime);
+        LifeTracer.start(application);
     }
 
     public static void start(Application application, boolean isDebug) {

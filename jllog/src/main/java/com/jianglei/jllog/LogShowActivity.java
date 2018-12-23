@@ -17,6 +17,7 @@ import com.jianglei.jllog.aidl.ILogInterface;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
+import com.jianglei.jllog.life.LifeCyclerFragment;
 import com.jianglei.jllog.uiblock.UiBlockListFragment;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 
