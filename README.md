@@ -1,7 +1,7 @@
 # JlLog使用
 ## 依赖引入
 ```
-compile('com.jianglei:jllog:1.4')
+compile('com.jianglei:jllog:1.5')
 ```
 
 ## 初始化
@@ -43,8 +43,8 @@ JlLog.notifyNetInfo(netInfoVo);
 
 ## 效果展示
 
+<img src="other/example.gif' width="320" hegiht="480">
 
-![演示](other/example.gif)
 
 ## 更新记录
 #### 1.5
