@@ -14,6 +14,7 @@ buildscript {
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
+    resourcePrefix 'jl_'
 
     defaultConfig {
         minSdkVersion 14

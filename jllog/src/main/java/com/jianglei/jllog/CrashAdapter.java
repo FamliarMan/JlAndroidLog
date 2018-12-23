@@ -45,7 +45,7 @@ public class CrashAdapter extends RecyclerView.Adapter<CrashAdapter.NetInfoViewH
     @NonNull
     @Override
     public NetInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.jl_listitem_crash, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.jl_listitem_only_text, parent, false);
         return new NetInfoViewHolder(view);
     }
 
@@ -79,7 +79,7 @@ public class CrashAdapter extends RecyclerView.Adapter<CrashAdapter.NetInfoViewH
         LinearLayout mainLayout;
         public NetInfoViewHolder(View itemView) {
             super(itemView);
-            tvCrash = (TextView)itemView.findViewById(R.id.tv_crash);
+            tvCrash = (TextView)itemView.findViewById(R.id.tv_content);
             mainLayout = (LinearLayout) itemView.findViewById(R.id.layout_main);
         }
     }

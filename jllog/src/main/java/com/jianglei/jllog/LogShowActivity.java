@@ -17,9 +17,10 @@ import com.jianglei.jllog.aidl.ILogInterface;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
+import com.jianglei.jllog.uiblock.UiBlockListFragment;
+import com.jianglei.jllog.uiblock.UiBlockVo;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -62,10 +63,12 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
         CrashListFragment crashListFragment = CrashListFragment.newInstance();
         fragments.add(netInfoFragment);
         fragments.add(crashListFragment);
+        fragments.add(UiBlockListFragment.newInstance());
         fragments.add(LifeCyclerFragment.newInstance());
         List<String> tab = new ArrayList<>();
         tab.add(getString(R.string.jl_http_request));
         tab.add(getString(R.string.jl_crash_info));
+        tab.add(getString(R.string.jl_ui_block));
         tab.add(getString(R.string.jl_life));
         viewPager.setAdapter(new LogFragmentAdapter(getSupportFragmentManager(), tab, fragments));
         tabLayout.setupWithViewPager(viewPager);
@@ -120,6 +123,23 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
     @Override
     public List<LifeVo> getLifeVos() {
         return DataCenter.getInstance().getLifeVos();
+    }
+
+    @Override
+    public void clearUi() {
+        if (logInterface == null) {
+            return;
+        }
+        try {
+            logInterface.clearData(TransformData.TYPE_UI);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<UiBlockVo> getUiTraces() {
+        return DataCenter.getInstance().getUiBlockVos();
     }
 
 

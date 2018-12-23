@@ -12,6 +12,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        JlLog.start(this,true);
+        JlLog.start(this,5,true);
     }
 }

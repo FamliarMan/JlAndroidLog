@@ -1,6 +1,5 @@
 package com.jianglei.jllog;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -19,7 +18,7 @@ public class CrashDetailActivity extends JlBaseActivity{
         if(crashVo == null){
             return;
         }
-        TextView tvCrashDetail = (TextView) findViewById(R.id.tv_crash);
+        TextView tvCrashDetail = (TextView) findViewById(R.id.tv_content);
         tvCrashDetail.setText(crashVo.getCrashInfo());
     }
 }

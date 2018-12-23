@@ -7,6 +7,8 @@ import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
+import com.jianglei.jllog.uiblock.UITracerHandler;
+import com.jianglei.jllog.uiblock.UiBlockVo;
 
 /**
  * @author jianglei on 11/23/18.
@@ -21,6 +23,8 @@ public class DataDispatcher {
             dataHandler = LifeDataHandler.getInstance();
         } else if (data instanceof NetInfoVo) {
             dataHandler = NetDataHandler.getInstance();
+        } else if (data instanceof UiBlockVo) {
+            dataHandler = UITracerHandler.getInstance();
         }
 
         if (dataHandler == null) {
@@ -29,7 +33,7 @@ public class DataDispatcher {
         dataHandler.handle(data, context);
     }
 
-    public void dispatchClear(int type,Context context) {
+    public void dispatchClear(int type, Context context) {
         IDataHandler dataHandler = null;
         switch (type) {
             case TransformData.TYPE_CRASH:
@@ -41,10 +45,12 @@ public class DataDispatcher {
             case TransformData.TYPE_LIFE:
                 dataHandler = LifeDataHandler.getInstance();
                 break;
+            case TransformData.TYPE_UI:
+                dataHandler = UITracerHandler.getInstance();
             default:
                 break;
         }
-        if(dataHandler == null){
+        if (dataHandler == null) {
             return;
         }
         dataHandler.clear(context);

@@ -56,8 +56,8 @@ public class LifeCyclerFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_life, container, false);
-        RecyclerView mRvLife =  view.findViewById(R.id.rv_life);
+        View view = inflater.inflate(R.layout.jl_fragment_list, container, false);
+        RecyclerView mRvLife =  view.findViewById(R.id.rv_content);
         view.findViewById(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

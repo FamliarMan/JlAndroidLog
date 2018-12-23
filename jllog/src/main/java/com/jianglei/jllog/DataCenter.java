@@ -3,6 +3,7 @@ package com.jianglei.jllog;
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+import com.jianglei.jllog.uiblock.UiBlockVo;
 
 import java.util.LinkedList;
 
@@ -25,6 +26,11 @@ public class DataCenter {
      */
     private LinkedList<LifeVo> lifeVos = new LinkedList<>();
 
+    /**
+     * ui阻塞信息
+     */
+    private LinkedList<UiBlockVo> uiBlockVos = new LinkedList<>();
+
     private static DataCenter instance = new DataCenter();
 
     public static DataCenter getInstance(){
@@ -43,6 +49,27 @@ public class DataCenter {
         return lifeVos;
     }
 
+    public LinkedList<UiBlockVo> getUiBlockVos(){
+        return uiBlockVos;
+    }
+
+    /**
+     * 增加一条ui阻塞信息
+     * @param uiBlockVo ui阻塞信息类
+     */
+    public void addUiTracer(UiBlockVo uiBlockVo){
+        if(uiBlockVos.size() >= JlLog.MAX_UI_RECORT){
+            uiBlockVos.removeLast();
+        }
+        uiBlockVos.add(0, uiBlockVo);
+    }
+
+    /**
+     * 清除ui阻塞信息
+     */
+    public void clearUi(){
+        uiBlockVos.clear();
+    }
     /**
      * 增加一条crash记录
      * @param crashVo crash信息类

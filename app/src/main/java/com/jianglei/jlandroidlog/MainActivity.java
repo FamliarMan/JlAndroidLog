@@ -30,11 +30,6 @@ public class MainActivity extends AbstractActivity{
             public void onClick(View view) {
                 NetInfoVo netInfoVo = null;
                 netInfoVo.isSuccessful();
-//                CrashVo crashVo = new CrashVo(System.currentTimeMillis());
-//                crashVo.setCrashInfo("name");
-//                JlLog.notifyCrash(crashVo);
-//                LifeVo lifeVo = new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_DESTROY,"name");
-//                JlLog.notifyLife(lifeVo);
             }
         });
 
@@ -43,6 +38,17 @@ public class MainActivity extends AbstractActivity{
             public void onClick(View v) {
                 NetInfoVo netInfoVo = getNetInfo(false);
                 JlLog.notifyNetInfo(netInfoVo);
+            }
+        });
+
+        findViewById(R.id.btn_ui_block).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Thread.sleep(6000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

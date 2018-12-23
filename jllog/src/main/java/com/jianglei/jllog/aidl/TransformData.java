@@ -11,6 +11,7 @@ public class TransformData implements Parcelable{
     public static final int TYPE_CRASH = 1;
     public static final int TYPE_LIFE = 2;
     public static final int TYPE_NET = 3;
+    public static final int TYPE_UI = 4;
     private int type;
     private Parcelable realData;
 
