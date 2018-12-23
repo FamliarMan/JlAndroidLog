@@ -6,15 +6,17 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+import com.jianglei.jllog.aidl.TransformData;
+import com.jianglei.jllog.life.LifeTracer;
+import com.jianglei.jllog.uiblock.UiBlockVo;
+import com.jianglei.jllog.uiblock.UiTracer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,12 +29,17 @@ public class JlLog {
     /**
      * 最多记录网络信息条数
      */
-    private static int MAX_NET_RECORD = 100;
+    public static int MAX_NET_RECORD = 100;
 
     /**
      * 最多记录崩溃次数
      */
-    private static int MAX_CRASH_RECORD = 100;
+    public static int MAX_CRASH_RECORD = 100;
+    public static int MAX_LIFE_RECORD = 1000;
+    /**
+     * 最多记录的ui block信息
+     */
+    public static int MAX_UI_RECORT = 100;
 
     private static boolean isDebug;
 
@@ -69,9 +76,10 @@ public class JlLog {
      * 开始日志监控
      *
      * @param application application
+     * @param uiBlockTime ui阻塞超过的该时间会被记录
      * @param isDebug     当前是否是调试环境
      */
-    public static void start(Application application, boolean isDebug) {
+    public static void start(Application application, int uiBlockTime, boolean isDebug) {
         JlLog.isDebug = isDebug;
         if (!isDebug) {
             return;
@@ -80,6 +88,12 @@ public class JlLog {
         Intent intent = new Intent(application, JlLogService.class);
         application.startService(intent);
         application.bindService(intent, serviceConnection, 0);
+        UiTracer.start(uiBlockTime);
+        LifeTracer.start(application);
+    }
+
+    public static void start(Application application, boolean isDebug) {
+        JlLog.start(application, 5, isDebug);
     }
 
     public static void notifyCrash(CrashVo crashVo) {
@@ -88,7 +102,8 @@ public class JlLog {
         }
         if (logInterface != null) {
             try {
-                logInterface.notifyCrash(crashVo);
+                TransformData transformData = new TransformData(crashVo);
+                logInterface.notifyData(transformData);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -101,7 +116,8 @@ public class JlLog {
         }
         if (logInterface != null) {
             try {
-                logInterface.notifyNetInfo(netInfoVo);
+                TransformData transformData = new TransformData(netInfoVo);
+                logInterface.notifyData(transformData);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -109,7 +125,6 @@ public class JlLog {
     }
 
     public static void notifyLife(LifeVo lifeVo) {
-        Log.d("longyi", lifeVo.toString());
         if (!isDebug) {
             return;
         }
@@ -117,11 +132,13 @@ public class JlLog {
             try {
                 if (mPendingLifes.size() != 0) {
                     for (LifeVo vo : mPendingLifes) {
-                        logInterface.notifyLife(vo);
+                        TransformData transformData = new TransformData(vo);
+                        logInterface.notifyData(transformData);
                     }
                     mPendingLifes.clear();
                 }
-                logInterface.notifyLife(lifeVo);
+                TransformData transformData = new TransformData(lifeVo);
+                logInterface.notifyData(transformData);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -131,6 +148,20 @@ public class JlLog {
                 return;
             }
             mPendingLifes.add(lifeVo);
+        }
+    }
+
+    public static void notifyUiBlock(UiBlockVo uiBlockVo) {
+        if (!isDebug) {
+            return;
+        }
+        if (logInterface != null) {
+            try {
+                TransformData transformData = new TransformData(uiBlockVo);
+                logInterface.notifyData(transformData);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 

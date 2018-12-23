@@ -1,0 +1,43 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'com.novoda.bintray-release'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+
+    compile 'com.android.tools.build:gradle:3.0.1'
+    compile 'com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api'
+    compile 'org.javassist:javassist:3.23.1-GA'
+    compile 'commons-io:commons-io:2.5'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.8.0'
+    }
+}
+repositories {
+    jcenter()
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: uri('/home/jianglei/maven'))
+        pom.groupId = 'com.jianglei'//包名
+        pom.artifactId = 'jllog-plugin-test'//在需要引用插件时用到
+        pom.version = '0.2'
+    }
+}
+publish {
+    userOrg = 'famliarman'
+    groupId = 'com.jianglei'//jcenter上的路径
+    artifactId = 'jllog-plugin'//项目名称
+    publishVersion = '0.1'//版本号
+    desc = 'an AOP stub plugin'
+    website = 'https://github.com/FamliarMan/JlAndroidLog'
+    repoName ='Android-lib'
+}

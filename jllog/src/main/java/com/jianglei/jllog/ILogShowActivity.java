@@ -3,6 +3,7 @@ package com.jianglei.jllog;
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+import com.jianglei.jllog.uiblock.UiBlockVo;
 
 import java.util.List;
 
@@ -43,4 +44,14 @@ public interface  ILogShowActivity {
      * 获取所有生命周期信息
      */
     List<LifeVo> getLifeVos();
+
+    /**
+     * 清除ui阻塞信息
+     */
+    void clearUi();
+
+    /**
+     * 获取所有的ui阻塞信息
+     */
+    List<UiBlockVo> getUiTraces();
 }

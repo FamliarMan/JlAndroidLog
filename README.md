@@ -1,18 +1,15 @@
 # JlLog使用
 ## 依赖引入
 ```
-compile('com.jianglei:jllog:1.3')
-```
-如果出现support包冲突无法解决，首选升级buildtool 到26，如果实在不想升级可用下列版本，该版本不再继续维护
-```
-compile('com.jianglei:jllog:0.2')
+compile('com.jianglei:jllog:1.5')
 ```
 
 ## 初始化
 ```
-JlLog.start(getApplication(),true);
+//此处传入的5代表ui阻塞超过5s就会被记录
+JlLog.start(getApplication(),5,true);
 ```
-第二个参数注意，如果当前是开发版本就传true,日志工具此时会生效，如果是发布版本就传false，日志工具不会启动。
+第三个参数注意，如果当前是开发版本就传true,日志工具此时会生效，如果是发布版本就传false，日志工具不会启动。
 ## 监控crash
 这一步已经封装好，无需手动调用，当然，如果想主动发出crash信息也是可以的：
 ```
@@ -41,12 +38,20 @@ netInfoVo.setResponseJson(rsponJson);
 //将信息通知给监控服务
 JlLog.notifyNetInfo(netInfoVo);
 ```
+## 监控生命周期
+这一步已经封装好，无需手动调用
 
 ## 效果展示
-![演示](http://7xpxx3.com1.z0.glb.clouddn.com/gif/blog/jllog.gif)
+
+<img src="other/example.gif" width="320" height="480"/>
+
 
 ## 更新记录
-
+#### 1.5
+增加ui阻塞（anr）的监控
+修改了UI样式
+#### 1.4
+增加了生命周期的监控
 #### 1.2
 增加了网络异常的展示，优化了activity任务栈
 

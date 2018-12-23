@@ -9,7 +9,7 @@
             android:name=".LogShowActivity"
             android:process=":Log"
             android:taskAffinity="com.jianglei.jllog"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service
             android:name=".JlLogService"
@@ -22,7 +22,11 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".CrashDetailActivity"
-            android:taskAffinity="com.jianglei.jllog" />
+            android:taskAffinity="com.jianglei.jllog"
+            />
+        <activity android:name=".uiblock.UiBlockDetailActivity"
+            android:taskAffinity="com.jianglei.jllog"
+            />
     </application>
 
 </manifest>

@@ -17,15 +17,15 @@ import com.jianglei.jllog.aidl.LifeVo;
  * @author jianglei
  */
 
-public class JlBaseActivity extends AppCompatActivity {
+public abstract  class JlBaseActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState );
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.setContentView(R.layout.jl_activity_base);
-        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_CREATE,getClass().getName()));
         mainLayout = (LinearLayout) findViewById(R.id.parent);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.jl_toolbar_color));
@@ -43,39 +43,39 @@ public class JlBaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_START,getClass().getName()));
+//        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_START,getClass().getName()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_RESUME,getClass().getName()));
+//        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_RESUME,getClass().getName()));
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_RESTART,getClass().getName()));
+//        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_RESTART,getClass().getName()));
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_STOP,getClass().getName()));
+//        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_STOP,getClass().getName()));
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_PAUSE,getClass().getName()));
+//        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_PAUSE,getClass().getName()));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_DESTROY,getClass().getName()));
+//        JlLog.notifyLife(new LifeVo(System.currentTimeMillis(),LifeVo.TYPE_ON_DESTROY,getClass().getName()));
 
     }
 }

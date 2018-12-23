@@ -1,20 +1,17 @@
 package com.jianglei.jlandroidlog;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jianglei.jllog.JlBaseActivity;
 import com.jianglei.jllog.JlLog;
 import com.jianglei.jllog.aidl.CrashVo;
+import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends JlBaseActivity{
+public class MainActivity extends AbstractActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +38,17 @@ public class MainActivity extends JlBaseActivity{
             public void onClick(View v) {
                 NetInfoVo netInfoVo = getNetInfo(false);
                 JlLog.notifyNetInfo(netInfoVo);
+            }
+        });
+
+        findViewById(R.id.btn_ui_block).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Thread.sleep(6000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

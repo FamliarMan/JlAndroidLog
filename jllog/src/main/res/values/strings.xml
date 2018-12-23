@@ -4,6 +4,7 @@
     <string name="jl_http_request">http请求</string>
     <string name="jl_crash_info">崩溃</string>
     <string name="jl_life">生命周期</string>
+    <string name="jl_ui_block">UI阻塞（ANR）</string>
     <string name="jl_exit">退出日志</string>
     <string name="jl_header">header</string>
     <string name="jl_query_params">query params</string>
@@ -12,4 +13,5 @@
     <string name="jl_clear">清除</string>
     <string name="jl_log_system">日志监控</string>
     <string name="jl_log_title">网络：%1$d，崩溃：%2$d，触摸查看更多</string>
+    <string name="jl_ui_block_holder">ui block %dms  at %s</string>
 </resources>
