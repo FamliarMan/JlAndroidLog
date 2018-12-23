@@ -42,7 +42,9 @@ JlLog.notifyNetInfo(netInfoVo);
 这一步已经封装好，无需手动调用
 
 ## 效果展示
-![演示](http://7xpxx3.com1.z0.glb.clouddn.com/gif/blog/jllog.gif)
+
+
+![演示](other/example.gif)
 
 ## 更新记录
 #### 1.5
