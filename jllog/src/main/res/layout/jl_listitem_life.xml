@@ -30,7 +30,7 @@
             tools:text="onCreate() "
             android:textSize="14sp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/jl_toolbar_color"
+            android:textColor="@color/jl_life_color"
             />
         <TextView
             android:id="@+id/tv_time"

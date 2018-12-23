@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="jl_toolbar_color">#3F51B5</color>
+    <color name="jl_toolbar_color">#2E5466</color>
     <color name="jl_white">#FFFFFF</color>
+    <color name="jl_life_color">#1D8B50</color>
     <color name="jl_grey_cccccc">#cccccc</color>
 </resources>

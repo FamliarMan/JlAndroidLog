@@ -60,7 +60,7 @@ public class NotifyManager {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return 0;
+        return R.mipmap.jl_knife ;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
