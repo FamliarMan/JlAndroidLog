@@ -29,7 +29,7 @@ public class JlLog {
     /**
      * 最多记录网络信息条数
      */
-    public static int MAX_NET_RECORD = 100;
+    public static int MAX_NET_RECORD = 10;
 
     /**
      * 最多记录崩溃次数
