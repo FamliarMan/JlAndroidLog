@@ -63,14 +63,6 @@ public class MethodStack {
             }
             lastUnFinishedNode.outTime = info.getTime();
             lastUnFinishedNode.time = (int) (lastUnFinishedNode.outTime - lastUnFinishedNode.inTime);
-            //小于5ms的方法没有统计的必要
-            if (lastUnFinishedNode.time < 5) {
-                lastUnFinishedNode.parentNode.getChildNodes().remove(lastUnFinishedNode);
-                index.remove(info.getClassNameAndHash());
-                LogUtils.d(info.getClassNameAndHash() + " " + info.getMethodName() + "时间小于5ms,被抛弃");
-                lastUnFinishedNode = lastUnFinishedNode.parentNode;
-                return;
-            }
             lastUnFinishedNode = lastUnFinishedNode.parentNode;
         }
 
@@ -108,24 +100,24 @@ public class MethodStack {
         private String methodName;
 
         /**
-         * 方法执行时间,ms
+         * 方法执行时间,ns
          */
         private int time;
 
         /**
-         * 方法进入时的时间戳
+         * 方法进入时的时间ns，用System.nanoTime()获取
          */
         private long inTime;
 
         /**
-         * 方法退出时的时间戳
+         * 方法退出时的时间ns，用System.nanoTime()获取
          */
         private long outTime;
 
         /**
          * 方法是否执行完毕，如果只执行了进入没有退出为false，否则为true
          */
-        private boolean isFinished = false;
+        private boolean isFinished;
         /**
          * 内部方法调用节点
          */

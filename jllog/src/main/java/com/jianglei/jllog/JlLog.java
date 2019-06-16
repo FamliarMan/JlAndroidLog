@@ -13,6 +13,8 @@ import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
 import com.jianglei.jllog.life.LifeTracer;
+import com.jianglei.jllog.methodtrace.MethodTraceInfo;
+import com.jianglei.jllog.methodtrace.MethodTracer;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 import com.jianglei.jllog.uiblock.UiTracer;
 
@@ -165,6 +167,20 @@ public class JlLog {
         }
     }
 
+    public static void notifyMethod(MethodTraceInfo info){
+        if(!isDebug){
+            return;
+        }
+        if(logInterface == null){
+            return;
+        }
+        TransformData transformData = new TransformData(info);
+        try {
+            logInterface.notifyData(transformData);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
     public static boolean isIsDebug() {
         return isDebug;
     }

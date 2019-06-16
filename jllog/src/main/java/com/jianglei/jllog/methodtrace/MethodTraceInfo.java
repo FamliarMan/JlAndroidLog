@@ -1,9 +1,12 @@
 package com.jianglei.jllog.methodtrace;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author longyi created on 19-6-14
  */
-public class MethodTraceInfo {
+public class MethodTraceInfo implements Parcelable {
 
     public static final short IN = 0;
     public static final short OUT = 1;
@@ -33,6 +36,25 @@ public class MethodTraceInfo {
         this.time = time;
         this.type = type;
     }
+
+    protected MethodTraceInfo(Parcel in) {
+        classNameAndHash = in.readString();
+        methodName = in.readString();
+        time = in.readLong();
+        type = (short) in.readInt();
+    }
+
+    public static final Creator<MethodTraceInfo> CREATOR = new Creator<MethodTraceInfo>() {
+        @Override
+        public MethodTraceInfo createFromParcel(Parcel in) {
+            return new MethodTraceInfo(in);
+        }
+
+        @Override
+        public MethodTraceInfo[] newArray(int size) {
+            return new MethodTraceInfo[size];
+        }
+    };
 
     public String getClassNameAndHash() {
         return classNameAndHash;
@@ -64,5 +86,18 @@ public class MethodTraceInfo {
 
     public void setType(short type) {
         this.type = type;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(classNameAndHash);
+        dest.writeString(methodName);
+        dest.writeLong(time);
+        dest.writeInt((int) type);
     }
 }

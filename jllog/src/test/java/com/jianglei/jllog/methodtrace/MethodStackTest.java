@@ -49,21 +49,21 @@ public class MethodStackTest {
         assertEquals("childClass", stack.getFirstLevelNode().get(0).getChildNodes().get(0)
                 .getClassNameAndHash());
 
-        //增加一个方法out信息
-        info = new MethodTraceInfo("childClass","testMethod",
-                time+1,MethodTraceInfo.OUT);
-        stack.addMethodTrace(info);
-        //时间小于5ms，上一个进入节点应该被删除
-        assertFalse(stack.getIndex().containsKey("childClass"));
 
-        //继续增加一个方法out信息，但这个方法执行时间超过5ms
-        info = new MethodTraceInfo("testClass","testMethod",
+        //增加一个方法out信息，但这个方法执行时间超过5ms
+        info = new MethodTraceInfo("childClass","testMethod",
                 time+6,MethodTraceInfo.OUT);
         stack.addMethodTrace(info);
-        assertTrue(stack.getIndex().containsKey("testClass"));
-        assertEquals(1, stack.getIndex().size());
-        assertNull(stack.getLastUnFinishedNode());
+        assertTrue(stack.getIndex().containsKey("childClass"));
+        assertEquals(2, stack.getIndex().size());
+        assertEquals(1, stack.getFirstLevelNode().size());
 
+
+
+        info = new MethodTraceInfo("testClass","testMethod",
+                System.currentTimeMillis(),MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        assertEquals(1,stack.getFirstLevelNode().size());
         //继续增加一个in信息，应该有两个一层节点了
 
         info = new MethodTraceInfo("testClass2","testMethod",
