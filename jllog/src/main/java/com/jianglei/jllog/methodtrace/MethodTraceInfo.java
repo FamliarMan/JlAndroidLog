@@ -18,7 +18,12 @@ public class MethodTraceInfo implements Parcelable {
     /**
      * 方法名称
      */
-    private String  methodName;
+    private String methodName;
+
+    /**
+     * 方法描述符，主要是用来区分不同方法的重载
+     */
+    private String desc;
 
     /**
      * 方法调用当时的时间
@@ -30,10 +35,11 @@ public class MethodTraceInfo implements Parcelable {
      */
     private short type;
 
-    public MethodTraceInfo(String classNameAndHash, String methodName, long time, short type) {
+    public MethodTraceInfo(String classNameAndHash, String methodName, String desc, long time, short type) {
         this.classNameAndHash = classNameAndHash;
         this.methodName = methodName;
         this.time = time;
+        this.desc = desc;
         this.type = type;
     }
 
@@ -42,6 +48,7 @@ public class MethodTraceInfo implements Parcelable {
         methodName = in.readString();
         time = in.readLong();
         type = (short) in.readInt();
+        desc = in.readString();
     }
 
     public static final Creator<MethodTraceInfo> CREATOR = new Creator<MethodTraceInfo>() {
@@ -66,6 +73,10 @@ public class MethodTraceInfo implements Parcelable {
 
     public String getMethodName() {
         return methodName;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 
     public void setMethodName(String methodName) {
@@ -99,5 +110,6 @@ public class MethodTraceInfo implements Parcelable {
         dest.writeString(methodName);
         dest.writeLong(time);
         dest.writeInt((int) type);
+        dest.writeString(desc);
     }
 }

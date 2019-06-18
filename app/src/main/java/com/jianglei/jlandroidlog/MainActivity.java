@@ -7,6 +7,7 @@ import com.jianglei.jllog.JlLog;
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+import com.jianglei.jllog.methodtrace.MethodTracer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
 public class MainActivity extends AbstractActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        MethodTracer.i("MainActivity", hashCode(), "onCreate","(Bundle)V", System.nanoTime());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_net).setOnClickListener(new View.OnClickListener() {
@@ -51,9 +53,11 @@ public class MainActivity extends AbstractActivity{
                 }
             }
         });
+        MethodTracer.o("MainActivity", hashCode(), "onCreate", "(Bundle)V",System.nanoTime());
     }
 
     private NetInfoVo getNetInfo(boolean isSuccessful) {
+        MethodTracer.i("MainActivity", hashCode(), "getNetInfo", "(Bundle)V",System.nanoTime());
         NetInfoVo netInfoVo = new NetInfoVo(isSuccessful);
         netInfoVo.setUrl("http://www.baidu.com");
         Map<String, String> header = new HashMap<>();
@@ -75,6 +79,7 @@ public class MainActivity extends AbstractActivity{
                     "    at com.msh.demo.exceptionStack.Test.fun2(Test.java:15)\n" +
                     "    ... 6 more";
             netInfoVo.setErrorMsg(error);
+            MethodTracer.o("MainActivity", hashCode(), "getNetInfo", "(Bundle)V",System.nanoTime());
             return netInfoVo;
 
         }
@@ -113,6 +118,7 @@ public class MainActivity extends AbstractActivity{
                 "                }\n" +
                 "            ]";
         netInfoVo.setResponseJson(json);
+        MethodTracer.o("MainActivity", hashCode(), "getNetInfo", "(Bundle)V",System.nanoTime());
         return netInfoVo;
     }
 

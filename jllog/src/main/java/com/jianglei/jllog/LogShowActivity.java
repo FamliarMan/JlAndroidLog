@@ -18,6 +18,8 @@ import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
 import com.jianglei.jllog.life.LifeCyclerFragment;
+import com.jianglei.jllog.methodtrace.MethodFragment;
+import com.jianglei.jllog.methodtrace.MethodTracer;
 import com.jianglei.jllog.uiblock.UiBlockListFragment;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 
@@ -63,11 +65,13 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
         NetInfoFragment netInfoFragment = NetInfoFragment.newInstance();
         CrashListFragment crashListFragment = CrashListFragment.newInstance();
         fragments.add(netInfoFragment);
+        fragments.add(MethodFragment.getInstance());
         fragments.add(crashListFragment);
         fragments.add(UiBlockListFragment.newInstance());
         fragments.add(LifeCyclerFragment.newInstance());
         List<String> tab = new ArrayList<>();
         tab.add(getString(R.string.jl_http_request));
+        tab.add(getString(R.string.jl_method));
         tab.add(getString(R.string.jl_crash_info));
         tab.add(getString(R.string.jl_ui_block));
         tab.add(getString(R.string.jl_life));

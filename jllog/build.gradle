@@ -49,8 +49,10 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     testImplementation 'junit:junit:4.12'
     compileOnly 'com.squareup.okhttp3:okhttp:3.10.0'
+
     testImplementation 'org.powermock:powermock-api-mockito:1.6.3'
     testImplementation 'org.powermock:powermock-module-junit4:1.6.3'
 }

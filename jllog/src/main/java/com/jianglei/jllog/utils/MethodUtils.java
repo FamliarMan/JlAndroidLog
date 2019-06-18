@@ -12,22 +12,21 @@ import java.util.List;
 public class MethodUtils {
 
     /**
-     * 在节点列表中查找某个方法的进入节点
+     * 在节点列表中查找某个符合某个方法的节点
      *
      * @param allNodes         被查找的节点
      * @param classNameAndHash 类名@hashCode
      * @param methodName       方法名称
-     * @return 如果查找到节点，返回该节点，否则范湖null
+     * @return 如果查找到节点，返回该节点，否则返回null
      */
     @Nullable
-    public static MethodNode findInMethodNode(List<MethodNode> allNodes, String classNameAndHash,
-                                              String methodName) {
+    public static MethodNode findMethodNode(List<MethodNode> allNodes, String classNameAndHash,
+                                              String methodName,String desc) {
         if (allNodes == null || allNodes.size() == 0) {
             return null;
         }
         for (MethodNode node : allNodes) {
-            if (node.getClassNameAndHash().equals(classNameAndHash) && node.getMethodName().equals(methodName)
-                    && !node.isFinished()) {
+            if (node.isEqual(classNameAndHash,methodName,desc)) {
                 return node;
             }
         }

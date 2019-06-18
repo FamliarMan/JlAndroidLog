@@ -23,7 +23,8 @@ public class MethodTracer {
      * @param methodName 被追踪的方法名
      * @param curTime    刚开始调用时的时间，一般用System.nanoTime()去获取
      */
-    public static void i(final String className, final int hashcode, final String methodName, final long curTime) {
+    public static void i(final String className, final int hashcode, final String methodName,
+                         final String desc, final long curTime) {
         if (!Thread.currentThread().getName().equals(MAIN_THREAD)) {
             return;
         }
@@ -31,7 +32,7 @@ public class MethodTracer {
             @Override
             public void run() {
                 MethodTraceInfo info = new MethodTraceInfo(className + "@" + hashcode,
-                        methodName, curTime, MethodTraceInfo.IN);
+                        methodName, desc,curTime, MethodTraceInfo.IN);
                 JlLog.notifyMethod(info);
             }
         });
@@ -48,7 +49,8 @@ public class MethodTracer {
      * @param methodName 被追踪的方法名
      * @param curTime    方法调用结尾的时间，一般用System.currentTimeMillis获得
      */
-    public static void o(final String className, final int hashcode, final String methodName, final long curTime) {
+    public static void o(final String className, final int hashcode, final String methodName,
+                         final String desc, final long curTime) {
 
         if (!Thread.currentThread().getName().equals(MAIN_THREAD)) {
             return;
@@ -57,7 +59,7 @@ public class MethodTracer {
             @Override
             public void run() {
                 MethodTraceInfo info = new MethodTraceInfo(className + "@" + hashcode,
-                        methodName, curTime, MethodTraceInfo.OUT);
+                        methodName,desc, curTime, MethodTraceInfo.OUT);
                 JlLog.notifyMethod(info);
             }
         });

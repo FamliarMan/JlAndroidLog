@@ -14,4 +14,6 @@
     <string name="jl_log_system">日志监控</string>
     <string name="jl_log_title">网络：%1$d，崩溃：%2$d，触摸查看更多</string>
     <string name="jl_ui_block_holder">ui block %1$dms  at %2$s</string>
+    <string name="jl_method">方法统计</string>
+    <string name="jl_method_cost">方法耗时图</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.jianglei.jllog.methodtrace;
 
 import com.jianglei.jllog.utils.LogUtils;
+import com.jianglei.jllog.utils.MethodUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +20,15 @@ public class MethodStack {
 
     /**
      * 这个索引主要是为了加速根据类名的查找速度,
-     * 所以此处key是类名@hashcode, value是该类下所有的方法调用节点
+     * 所以此处key是类名@hashcode, value是该类下所有的方法调用节点,
      */
     private Map<String, List<MethodNode>> index = new HashMap<>();
+
+    /**
+     * 这个索引是为了增加方法名和方法节点的搜索速度
+     * 所以此处key是类名：方法名：方法描述，value是该方法对应的节点
+     */
+    private Map<String, MethodNode> methodIndex = new HashMap<>();
 
     /**
      * 最后一个未完成的方法节点
@@ -36,24 +43,42 @@ public class MethodStack {
 
     public void addMethodTrace(MethodTraceInfo info) {
         MethodNode node = new MethodNode(info.getClassNameAndHash(), info.getMethodName(),
-                info.getTime());
+                info.getDesc(), info.getTime());
+        boolean needIndex = true;
         if (info.getType() == MethodTraceInfo.IN) {
             //这个方法第一次被执行,有两种情况，一种是第一级的节点，比如某个Activity的onCreate方法，
             //或者是在某个方法内部被调用
             if (lastUnFinishedNode == null) {
-                //说明这是一个第一级节点
-                firstLevelNode.add(node);
+                //说明这是一个第一级节点或者是以前方法的重复调用
+                MethodNode lastNode = MethodUtils.findMethodNode(firstLevelNode, info.getClassNameAndHash(),
+                        info.getMethodName(), info.getDesc());
+                if (lastNode == null) {
+                    firstLevelNode.add(node);
+                    lastUnFinishedNode = node;
+                } else {
+                    lastNode.inTime = info.getTime();
+                    lastUnFinishedNode = lastNode;
+                    needIndex = false;
+                }
             } else {
                 //说明这个方法在某个其他方法内部被第一次调用
-                lastUnFinishedNode.addNode(node);
-                node.parentNode = lastUnFinishedNode;
-            }
-            lastUnFinishedNode = node;
 
+                MethodNode lastNode = MethodUtils.findMethodNode(lastUnFinishedNode.childNodes, info.getClassNameAndHash(),
+                        info.getMethodName(), info.getDesc());
+                if (lastNode == null) {
+                    lastUnFinishedNode.addNode(node);
+                    node.parentNode = lastUnFinishedNode;
+                    lastUnFinishedNode = node;
+                } else {
+                    //这个方法之前已经被调用过一次，我们更新时间即可
+                    lastNode.inTime = info.getTime();
+                    lastUnFinishedNode = lastNode;
+                }
+            }
         } else {
             if (lastUnFinishedNode == null) {
                 //异常情况，没有方法的进入信息，本条方法退出信息会被抛弃
-                LogUtils.w("异常节点，没有该方法的进入信息，此节点会被抛弃");
+                LogUtils.w("异常节点:" + node.getClassNameAndHash() + ":" + node.getMethodName() + "，没有该方法的进入信息，此节点会被抛弃");
                 return;
             }
             if (!lastUnFinishedNode.getClassNameAndHash().equals(info.getClassNameAndHash())
@@ -62,19 +87,33 @@ public class MethodStack {
                 return;
             }
             lastUnFinishedNode.outTime = info.getTime();
-            lastUnFinishedNode.time = (int) (lastUnFinishedNode.outTime - lastUnFinishedNode.inTime);
+            int time = (int) (lastUnFinishedNode.outTime - lastUnFinishedNode.inTime);
+            if (time > lastUnFinishedNode.time) {
+                lastUnFinishedNode.time = time;
+            }
+            //清空时间，给下一次使用
+            lastUnFinishedNode.inTime = 0;
+            lastUnFinishedNode.outTime = 0;
             lastUnFinishedNode = lastUnFinishedNode.parentNode;
         }
 
-        List<MethodNode> nodes = index.get(info.getClassNameAndHash());
-        if (nodes == null) {
-            nodes = new ArrayList<>();
+        if (info.getType() == MethodTraceInfo.IN && needIndex) {
+            List<MethodNode> nodes = index.get(info.getClassNameAndHash());
+            if (nodes == null) {
+                nodes = new ArrayList<>();
+            }
+            nodes.add(node);
+            index.put(info.getClassNameAndHash(), nodes);
         }
-        nodes.add(node);
-        index.put(info.getClassNameAndHash(), nodes);
 
     }
 
+    public void reset(){
+        index.clear();
+        methodIndex.clear();
+        lastUnFinishedNode = null;
+        firstLevelNode.clear();
+    }
     public Map<String, List<MethodNode>> getIndex() {
         return index;
     }
@@ -98,6 +137,11 @@ public class MethodStack {
          * 方法名称
          */
         private String methodName;
+
+        /**
+         * 方法描述，类似于：(Landroid/os/Bundle;)V，只有类名，方法名和方法描述都相等了才能判断一个方法节点相等
+         */
+        private String desc;
 
         /**
          * 方法执行时间,ns
@@ -128,18 +172,25 @@ public class MethodStack {
          */
         private MethodNode parentNode;
 
-        public MethodNode(String classNameAndHash, String methodName, int time) {
+        public MethodNode(String classNameAndHash, String methodName, String desc, int time) {
             this.classNameAndHash = classNameAndHash;
             this.methodName = methodName;
             this.time = time;
+            this.desc = desc;
             this.isFinished = true;
         }
 
-        public MethodNode(String classNameAndHash, String methodName, long inTime) {
+        public MethodNode(String classNameAndHash, String methodName, String desc, long inTime) {
             this.classNameAndHash = classNameAndHash;
             this.methodName = methodName;
             this.isFinished = false;
+            this.desc = desc;
             this.inTime = inTime;
+        }
+
+        public boolean isEqual(String classNameAndHash, String methodName, String desc) {
+            return (this.classNameAndHash.equals(classNameAndHash) && this.methodName.equals(methodName)
+                    && this.desc.equals(desc));
         }
 
         public boolean isFinished() {

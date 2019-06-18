@@ -21,57 +21,215 @@ import static org.junit.Assert.*;
 @PrepareForTest({LogUtils.class})
 public class MethodStackTest {
     @Before
-    public void setup(){
+    public void setup() {
         PowerMockito.mockStatic(LogUtils.class);
     }
 
+    /**
+     * 最简单的，只有一个第一级方法调用信息
+     */
     @Test
-    public void addMethodTrace_in() {
-        MethodTraceInfo info = new MethodTraceInfo("testClass","testMethod",
-                System.currentTimeMillis(),MethodTraceInfo.IN);
+    public void addMethodTrace_1() {
+        MethodTraceInfo info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.currentTimeMillis(), MethodTraceInfo.IN);
         MethodStack stack = MethodStack.getInstance();
         stack.addMethodTrace(info);
         //第一层节点里面应该有这个方法信息
         MethodStack.MethodNode node = stack.getFirstLevelNode().get(0);
-        assertEquals(node.getClassNameAndHash(),"testClass");
+        assertEquals(node.getClassNameAndHash(), "testClass");
         //索引里面有这个节点
         assertTrue(stack.getIndex().containsKey(node.getClassNameAndHash()));
+        //out信息
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.currentTimeMillis(), MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
 
+        assertEquals(1, stack.getFirstLevelNode().size());
+        assertEquals(1, stack.getIndex().size());
+
+
+    }
+
+    /**
+     * 同一个第一级方法被多次调用，应该保留时间长的
+     */
+    @Test
+    public void addMethodTrace_2() {
+
+        MethodStack stack = MethodStack.getInstance();
+        stack.reset();
 
         //增加一个方法in信息
         long time = System.currentTimeMillis();
-        info = new MethodTraceInfo("childClass","testMethod",
-                time,MethodTraceInfo.IN);
-        //第一层节点应该没有这个信息，所以第一层节点数量为1
-        stack.addMethodTrace(info);
-        assertEquals(1,stack.getFirstLevelNode().size());
-        assertTrue(stack.getIndex().containsKey("childClass"));
-        assertEquals("childClass", stack.getFirstLevelNode().get(0).getChildNodes().get(0)
-                .getClassNameAndHash());
 
-
-        //增加一个方法out信息，但这个方法执行时间超过5ms
-        info = new MethodTraceInfo("childClass","testMethod",
-                time+6,MethodTraceInfo.OUT);
+        //第一次调用这个方法
+        MethodTraceInfo info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time, MethodTraceInfo.IN);
         stack.addMethodTrace(info);
-        assertTrue(stack.getIndex().containsKey("childClass"));
-        assertEquals(2, stack.getIndex().size());
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time + 100, MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+
+        //第二次调用,方法执行时间比上次短,这个节点应该会被忽略
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time+200, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time + 250, MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
         assertEquals(1, stack.getFirstLevelNode().size());
+        assertTrue(stack.getIndex().containsKey("testClass"));
+        assertEquals(1,stack.getIndex().size());
 
 
+        //第三次调用,方法执行时间比第一次长，这个节点的执行时间应该更新成本次时间
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time+300, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time + 550, MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        assertEquals(1, stack.getFirstLevelNode().size());
+        assertTrue(stack.getIndex().containsKey("testClass"));
+        assertEquals(1,stack.getIndex().size());
+        assertEquals(250,stack.getFirstLevelNode().get(0).getTime());
 
-        info = new MethodTraceInfo("testClass","testMethod",
-                System.currentTimeMillis(),MethodTraceInfo.OUT);
+
+    }
+
+
+    /**
+     * 测试子级方法调用情况
+     */
+    @Test
+    public void addMethodTrace_3() {
+
+        MethodStack stack = MethodStack.getInstance();
+        stack.reset();
+
+        //增加一个方法in信息
+        long time = System.currentTimeMillis();
+
+        //第一层节点方法进入
+        MethodTraceInfo info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        //第二层节点方法进入
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time + 1, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+
+        //第二层节点方法退出
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time+200, MethodTraceInfo.OUT);
         stack.addMethodTrace(info);
         assertEquals(1,stack.getFirstLevelNode().size());
-        //继续增加一个in信息，应该有两个一层节点了
+        assertEquals(1,stack.getFirstLevelNode().get(0).getChildNodes().size());
 
-        info = new MethodTraceInfo("testClass2","testMethod",
-                System.currentTimeMillis(),MethodTraceInfo.IN);
+        //第一层节点方法退出
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time + 250, MethodTraceInfo.OUT);
         stack.addMethodTrace(info);
-        assertEquals(2,stack.getFirstLevelNode().size());
+        assertEquals(1, stack.getFirstLevelNode().size());
+        assertTrue(stack.getIndex().containsKey("testClass"));
+        assertEquals(2,stack.getIndex().size());
 
+
+        //第三次调用,方法执行时间比第一次长，这个节点的执行时间应该更新成本次时间
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time+300, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time + 550, MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        assertEquals(1, stack.getFirstLevelNode().size());
+        assertTrue(stack.getIndex().containsKey("testClass"));
+        assertEquals(2,stack.getIndex().size());
+        assertEquals(250,stack.getFirstLevelNode().get(0).getTime());
+    }
+
+
+    /**
+     * 测试子级方法多次调用情况
+     */
+    @Test
+    public void addMethodTrace_4() {
+
+        MethodStack stack = MethodStack.getInstance();
+        stack.reset();
+
+        //增加一个方法in信息
+        long time = System.currentTimeMillis();
+
+        //第一层节点方法进入
+        MethodTraceInfo info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                time, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        //第二层节点方法第一次调用
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time , MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time+200, MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        assertEquals(200,stack.getFirstLevelNode().get(0).getChildNodes().get(0).getTime());
+
+        //第二层节点方法第二次调用,调用时间比第一次短
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time + 250, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time + 300, MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        assertEquals(1, stack.getFirstLevelNode().size());
+        assertEquals(200,stack.getFirstLevelNode().get(0).getChildNodes().get(0).getTime());
+
+        //第二层节点方法第三次调用，调用时间比第一次长
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time + 400, MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+
+        info = new MethodTraceInfo("childClass", "testMethod", "()V",
+                time + 700, MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        assertEquals(1, stack.getFirstLevelNode().size());
+        assertEquals(300,stack.getFirstLevelNode().get(0).getChildNodes().get(0).getTime());
+
+    }
+
+
+    /**
+     * 测试方法递归调用
+     */
+    @Test
+    public void addMethodTrace_5() {
+        MethodStack stack = MethodStack.getInstance();
+        MethodTraceInfo info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.nanoTime(), MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.nanoTime(), MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.nanoTime(), MethodTraceInfo.IN);
+        stack.addMethodTrace(info);
+        //out信息
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.nanoTime(), MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.nanoTime(), MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+        info = new MethodTraceInfo("testClass", "testMethod", "()V",
+                System.nanoTime(), MethodTraceInfo.OUT);
+        stack.addMethodTrace(info);
+
+        assertEquals(1, stack.getFirstLevelNode().size());
+        assertEquals(1, stack.getFirstLevelNode().get(0).getChildNodes().size());
+        assertEquals(1, stack.getIndex().size());
 
 
     }
 }
+
