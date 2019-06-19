@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
@@ -32,7 +34,7 @@ import java.util.List;
 public class LogShowActivity extends JlBaseActivity implements ILogShowActivity {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private NoScrollViewPager viewPager;
 
     private ILogInterface logInterface;
     private boolean isUnbind;
@@ -56,8 +58,8 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
         Intent intent = new Intent(this, JlLogService.class);
         bindService(intent, serviceConnection, 0);
         setContentView(R.layout.activity_log_show);
-        tabLayout = (TabLayout) findViewById(R.id.tab);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tab);
+        viewPager = findViewById(R.id.viewpager);
     }
 
     private void init() {

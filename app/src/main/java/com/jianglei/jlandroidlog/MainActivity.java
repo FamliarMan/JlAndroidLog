@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class MainActivity extends AbstractActivity {
     private String name = "longyi";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,7 @@ public class MainActivity extends AbstractActivity {
                 }
             }
         });
+        getNetInfo(true);
     }
 
     private NetInfoVo getNetInfo(boolean isSuccessful) {
@@ -121,7 +123,7 @@ public class MainActivity extends AbstractActivity {
         super.onDestroy();
     }
 
-    private static void test(){
-        int i=10;
+    private static void test() {
+        int i = 10;
     }
 }

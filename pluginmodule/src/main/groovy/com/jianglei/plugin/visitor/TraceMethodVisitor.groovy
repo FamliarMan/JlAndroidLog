@@ -1,8 +1,7 @@
 package com.jianglei.plugin.visitor
 
-import com.jianglei.plugin.LogUtils
+
 import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
 
 public class TraceMethodVisitor extends AdviceAdapter {
@@ -10,7 +9,7 @@ public class TraceMethodVisitor extends AdviceAdapter {
     private String className
     private String methodName
     private String desc
-    private int access;
+    private int access
     //某个方法是否需要追踪
     private boolean isNeedTraceMethod
 

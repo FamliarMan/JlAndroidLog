@@ -27,34 +27,30 @@ class MethodTraceUtils {
 
     public static void traceJar(JarInput jarInPut, File outputFile) {
         def jar = jarInPut.file
-//        FileUtils.copyFile(jar, outputFile)
-//        if (jarInPut.name.startsWith("com.android") || jarInPut.name.startsWith("android")) {
-//            FileUtils.copyFile(jar, outputFile)
-//            return
-//        }
+        FileUtils.copyFile(jar, outputFile)
 //
         //jar包解压的临时位置
-        def tmpDir = outputFile.parentFile.absolutePath + File.separator + outputFile
-                .name.replace(".jar", File.separator)
-        def tmpFile = new File(tmpDir)
-        tmpFile.mkdirs()
-        //先解压缩到临时目录
-        MyZipUtils.unzip(jar.absolutePath, tmpFile.absolutePath)
-        //收集解压缩后的所有文件
-        def allFiles = new ArrayList()
-        collectFiles(tmpFile, allFiles)
-        allFiles.each {
-            if (isNeedTraceClass(it)) {
-                //将处理后的文件命名成原名称-new形式
-                def tracedFile = new File(tmpFile.absolutePath + "-new")
-                traceFile(it, tracedFile)
-                //处理完后用新的文件替换原有文件
-                it.delete()
-                tracedFile.renameTo(it)
-            }
-        }
-        MyZipUtils.zip(tmpFile.absolutePath, outputFile.absolutePath)
-        tmpFile.deleteDir()
+//        def tmpDir = outputFile.parentFile.absolutePath + File.separator + outputFile
+//                .name.replace(".jar", File.separator)
+//        def tmpFile = new File(tmpDir)
+//        tmpFile.mkdirs()
+//        //先解压缩到临时目录
+//        MyZipUtils.unzip(jar.absolutePath, tmpFile.absolutePath)
+//        //收集解压缩后的所有文件
+//        def allFiles = new ArrayList()
+//        collectFiles(tmpFile, allFiles)
+//        allFiles.each {
+//            if (isNeedTraceClass(it)) {
+//                //将处理后的文件命名成原名称-new形式
+//                def tracedFile = new File(tmpFile.absolutePath + "-new")
+//                traceFile(it, tracedFile)
+//                //处理完后用新的文件替换原有文件
+//                it.delete()
+//                tracedFile.renameTo(it)
+//            }
+//        }
+//        MyZipUtils.zip(tmpFile.absolutePath, outputFile.absolutePath)
+//        tmpFile.deleteDir()
 
 
     }

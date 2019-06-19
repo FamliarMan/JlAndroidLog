@@ -1,5 +1,7 @@
 package com.jianglei.jllog.methodtrace;
 
+import android.support.annotation.NonNull;
+
 import com.jianglei.jllog.utils.LogUtils;
 import com.jianglei.jllog.utils.MethodUtils;
 
@@ -213,6 +215,7 @@ public class MethodStack {
             childNodes.add(node);
         }
 
+        @NonNull
         public List<MethodNode> getChildNodes() {
             return childNodes;
         }

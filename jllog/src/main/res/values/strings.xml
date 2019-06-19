@@ -16,4 +16,8 @@
     <string name="jl_ui_block_holder">ui block %1$dms  at %2$s</string>
     <string name="jl_method">方法统计</string>
     <string name="jl_method_cost">方法耗时图</string>
+    <string name="jl_mark_view">%1$s:%2$2f ms</string>
+    <string name="jl_last_level">上一级</string>
+    <string name="jl_detail">详情</string>
+    <string name="jl_back">返回</string>
 </resources>
