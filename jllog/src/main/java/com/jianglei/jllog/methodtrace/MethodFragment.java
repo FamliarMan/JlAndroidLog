@@ -70,6 +70,7 @@ public class MethodFragment extends Fragment {
         tvDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeMarkView();
                 if (curSelectedNode == null || curSelectedNode.getChildNodes().size() == 0) {
                     return;
                 }
@@ -86,12 +87,12 @@ public class MethodFragment extends Fragment {
                 switchToMethodBar(curSelectedNode);
                 tvLastLevel.setVisibility(View.VISIBLE);
                 tvDetail.setVisibility(View.GONE);
-                methodMarkView.cancelLongPress();
             }
         });
         tvLastLevel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeMarkView();
                 if (nodeStack.size() == 0) {
                     tvLastLevel.setVisibility(View.GONE);
                     return;
@@ -121,6 +122,10 @@ public class MethodFragment extends Fragment {
         super.onResume();
     }
 
+    private void closeMarkView(){
+        barChart.highlightValue(null);
+        barChart.invalidate();
+    }
     private void initSpinner() {
         final String[] classNames = MethodStack.getInstance().getIndex().keySet().toArray(new String[0]);
         Arrays.sort(classNames);
