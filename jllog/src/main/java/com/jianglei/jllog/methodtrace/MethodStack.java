@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author longyi created on 19-6-14
@@ -110,12 +111,13 @@ public class MethodStack {
 
     }
 
-    public void reset(){
+    public void reset() {
         index.clear();
         methodIndex.clear();
         lastUnFinishedNode = null;
         firstLevelNode.clear();
     }
+
     public Map<String, List<MethodNode>> getIndex() {
         return index;
     }
@@ -126,6 +128,11 @@ public class MethodStack {
 
     public List<MethodNode> getFirstLevelNode() {
         return firstLevelNode;
+    }
+
+
+    public Set<String> getAllClassName() {
+        return index.keySet();
     }
 
     public static class MethodNode {

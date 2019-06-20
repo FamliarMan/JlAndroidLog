@@ -20,4 +20,9 @@
     <string name="jl_last_level">上一级</string>
     <string name="jl_detail">详情</string>
     <string name="jl_back">返回</string>
+    <string name="jl_class_search">类名模糊匹配</string>
+    <string name="jl_confirm">确认</string>
+    <string name="jl_invalid_class_name">不合法的类名</string>
+    <string name="jl_class_mode">类模式</string>
+    <string name="jl_statistics">统计模式</string>
 </resources>

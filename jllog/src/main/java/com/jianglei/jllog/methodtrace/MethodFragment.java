@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -46,9 +48,9 @@ public class MethodFragment extends Fragment {
      * 当前柱状图展示的是某个两个方法之间的所有方法调用情况
      */
     public static final int STATUS_STATICS = 2;
-    private Spinner spinner;
     private BarChart barChart;
     private TextView tvLastLevel, tvDetail;
+    private ImageView ivConfig;
     private MethodMarkView methodMarkView;
     private String curClassName;
     private MethodStack.MethodNode curSelectedNode;
@@ -63,10 +65,10 @@ public class MethodFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.jl_fragment_method, container, false);
-        spinner = view.findViewById(R.id.sp_name);
         barChart = view.findViewById(R.id.bar_chart);
         tvLastLevel = view.findViewById(R.id.tv_last_level);
         tvDetail = view.findViewById(R.id.tv_detail);
+        ivConfig = view.findViewById(R.id.iv_config);
         tvDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,8 +114,22 @@ public class MethodFragment extends Fragment {
             }
         });
 
+        ivConfig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getChildFragmentManager();
+                MethodFilterDialog dialog = new MethodFilterDialog();
+                dialog.setOnConfigListener(new MethodFilterDialog.OnConfigListener() {
+                    @Override
+                    public void onClassSelected(String className) {
+                        switchToClassBar(className);
+                    }
+                });
+                dialog.show(fm, "dialog");
+            }
+        });
+
         initChar();
-        initSpinner();
         return view;
     }
 
@@ -122,29 +138,9 @@ public class MethodFragment extends Fragment {
         super.onResume();
     }
 
-    private void closeMarkView(){
+    private void closeMarkView() {
         barChart.highlightValue(null);
         barChart.invalidate();
-    }
-    private void initSpinner() {
-        final String[] classNames = MethodStack.getInstance().getIndex().keySet().toArray(new String[0]);
-        Arrays.sort(classNames);
-        SpinnerAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, classNames);
-
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                curClassName = classNames[position];
-                switchToClassBar(curClassName);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                tvDetail.setVisibility(View.GONE);
-
-            }
-        });
     }
 
     private void initChar() {

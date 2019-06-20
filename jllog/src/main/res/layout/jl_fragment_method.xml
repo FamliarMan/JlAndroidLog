@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:background="#000000">
 
-    <Spinner
-        android:id="@+id/sp_name"
-        android:layout_width="match_parent"
-        android:layout_height="44dp" />
 
     <RelativeLayout
+        android:id="@+id/layout_config"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
         <TextView
             android:id="@+id/tv_last_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:drawableLeft="@mipmap/jl_double_left_arrow"
             android:text="@string/jl_back"
             android:textColor="@color/jl_white"
-            android:layout_centerVertical="true"
             android:visibility="gone"
             tools:visibility="visible"
 
@@ -42,9 +40,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_centerVertical="true"
             android:drawableEnd="@mipmap/jl_double_right_arrow"
             android:drawableRight="@mipmap/jl_double_right_arrow"
             android:text="@string/jl_detail"
@@ -57,5 +55,6 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bar_chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout_config" />
+</RelativeLayout>
