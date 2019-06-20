@@ -205,6 +205,7 @@ public class MethodStackTest {
     @Test
     public void addMethodTrace_5() {
         MethodStack stack = MethodStack.getInstance();
+        stack.reset();
         MethodTraceInfo info = new MethodTraceInfo("testClass", "testMethod", "()V",
                 System.nanoTime(), MethodTraceInfo.IN);
         stack.addMethodTrace(info);

@@ -41,9 +41,6 @@ public class MethodFilterDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.jl_method_filter_fragment, container, false);
         initClassSearch(view);
-        TabLayout tab = view.findViewById(R.id.tab);
-        tab.addTab(tab.newTab().setText(R.string.jl_class_mode));
-        tab.addTab(tab.newTab().setText(R.string.jl_statistics));
         return view;
     }
 

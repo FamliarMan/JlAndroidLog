@@ -12,7 +12,9 @@ import com.jianglei.jllog.methodtrace.MethodTracer;
 public class MyApplication extends Application {
     @Override
     public void onCreate() {
+        MethodTracer.i("com/jianglei/jlandroidlog/MyApplication", this.hashCode(), "onCreate", "()V", System.nanoTime());
         super.onCreate();
         JlLog.start(this, 5, true);
+        MethodTracer.o("com/jianglei/jlandroidlog/MyApplication", this.hashCode(), "onCreate", "()V", System.nanoTime());
     }
 }

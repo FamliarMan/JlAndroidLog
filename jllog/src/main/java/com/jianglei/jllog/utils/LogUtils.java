@@ -15,5 +15,8 @@ public class LogUtils {
     public static void d(String msg) {
         Log.d(TAG, msg);
     }
+    public static void d(String tag,String msg) {
+        Log.d(TAG+"-"+tag, msg);
+    }
 
 }

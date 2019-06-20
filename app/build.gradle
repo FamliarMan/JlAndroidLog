@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jianglei.jllog'
+//apply plugin: 'com.jianglei.jllog'
 android {
     compileSdkVersion 27
     defaultConfig {

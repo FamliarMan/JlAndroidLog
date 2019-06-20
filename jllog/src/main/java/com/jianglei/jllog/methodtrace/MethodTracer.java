@@ -31,8 +31,9 @@ public class MethodTracer {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
+
                 MethodTraceInfo info = new MethodTraceInfo(className + "@" + hashcode,
-                        methodName, desc,curTime, MethodTraceInfo.IN);
+                        methodName, desc, curTime, MethodTraceInfo.IN);
                 JlLog.notifyMethod(info);
             }
         });
@@ -59,7 +60,7 @@ public class MethodTracer {
             @Override
             public void run() {
                 MethodTraceInfo info = new MethodTraceInfo(className + "@" + hashcode,
-                        methodName,desc, curTime, MethodTraceInfo.OUT);
+                        methodName, desc, curTime, MethodTraceInfo.OUT);
                 JlLog.notifyMethod(info);
             }
         });

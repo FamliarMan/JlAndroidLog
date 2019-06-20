@@ -14,7 +14,6 @@ import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
 import com.jianglei.jllog.life.LifeTracer;
 import com.jianglei.jllog.methodtrace.MethodTraceInfo;
-import com.jianglei.jllog.methodtrace.MethodTracer;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 import com.jianglei.jllog.uiblock.UiTracer;
 import com.jianglei.jllog.utils.LogUtils;
@@ -48,7 +47,11 @@ public class JlLog {
      */
     public static int MAX_UI_RECORT = 100;
 
-    private static boolean isDebug;
+    /**
+     * 此处必须默认为true，因为方法耗时追踪可能在初始化之前就开始，
+     * 如果想保留初始化之前的方法信息，这里必须默认为true
+     */
+    private static boolean isDebug = true;
 
 
     private static ILogInterface logInterface;

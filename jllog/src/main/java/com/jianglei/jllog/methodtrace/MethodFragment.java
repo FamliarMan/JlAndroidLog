@@ -29,6 +29,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.jianglei.jllog.R;
 import com.jianglei.jllog.chart.MethodMarkView;
+import com.jianglei.jllog.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -193,6 +194,7 @@ public class MethodFragment extends Fragment {
         for (int i = 0; i < nodes.size(); ++i) {
             MethodStack.MethodNode node = nodes.get(i);
             if (node.getTime() < 100000) {
+                LogUtils.w(node.getClassNameAndHash()+":"+node.getMethodName()+" "+node.getTime()+"ns 小于1ms，不展示");
                 continue;
             }
             BarEntry barEntry = new BarEntry(i, node.getTime() / 100000f);

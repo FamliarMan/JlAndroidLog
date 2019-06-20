@@ -81,7 +81,8 @@ public class MethodStack {
         } else {
             if (lastUnFinishedNode == null) {
                 //异常情况，没有方法的进入信息，本条方法退出信息会被抛弃
-                LogUtils.w("异常节点:" + node.getClassNameAndHash() + ":" + node.getMethodName() + "，没有该方法的进入信息，此节点会被抛弃");
+                LogUtils.w("异常节点:" + info.getClassNameAndHash() + ":" + info.getMethodName()
+                        +info.getType()+ "，没有该方法的进入信息，此节点会被抛弃");
                 return;
             }
             if (!lastUnFinishedNode.getClassNameAndHash().equals(info.getClassNameAndHash())
@@ -104,6 +105,11 @@ public class MethodStack {
             List<MethodNode> nodes = index.get(info.getClassNameAndHash());
             if (nodes == null) {
                 nodes = new ArrayList<>();
+            }
+            if (MethodUtils.findMethodNode(nodes, info.getClassNameAndHash(), info.getMethodName(),
+                    info.getDesc()) != null) {
+                //这个方法之前已经有了，无需继续缓存
+                return;
             }
             nodes.add(node);
             index.put(info.getClassNameAndHash(), nodes);
