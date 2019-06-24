@@ -1,6 +1,7 @@
 package com.jianglei.jlandroidlog;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.jianglei.jllog.JlLog;
@@ -15,6 +16,7 @@ public class MainActivity extends AbstractActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        long start = System.nanoTime();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_net).setOnClickListener(new View.OnClickListener() {
@@ -53,6 +55,7 @@ public class MainActivity extends AbstractActivity {
             }
         });
         getNetInfo(true);
+        Log.d("longyi", "time:" + ((System.nanoTime() - start) / 100000));
     }
 
     private NetInfoVo getNetInfo(boolean isSuccessful) {

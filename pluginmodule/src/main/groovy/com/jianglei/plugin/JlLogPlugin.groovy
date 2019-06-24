@@ -10,6 +10,8 @@ class JlLogPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
 
+        project.getExtensions()
+                .create("jlLog", JlLogExtension.class)
         def extension = project.getExtensions().findByType(AppExtension.class)
         def isForApplication = true
         if (extension == null) {

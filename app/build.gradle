@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.jianglei.jllog'
+apply plugin: 'com.jianglei.jllog'
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -46,4 +46,8 @@ dependencies {
 //    compile('com.jianglei:jllog:1.3')
     testImplementation'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:27.1.1'
+}
+
+jlLog{
+    traceThirdLibrary = false
 }
