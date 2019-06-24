@@ -8,7 +8,8 @@ import com.jianglei.jllog.IDataHandler;
 
 public class MethodHandler implements IDataHandler {
     private static MethodHandler methodHandler = new MethodHandler();
-    public static MethodHandler getInstance(){
+
+    public static MethodHandler getInstance() {
         return methodHandler;
     }
 
@@ -19,7 +20,7 @@ public class MethodHandler implements IDataHandler {
             return;
         }
         MethodTraceInfo info = (MethodTraceInfo) parcelable;
-        MethodStack.getInstance().addMethodTrace(info);
+        MethodStack.addMethodTraceInfo(info);
     }
 
     @Override

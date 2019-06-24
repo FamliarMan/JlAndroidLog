@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -30,6 +32,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.jianglei.jllog.R;
 import com.jianglei.jllog.chart.MethodMarkView;
 import com.jianglei.jllog.utils.LogUtils;
+import com.jianglei.jllog.utils.MethodUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +65,8 @@ public class MethodFragment extends Fragment {
      */
     private Stack<StackNode> nodeStack = new Stack<>();
 
+    private Stack<String> descStack = new Stack<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +82,7 @@ public class MethodFragment extends Fragment {
                 if (curSelectedNode == null || curSelectedNode.getChildNodes().size() == 0) {
                     return;
                 }
+                descStack.push(barChart.getDescription().getText());
                 if (status == STATUS_METHOD) {
                     nodeStack.push(new StackNode(status, curSelectedNode));
                 } else {
@@ -112,6 +118,8 @@ public class MethodFragment extends Fragment {
                 if (nodeStack.size() == 0) {
                     tvLastLevel.setVisibility(View.GONE);
                 }
+                String desc = descStack.pop();
+                barChart.getDescription().setText(desc);
             }
         });
 
@@ -145,7 +153,11 @@ public class MethodFragment extends Fragment {
     }
 
     private void initChar() {
-        barChart.getDescription().setEnabled(false);
+//        barChart.getDescription().setEnabled(false);
+        barChart.setMaxVisibleValueCount(60);
+        barChart.getDescription().setTextColor(ContextCompat.getColor(getActivity(), R.color.jl_white));
+        barChart.getLegend().setTextColor(ContextCompat.getColor(getActivity(), R.color.jl_white));
+        barChart.setNoDataText(getString(R.string.jl_chart_no_data));
         XAxis xAxis = barChart.getXAxis();
         xAxis.setDrawGridLines(false);
         xAxis.setDrawLabels(false);
@@ -181,7 +193,8 @@ public class MethodFragment extends Fragment {
 
             }
         });
-
+        barChart.getDescription().setText(getString(R.string.jl_first_level_node));
+        updateChart(MethodStack.getInstance().getFirstLevelNode());
 
     }
 
@@ -189,18 +202,23 @@ public class MethodFragment extends Fragment {
      * 根据方法节点绘制柱状图，如果方法 节点为空就绘制当前选中类的
      */
     private void updateChart(List<MethodStack.MethodNode> nodes) {
-        List<IBarDataSet> barDataSets = new ArrayList<>(nodes.size());
         List<BarEntry> entries = new ArrayList<>(1);
         for (int i = 0; i < nodes.size(); ++i) {
             MethodStack.MethodNode node = nodes.get(i);
-            if (node.getTime() < 100000) {
-                LogUtils.w(node.getClassNameAndHash()+":"+node.getMethodName()+" "+node.getTime()+"ns 小于1ms，不展示");
+            if (node.getTime() < 500000) {
+                LogUtils.w(node.getClassNameAndHash() + ":" + node.getMethodName() + " " + node.getTime() + "ns 小于1ms，不展示");
                 continue;
             }
             BarEntry barEntry = new BarEntry(i, node.getTime() / 100000f);
             barEntry.setData(node);
             entries.add(barEntry);
         }
+        if (entries.size() == 0) {
+
+            barChart.clear();
+            return;
+        }
+        Log.d("longyi","bar数量："+entries.size());
         BarDataSet barDataSet;
         if (barChart.getData() != null && barChart.getData().getDataSetCount() > 0) {
             barDataSet = (BarDataSet) barChart.getData().getDataSetByIndex(0);
@@ -211,6 +229,7 @@ public class MethodFragment extends Fragment {
         } else {
             barDataSet = new BarDataSet(entries, getString(R.string.jl_method_cost));
             barDataSet.setValueTextColors(Arrays.asList(ContextCompat.getColor(getActivity(), R.color.jl_white)));
+            List<IBarDataSet> barDataSets = new ArrayList<>(nodes.size());
             barDataSets.add(barDataSet);
             BarData barData = new BarData(barDataSets);
             barChart.setData(barData);
@@ -224,13 +243,18 @@ public class MethodFragment extends Fragment {
      * @param className 类名
      */
     private void switchToClassBar(String className) {
+        barChart.setNoDataText(getString(R.string.jl_chart_no_data1, MethodUtils.getSimpleClassName(className)));
         MethodStack stack = MethodStack.getInstance();
         List<MethodStack.MethodNode> nodes = stack.getIndex().get(className);
         if (nodes == null || nodes.size() == 0) {
             barChart.clear();
         } else {
+
             updateChart(nodes);
         }
+        Description desc = barChart.getDescription();
+        desc.setText(className);
+        barChart.setDescription(desc);
         status = STATUS_CLASS;
     }
 
@@ -239,6 +263,7 @@ public class MethodFragment extends Fragment {
             barChart.clear();
             return;
         }
+        barChart.getDescription().setText(getString(R.string.jl_method_child, node.getMethodName()));
         updateChart(node.getChildNodes());
         status = STATUS_METHOD;
     }

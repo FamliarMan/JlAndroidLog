@@ -35,6 +35,8 @@ public class MethodTraceInfo implements Parcelable {
      */
     private short type;
 
+    private String processName;
+
     public MethodTraceInfo(String classNameAndHash, String methodName, String desc, long time, short type) {
         this.classNameAndHash = classNameAndHash;
         this.methodName = methodName;
@@ -43,12 +45,14 @@ public class MethodTraceInfo implements Parcelable {
         this.type = type;
     }
 
+
     protected MethodTraceInfo(Parcel in) {
         classNameAndHash = in.readString();
         methodName = in.readString();
+        desc = in.readString();
         time = in.readLong();
         type = (short) in.readInt();
-        desc = in.readString();
+        processName = in.readString();
     }
 
     public static final Creator<MethodTraceInfo> CREATOR = new Creator<MethodTraceInfo>() {
@@ -62,6 +66,14 @@ public class MethodTraceInfo implements Parcelable {
             return new MethodTraceInfo[size];
         }
     };
+
+    public String getProcessName() {
+        return processName;
+    }
+
+    public void setProcessName(String processName) {
+        this.processName = processName;
+    }
 
     public String getClassNameAndHash() {
         return classNameAndHash;
@@ -99,6 +111,7 @@ public class MethodTraceInfo implements Parcelable {
         this.type = type;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -108,8 +121,9 @@ public class MethodTraceInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(classNameAndHash);
         dest.writeString(methodName);
+        dest.writeString(desc);
         dest.writeLong(time);
         dest.writeInt((int) type);
-        dest.writeString(desc);
+        dest.writeString(processName);
     }
 }

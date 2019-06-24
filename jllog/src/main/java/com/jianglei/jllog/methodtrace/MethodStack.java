@@ -1,12 +1,14 @@
 package com.jianglei.jllog.methodtrace;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.jianglei.jllog.utils.LogUtils;
 import com.jianglei.jllog.utils.MethodUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,10 +17,25 @@ import java.util.Set;
  * @author longyi created on 19-6-14
  */
 public class MethodStack {
-    private static MethodStack instance = new MethodStack();
+    /**
+     * 每个不同的进程都有自己的stack
+     */
+    private static Map<String, MethodStack> instances = new HashMap<>();
+    private static List<String> processNames = new ArrayList<>();
 
+    /**
+     * 获取第一个进程的实例
+     */
     public static MethodStack getInstance() {
-        return instance;
+        return instances.get(processNames.get(0));
+    }
+
+    public static MethodStack getInstance(String processName) {
+        return instances.get(processName);
+    }
+
+    public static List<String> getProcessNames() {
+        return processNames;
     }
 
     /**
@@ -43,8 +60,19 @@ public class MethodStack {
      */
     private List<MethodNode> firstLevelNode = new ArrayList<>();
 
+    public static void addMethodTraceInfo(MethodTraceInfo info) {
+        MethodStack stack = getInstance(info.getProcessName());
+        if (stack == null) {
+            stack = new MethodStack();
+            instances.put(info.getProcessName(), stack);
+            processNames.add(info.getProcessName());
+        }
+        stack.addMethodTrace(info);
+    }
 
     public void addMethodTrace(MethodTraceInfo info) {
+        Log.d("longyi", "add method:" + info.getProcessName() + ":" + info.getClassNameAndHash()
+                + ":" + info.getMethodName() + ":" + info.getType());
         MethodNode node = new MethodNode(info.getClassNameAndHash(), info.getMethodName(),
                 info.getDesc(), info.getTime());
         boolean needIndex = true;
@@ -82,12 +110,14 @@ public class MethodStack {
             if (lastUnFinishedNode == null) {
                 //异常情况，没有方法的进入信息，本条方法退出信息会被抛弃
                 LogUtils.w("异常节点:" + info.getClassNameAndHash() + ":" + info.getMethodName()
-                        +info.getType()+ "，没有该方法的进入信息，此节点会被抛弃");
+                        + info.getType() + "，没有该方法的进入信息，此节点会被抛弃");
                 return;
             }
             if (!lastUnFinishedNode.getClassNameAndHash().equals(info.getClassNameAndHash())
                     || !lastUnFinishedNode.getMethodName().equals(info.getMethodName())) {
-                LogUtils.w("异常节点，该方法的退出信息和上一个方法的进入信息不符合，此节点会被抛弃");
+                LogUtils.w("异常节点，该方法的退出信息和上一个方法的进入信息不符合，此节点会被抛弃:"
+                        + info.getProcessName() + " :" + info.getClassNameAndHash()
+                        + ":" + info.getMethodName());
                 return;
             }
             lastUnFinishedNode.outTime = info.getTime();
@@ -124,7 +154,7 @@ public class MethodStack {
         firstLevelNode.clear();
     }
 
-    public Map<String, List<MethodNode>> getIndex() {
+    public synchronized Map<String, List<MethodNode>> getIndex() {
         return index;
     }
 
@@ -132,13 +162,13 @@ public class MethodStack {
         return lastUnFinishedNode;
     }
 
-    public List<MethodNode> getFirstLevelNode() {
+    public synchronized List<MethodNode> getFirstLevelNode() {
         return firstLevelNode;
     }
 
 
-    public Set<String> getAllClassName() {
-        return index.keySet();
+    public synchronized Set<String> getAllClassName() {
+        return new HashSet<>(index.keySet());
     }
 
     public static class MethodNode {

@@ -15,8 +15,8 @@
     <string name="jl_log_title">网络：%1$d，崩溃：%2$d，触摸查看更多</string>
     <string name="jl_ui_block_holder">ui block %1$dms  at %2$s</string>
     <string name="jl_method">方法统计</string>
-    <string name="jl_method_cost">方法耗时图</string>
-    <string name="jl_mark_view">%1$s:%2$2f ms</string>
+    <string name="jl_method_cost">超过5ms的方法耗时</string>
+    <string name="jl_mark_view">%1$s:\n %2$s:%3$.2f ms</string>
     <string name="jl_last_level">上一级</string>
     <string name="jl_detail">详情</string>
     <string name="jl_back">返回</string>
@@ -26,4 +26,8 @@
     <string name="jl_class_mode">类模式</string>
     <string name="jl_statistics">统计模式</string>
     <string name="jl_class_name_search">类名搜索</string>
+    <string name="jl_chart_no_data">没有耗时超过5ms的方法</string>
+    <string name="jl_chart_no_data1">%s没有耗时超过5ms的方法</string>
+    <string name="jl_first_level_node">第一层有节点方法</string>
+    <string name="jl_method_child">%s下所有方法调用</string>
 </resources>

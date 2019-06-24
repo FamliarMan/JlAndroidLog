@@ -50,7 +50,7 @@ public class MethodFilterDialog extends DialogFragment {
         allClassNames = MethodStack.getInstance().getAllClassName();
         List<String> classNames = new ArrayList<>(allClassNames);
         MyArrayAdapter<String> adapter = new MyArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, classNames);
+                R.layout.jl_simple_list_item, classNames);
         tvClassName.setAdapter(adapter);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +99,7 @@ public class MethodFilterDialog extends DialogFragment {
         if (dialog != null) {
             DisplayMetrics dm = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-            dialog.getWindow().setLayout((int) (dm.widthPixels * 0.85), (int) (dm.heightPixels * 0.75));
+            dialog.getWindow().setLayout((int) (dm.widthPixels * 0.95), (int) (dm.heightPixels * 0.75));
         }
     }
 

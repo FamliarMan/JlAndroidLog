@@ -10,8 +10,10 @@ import com.jianglei.jllog.aidl.TransformData;
 import com.jianglei.jllog.life.LifeDataHandler;
 import com.jianglei.jllog.methodtrace.MethodHandler;
 import com.jianglei.jllog.methodtrace.MethodTraceInfo;
+import com.jianglei.jllog.methodtrace.MethodTracer;
 import com.jianglei.jllog.uiblock.UITracerHandler;
 import com.jianglei.jllog.uiblock.UiBlockVo;
+import com.jianglei.jllog.utils.LogUtils;
 
 /**
  * @author jianglei on 11/23/18.

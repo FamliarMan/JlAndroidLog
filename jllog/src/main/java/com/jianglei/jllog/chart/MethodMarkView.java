@@ -1,6 +1,7 @@
 package com.jianglei.jllog.chart;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
@@ -10,6 +11,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.jianglei.jllog.R;
 import com.jianglei.jllog.methodtrace.MethodStack;
+import com.jianglei.jllog.utils.MethodUtils;
 
 /**
  * @author longyi created on 19-6-19
@@ -24,8 +26,10 @@ public class MethodMarkView extends MarkerView {
 
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
+        MethodStack.MethodNode node = (MethodStack.MethodNode) e.getData();
         tvMarker.setText(getContext().getString(R.string.jl_mark_view,
-                ((MethodStack.MethodNode)e.getData()).getMethodName(), e.getY()));
+                MethodUtils.getSimpleClassName(node.getClassNameAndHash()),
+                node.getMethodName(), e.getY()));
         super.refreshContent(e, highlight);
     }
 
@@ -34,4 +38,8 @@ public class MethodMarkView extends MarkerView {
         return new MPPointF(-(getWidth() / 2f), -getHeight());
     }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+    }
 }

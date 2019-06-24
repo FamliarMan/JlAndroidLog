@@ -49,5 +49,5 @@ dependencies {
 }
 
 jlLog{
-    traceThirdLibrary = false
+    traceThirdLibrary = true
 }

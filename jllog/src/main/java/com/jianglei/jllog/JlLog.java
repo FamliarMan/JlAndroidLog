@@ -17,6 +17,7 @@ import com.jianglei.jllog.methodtrace.MethodTraceInfo;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 import com.jianglei.jllog.uiblock.UiTracer;
 import com.jianglei.jllog.utils.LogUtils;
+import com.jianglei.jllog.utils.MethodUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,8 @@ public class JlLog {
      */
     private static List<LifeVo> mPendingLifes = new ArrayList<>();
 
+    private static Application application;
+
     private static List<MethodTraceInfo> mPendingMethods = new ArrayList<>();
     private static int mServiceStatus = STATUS_NOT_READY;
     private static ServiceConnection serviceConnection = new ServiceConnection() {
@@ -79,6 +82,7 @@ public class JlLog {
 
                 if (mPendingMethods.size() != 0) {
                     for (MethodTraceInfo vo : mPendingMethods) {
+                        vo.setProcessName(MethodUtils.getProcessName(application));
                         TransformData transformData = new TransformData(vo);
                         logInterface.notifyData(transformData);
                     }
@@ -119,6 +123,7 @@ public class JlLog {
         if (!isDebug) {
             return;
         }
+        JlLog.application = application;
         JlCrashHandler.getInstance().init(application);
         Intent intent = new Intent(application, JlLogService.class);
         application.startService(intent);
@@ -201,6 +206,14 @@ public class JlLog {
             mPendingMethods.add(info);
             return;
         }
+        if (logInterface == null) {
+            return;
+        }
+        String processName = MethodUtils.getProcessName(application);
+//        if(processName.contains(":Log")){
+//            //日志进程本身不参与进来
+//        }
+        info.setProcessName(MethodUtils.getProcessName(application));
         TransformData transformData = new TransformData(info);
         try {
             logInterface.notifyData(transformData);

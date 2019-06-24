@@ -1,5 +1,8 @@
 package com.jianglei.jllog.utils;
 
+import android.app.ActivityManager;
+import android.app.Application;
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.jianglei.jllog.methodtrace.MethodStack.MethodNode;
@@ -21,15 +24,40 @@ public class MethodUtils {
      */
     @Nullable
     public static MethodNode findMethodNode(List<MethodNode> allNodes, String classNameAndHash,
-                                              String methodName,String desc) {
+                                            String methodName, String desc) {
         if (allNodes == null || allNodes.size() == 0) {
             return null;
         }
         for (MethodNode node : allNodes) {
-            if (node.isEqual(classNameAndHash,methodName,desc)) {
+            if (node.isEqual(classNameAndHash, methodName, desc)) {
                 return node;
             }
         }
         return null;
+    }
+
+    public static String getSimpleClassName(String fullClassName) {
+        int pos = fullClassName.lastIndexOf("/");
+        if (pos == -1 || pos == fullClassName.length() - 1) {
+            return fullClassName;
+        }
+        int atPos = fullClassName.lastIndexOf("@");
+        if (atPos == -1) {
+            return fullClassName.substring(pos + 1);
+        } else {
+            return fullClassName.substring(pos + 1, atPos);
+        }
+    }
+
+    public static String getProcessName(Application application) {
+        int pid = android.os.Process.myPid();
+        ActivityManager manager = (ActivityManager) application.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
+            if (processInfo.pid == pid) {
+                return processInfo.processName;
+            }
+        }
+        return "";
+
     }
 }

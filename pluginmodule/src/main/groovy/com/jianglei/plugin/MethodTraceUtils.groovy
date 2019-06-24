@@ -13,6 +13,7 @@ class MethodTraceUtils {
     public static void traceFile(File inputFile, File outputFile) {
 //        FileUtils.copyFile(inputFile, outputFile)
         if (isNeedTraceClass(inputFile)) {
+            LogUtils.i("正在处理文件："+inputFile.absolutePath)
             def classWriter = ASMUtils.insertByteCode(inputFile)
             def outStream = new FileOutputStream(outputFile)
             outStream.write(classWriter.toByteArray())
@@ -31,6 +32,7 @@ class MethodTraceUtils {
                 .name.replace(".jar", File.separator)
         def tmpFile = new File(tmpDir)
         tmpFile.mkdirs()
+        LogUtils.i("正在处理jar："+jarInput.name)
         //先解压缩到临时目录
         MyZipUtils.unzip(jar.absolutePath, tmpFile.absolutePath)
         //收集解压缩后的所有文件
@@ -77,7 +79,8 @@ class MethodTraceUtils {
      */
     public static boolean isNeedTraceClass(File file) {
         def name = file.name
-        if (!name.endsWith(".class") || name.startsWith("R.class") || name.startsWith('R$')) {
+        if (!name.endsWith(".class") || name.startsWith("R.class") || name.startsWith('R$')
+            || file.absolutePath.contains("com/jianglei/jllog")) {
             //R类文件不追踪，非class文件不追踪
             return false
         }
