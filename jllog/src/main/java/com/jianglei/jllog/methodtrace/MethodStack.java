@@ -71,8 +71,6 @@ public class MethodStack {
     }
 
     public void addMethodTrace(MethodTraceInfo info) {
-        Log.d("longyi", "add method:" + info.getProcessName() + ":" + info.getClassNameAndHash()
-                + ":" + info.getMethodName() + ":" + info.getType());
         MethodNode node = new MethodNode(info.getClassNameAndHash(), info.getMethodName(),
                 info.getDesc(), info.getTime());
         boolean needIndex = true;

@@ -12,9 +12,11 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.jianglei.jllog.R;
@@ -31,6 +33,8 @@ public class MethodFilterDialog extends DialogFragment {
     private Button btnConfirm;
     private OnConfigListener onConfigListener;
     private Set<String> allClassNames;
+    private MyArrayAdapter<String> classAdapter;
+    private String curProcessName;
 
     public void setOnConfigListener(OnConfigListener onConfigListener) {
         this.onConfigListener = onConfigListener;
@@ -39,19 +43,17 @@ public class MethodFilterDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            curProcessName = getArguments().getString("processName");
+        }
         View view = inflater.inflate(R.layout.jl_method_filter_fragment, container, false);
-        initClassSearch(view);
+        initView(view);
         return view;
     }
 
-    public void initClassSearch(View view) {
-        tvClassName = view.findViewById(R.id.tv_class_name);
+    public void initView(View view) {
+
         btnConfirm = view.findViewById(R.id.tv_class_confirm);
-        allClassNames = MethodStack.getInstance().getAllClassName();
-        List<String> classNames = new ArrayList<>(allClassNames);
-        MyArrayAdapter<String> adapter = new MyArrayAdapter<String>(getActivity(),
-                R.layout.jl_simple_list_item, classNames);
-        tvClassName.setAdapter(adapter);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +70,8 @@ public class MethodFilterDialog extends DialogFragment {
                 }
             }
         });
+
+        tvClassName = view.findViewById(R.id.tv_class_name);
         tvClassName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +93,11 @@ public class MethodFilterDialog extends DialogFragment {
 
             }
         });
-
+        allClassNames = MethodStack.getInstance(curProcessName).getAllClassName();
+        List<String> classNames = new ArrayList<>(allClassNames);
+        MyArrayAdapter<String> adapter = new MyArrayAdapter<String>(getActivity(),
+                R.layout.jl_simple_list_item, classNames);
+        tvClassName.setAdapter(adapter);
     }
 
     @Override
@@ -101,6 +109,14 @@ public class MethodFilterDialog extends DialogFragment {
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
             dialog.getWindow().setLayout((int) (dm.widthPixels * 0.95), (int) (dm.heightPixels * 0.75));
         }
+    }
+
+    public static MethodFilterDialog newInstance(String processName) {
+        MethodFilterDialog dialog = new MethodFilterDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("processName", processName);
+        dialog.setArguments(bundle);
+        return dialog;
     }
 
     public interface OnConfigListener {

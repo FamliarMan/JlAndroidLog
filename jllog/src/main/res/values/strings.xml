@@ -28,6 +28,8 @@
     <string name="jl_class_name_search">类名搜索</string>
     <string name="jl_chart_no_data">没有耗时超过5ms的方法</string>
     <string name="jl_chart_no_data1">%s没有耗时超过5ms的方法</string>
-    <string name="jl_first_level_node">第一层有节点方法</string>
+    <string name="jl_first_level_node">第一层所有节点方法</string>
     <string name="jl_method_child">%s下所有方法调用</string>
+    <string name="jl_filter">筛选</string>
+    <string name="jl_reset">重置</string>
 </resources>

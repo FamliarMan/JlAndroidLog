@@ -80,13 +80,15 @@ public class JlLog {
                     mPendingLifes.clear();
                 }
 
-                if (mPendingMethods.size() != 0) {
-                    for (MethodTraceInfo vo : mPendingMethods) {
-                        vo.setProcessName(MethodUtils.getProcessName(application));
-                        TransformData transformData = new TransformData(vo);
-                        logInterface.notifyData(transformData);
+                synchronized (JlLog.class) {
+                    if (mPendingMethods.size() != 0) {
+                        for (MethodTraceInfo vo : mPendingMethods) {
+                            vo.setProcessName(MethodUtils.getProcessName(application));
+                            TransformData transformData = new TransformData(vo);
+                            logInterface.notifyData(transformData);
+                        }
+                        mPendingMethods.clear();
                     }
-                    mPendingMethods.clear();
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -203,7 +205,9 @@ public class JlLog {
         }
         if (mServiceStatus == STATUS_NOT_READY) {
             //有可能服务还没启动起来
-            mPendingMethods.add(info);
+            synchronized (JlLog.class) {
+                mPendingMethods.add(info);
+            }
             return;
         }
         if (logInterface == null) {

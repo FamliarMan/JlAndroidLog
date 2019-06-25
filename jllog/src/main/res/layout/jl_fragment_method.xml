@@ -7,6 +7,12 @@
     tools:background="#000000">
 
 
+    <Spinner
+        android:id="@+id/sp_process_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </Spinner>
     <RelativeLayout
         android:id="@+id/layout_config"
         android:layout_width="match_parent"
@@ -28,12 +34,33 @@
 
             />
 
-        <ImageView
-            android:id="@+id/iv_config"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/jl_filter" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jl_reset"
+                android:textColor="@color/jl_white"
+                android:src="@mipmap/jl_filter"
+                 />
+
+            <TextView
+                android:id="@+id/tv_config"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jl_filter"
+                android:textColor="@color/jl_white"
+                android:src="@mipmap/jl_filter"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_detail"
@@ -57,5 +84,6 @@
         android:id="@+id/bar_chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/sp_process_name"
         android:layout_above="@id/layout_config" />
 </RelativeLayout>

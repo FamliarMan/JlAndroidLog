@@ -55,6 +55,14 @@ public class MethodTraceInfo implements Parcelable {
         processName = in.readString();
     }
 
+    public String getSimpleClassName() {
+        int index = classNameAndHash.indexOf("@");
+        if (index == -1) {
+            return classNameAndHash;
+        }
+        return classNameAndHash.substring(0, index);
+    }
+
     public static final Creator<MethodTraceInfo> CREATOR = new Creator<MethodTraceInfo>() {
         @Override
         public MethodTraceInfo createFromParcel(Parcel in) {

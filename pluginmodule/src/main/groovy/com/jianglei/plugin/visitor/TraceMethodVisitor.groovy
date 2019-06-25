@@ -31,6 +31,7 @@ public class TraceMethodVisitor extends AdviceAdapter {
     void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         super.visitMethodInsn(opcode, owner, name, desc, itf)
     }
+
     @Override
     protected void onMethodEnter() {
         super.onMethodEnter()
@@ -39,11 +40,13 @@ public class TraceMethodVisitor extends AdviceAdapter {
             return
         }
         mv.visitLdcInsn(className)
+
         if (isStatic(access)) {
             mv.visitInsn(ICONST_0)
         } else {
             mv.visitVarInsn(ALOAD, 0)
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "hashCode", "()I", false)
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "identityHashCode",
+                    "(Ljava/lang/Object;)I", false)
         }
         mv.visitLdcInsn(methodName)
         mv.visitLdcInsn(desc)
@@ -65,8 +68,10 @@ public class TraceMethodVisitor extends AdviceAdapter {
             mv.visitInsn(ICONST_0)
         } else {
             mv.visitVarInsn(ALOAD, 0)
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "hashCode", "()I", false)
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "identityHashCode",
+                    "(Ljava/lang/Object;)I", false)
         }
+
         mv.visitLdcInsn(methodName)
         mv.visitLdcInsn(desc)
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false)

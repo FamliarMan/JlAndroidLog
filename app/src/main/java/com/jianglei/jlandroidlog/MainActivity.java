@@ -124,6 +124,7 @@ public class MainActivity extends AbstractActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        long hash = System.identityHashCode(this);
     }
 
     private static void test() {
