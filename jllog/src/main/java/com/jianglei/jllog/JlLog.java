@@ -80,10 +80,16 @@ public class JlLog {
                     mPendingLifes.clear();
                 }
 
+
+                String processName = MethodUtils.getProcessName(application);
+                if (processName.contains(":Log")) {
+                    //日志进程本身不参与进来
+                    return;
+                }
                 synchronized (JlLog.class) {
                     if (mPendingMethods.size() != 0) {
                         for (MethodTraceInfo vo : mPendingMethods) {
-                            vo.setProcessName(MethodUtils.getProcessName(application));
+                            vo.setProcessName(processName);
                             TransformData transformData = new TransformData(vo);
                             logInterface.notifyData(transformData);
                         }
@@ -214,9 +220,10 @@ public class JlLog {
             return;
         }
         String processName = MethodUtils.getProcessName(application);
-//        if(processName.contains(":Log")){
-//            //日志进程本身不参与进来
-//        }
+        if (processName.contains(":Log")) {
+            //日志进程本身不参与进来
+            return;
+        }
         info.setProcessName(MethodUtils.getProcessName(application));
         TransformData transformData = new TransformData(info);
         try {
