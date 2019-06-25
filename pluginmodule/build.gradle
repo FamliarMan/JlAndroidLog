@@ -18,7 +18,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.8.0'
+        classpath 'com.novoda:bintray-release:0.9.1'
     }
 }
 repositories {
@@ -38,7 +38,7 @@ publish {
     groupId = 'com.jianglei'//jcenter上的路径
     artifactId = 'jllog-tracer'//项目名称
     publishVersion = '0.1'//版本号
-    desc = 'an AOP stub plugin'
+    desc = 'a plugin that can create method trace code '
     website = 'https://github.com/FamliarMan/JlAndroidLog'
     repoName ='Android-lib'
 }
