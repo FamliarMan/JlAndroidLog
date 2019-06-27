@@ -148,7 +148,8 @@ public class MethodFragment extends Fragment {
 
         spProcessName = view.findViewById(R.id.sp_process_name);
         final List<String> processNames = MethodStack.getProcessNames();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.jl_simple_list_item, processNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.jl_simple_list_item,
+                R.id.tvContent,processNames);
         spProcessName.setAdapter(adapter);
         spProcessName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

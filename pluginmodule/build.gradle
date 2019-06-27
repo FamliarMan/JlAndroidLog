@@ -37,7 +37,7 @@ publish {
     userOrg = 'famliarman'
     groupId = 'com.jianglei'//jcenter上的路径
     artifactId = 'jllog-tracer'//项目名称
-    publishVersion = '0.1'//版本号
+    publishVersion = '1.0'//版本号
     desc = 'a plugin that can create method trace code '
     website = 'https://github.com/FamliarMan/JlAndroidLog'
     repoName ='Android-lib'

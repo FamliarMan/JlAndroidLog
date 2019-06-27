@@ -48,7 +48,6 @@ class MethodTraceTransform extends Transform {
 
         //获取配置信息
         JlLogExtension extension = project.getExtensions().findByType(JlLogExtension.class)
-        LogUtils.e(" configure:" + extension.traceThirdLibrary)
 
         def gson = new Gson()
         //保存上次依赖jar文件和输出的jar文件的依赖关系，比如上次编译时gson被输出成32.jar
@@ -75,7 +74,6 @@ class MethodTraceTransform extends Transform {
                 } else {
                     lastJarMap = lastConfig.jarMap
                     isConfigChange = lastConfig.extension.traceThirdLibrary != extension.traceThirdLibrary
-                    LogUtils.e("isConfigChange:" + isConfigChange)
                 }
             } catch (Exception e) {
                 e.printStackTrace()

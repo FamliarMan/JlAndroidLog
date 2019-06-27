@@ -34,6 +34,7 @@ public class MethodStack {
         if (instances.get(processName) == null) {
             MethodStack stack = new MethodStack();
             instances.put(processName, stack);
+            processNames.add(processName);
             return stack;
         }
         return instances.get(processName);

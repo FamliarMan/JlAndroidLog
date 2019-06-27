@@ -96,7 +96,7 @@ public class MethodFilterDialog extends DialogFragment {
         allClassNames = MethodStack.getInstance(curProcessName).getAllClassName();
         List<String> classNames = new ArrayList<>(allClassNames);
         MyArrayAdapter<String> adapter = new MyArrayAdapter<String>(getActivity(),
-                R.layout.jl_simple_list_item, classNames);
+                R.layout.jl_simple_list_item, R.id.tvContent,classNames);
         tvClassName.setAdapter(adapter);
     }
 

@@ -55,14 +55,15 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_log_show);
         Intent intent = new Intent(this, JlLogService.class);
         bindService(intent, serviceConnection, 0);
-        setContentView(R.layout.activity_log_show);
-        tabLayout = findViewById(R.id.tab);
-        viewPager = findViewById(R.id.viewpager);
     }
 
     private void init() {
+
+        tabLayout = findViewById(R.id.tab);
+        viewPager = findViewById(R.id.viewpager);
         List<Fragment> fragments = new ArrayList<>();
         NetInfoFragment netInfoFragment = NetInfoFragment.newInstance();
         CrashListFragment crashListFragment = CrashListFragment.newInstance();

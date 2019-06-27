@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:completionThreshold="1"
+            android:inputType="textMultiLine"
             android:hint="@string/jl_class_search" />
 
         <Button
