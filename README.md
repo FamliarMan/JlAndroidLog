@@ -1,8 +1,9 @@
 # JlLog使用
 ## 依赖引入
 ```
-compile('com.jianglei:jllog:1.5')
+compile('com.jianglei:jllog:2.0')
 ```
+
 
 ## 初始化
 ```
@@ -10,6 +11,43 @@ compile('com.jianglei:jllog:1.5')
 JlLog.start(getApplication(),5,true);
 ```
 第三个参数注意，如果当前是开发版本就传true,日志工具此时会生效，如果是发布版本就传false，日志工具不会启动。
+
+## 监控所有方法耗时
+这里采用了字节码插桩的方式，所以需要引入gradle插件
+
+首先，在项目根目录下的build.gradle插件下如下配置：
+```
+
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath 'com.jianglei:jllog-tracer:1.0'
+    }
+}
+
+```
+这里主要是为了引入这个插件依赖，你如果不想在这里配置，也可以在每个module的
+build.gradle文件中如此配置依赖
+
+然后，在每个module的build.gradle中引入插件
+```
+apply plugin: 'com.jianglei.jllog'
+```
+
+默认是不会监控第三方库的方法的，如果想要监控第三方库，可以在app模块下的build.gradle
+中添加配置：
+```
+
+jlLog{
+    
+    traceThirdLibrary = true
+}
+```
+
+这样就可以了，注意，想要用这个功能，jllog版本最低是2.0
+
 ## 监控crash
 这一步已经封装好，无需手动调用，当然，如果想主动发出crash信息也是可以的：
 ```

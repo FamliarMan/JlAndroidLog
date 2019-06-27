@@ -1,19 +1,22 @@
 package com.jianglei.jlandroidlog;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.jianglei.jllog.JlLog;
-import com.jianglei.jllog.aidl.CrashVo;
-import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
+import com.jianglei.jllog.methodtrace.MethodTracer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AbstractActivity{
+public class MainActivity extends AbstractActivity {
+    private String name = "longyi";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        long start = System.nanoTime();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_net).setOnClickListener(new View.OnClickListener() {
@@ -51,6 +54,8 @@ public class MainActivity extends AbstractActivity{
                 }
             }
         });
+        getNetInfo(true);
+        Log.d("longyi", "time:" + ((System.nanoTime() - start) / 100000));
     }
 
     private NetInfoVo getNetInfo(boolean isSuccessful) {
@@ -61,7 +66,7 @@ public class MainActivity extends AbstractActivity{
         netInfoVo.setRequestHeader(header);
         netInfoVo.setRequestForm(header);
         netInfoVo.setRequsetUrlParams(header);
-        if(!isSuccessful){
+        if (!isSuccessful) {
             String error = "java.lang.RuntimeException: level 2 exception\n" +
                     "    at com.msh.demo.exceptionStack.Test.fun2(Test.java:17)\n" +
                     "    at com.msh.demo.exceptionStack.Test.main(Test.java:24)\n" +
@@ -119,5 +124,10 @@ public class MainActivity extends AbstractActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        long hash = System.identityHashCode(this);
+    }
+
+    private static void test() {
+        int i = 10;
     }
 }

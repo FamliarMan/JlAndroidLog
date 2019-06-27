@@ -33,7 +33,7 @@ public class DataCenter {
 
     private static DataCenter instance = new DataCenter();
 
-    public static DataCenter getInstance(){
+    public static DataCenter getInstance() {
         return instance;
     }
 
@@ -49,78 +49,83 @@ public class DataCenter {
         return lifeVos;
     }
 
-    public LinkedList<UiBlockVo> getUiBlockVos(){
+    public LinkedList<UiBlockVo> getUiBlockVos() {
         return uiBlockVos;
     }
 
     /**
      * 增加一条ui阻塞信息
+     *
      * @param uiBlockVo ui阻塞信息类
      */
-    public void addUiTracer(UiBlockVo uiBlockVo){
-        if(uiBlockVos.size() >= JlLog.MAX_UI_RECORT){
-            uiBlockVos.removeLast();
+    public void addUiTracer(UiBlockVo uiBlockVo) {
+        if (uiBlockVos.size() >= JlLog.MAX_UI_RECORT) {
+            uiBlockVos.remove(0);
         }
-        uiBlockVos.add(0, uiBlockVo);
+        uiBlockVos.add(uiBlockVo);
     }
 
     /**
      * 清除ui阻塞信息
      */
-    public void clearUi(){
+    public void clearUi() {
         uiBlockVos.clear();
     }
+
     /**
      * 增加一条crash记录
+     *
      * @param crashVo crash信息类
      */
-    public void addCrashVo(CrashVo crashVo){
-        if(crashVos.size()  == JlLog.MAX_CRASH_RECORD){
-            crashVos.removeLast();
+    public void addCrashVo(CrashVo crashVo) {
+        if (crashVos.size() == JlLog.MAX_CRASH_RECORD) {
+            crashVos.remove(0);
         }
-        crashVos.add(0,crashVo);
+        crashVos.add(crashVo);
     }
 
     /**
      * 清除crash数据
      */
-    public void clearCrash(){
+    public void clearCrash() {
         crashVos.clear();
     }
 
     /**
      * 增加网络信息记录类
+     *
      * @param netInfoVo 网络类
      */
-    public void addNetInfoVo(NetInfoVo netInfoVo){
-        if(netInfoVos.size() == JlLog.MAX_NET_RECORD){
-            netInfoVos.removeLast();
+    public void addNetInfoVo(NetInfoVo netInfoVo) {
+        if (netInfoVos.size() == JlLog.MAX_NET_RECORD) {
+            netInfoVos.remove(0);
         }
-        netInfoVos.add(0,netInfoVo);
+        netInfoVos.add(netInfoVo);
     }
 
     /**
      * 清除网络数据
      */
-    public void clearNetInfo(){
+    public void clearNetInfo() {
         netInfoVos.clear();
     }
 
     /**
      * 增加一条生命周期信息
+     *
      * @param lifeVo 生命周期详细类
      */
-    public void addLifeVo(LifeVo lifeVo){
-        if(lifeVos.size() == JlLog.MAX_LIFE_RECORD){
-            lifeVos.removeLast();
+    public void addLifeVo(LifeVo lifeVo) {
+        if (lifeVos.size() == JlLog.MAX_LIFE_RECORD) {
+            lifeVos.remove(0);
         }
-        lifeVos.add(0,lifeVo);
+        lifeVos.add(lifeVo);
     }
 
     /**
      * 清除生命周期数据
      */
-    public void clearLife(){
+    public void clearLife() {
         lifeVos.clear();
     }
 }

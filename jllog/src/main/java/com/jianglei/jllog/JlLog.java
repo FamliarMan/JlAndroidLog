@@ -13,8 +13,11 @@ import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
 import com.jianglei.jllog.life.LifeTracer;
+import com.jianglei.jllog.methodtrace.MethodTraceInfo;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 import com.jianglei.jllog.uiblock.UiTracer;
+import com.jianglei.jllog.utils.LogUtils;
+import com.jianglei.jllog.utils.MethodUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +29,14 @@ import java.util.List;
  */
 
 public class JlLog {
+    private static final int STATUS_NOT_READY = 0;
+    private static final int STATUS_CONNECTED = 1;
+    private static final int STATUS_CLOSED = 2;
+
     /**
      * 最多记录网络信息条数
      */
-    public static int MAX_NET_RECORD = 100;
+    public static int MAX_NET_RECORD = 10;
 
     /**
      * 最多记录崩溃次数
@@ -41,7 +48,11 @@ public class JlLog {
      */
     public static int MAX_UI_RECORT = 100;
 
-    private static boolean isDebug;
+    /**
+     * 此处必须默认为true，因为方法耗时追踪可能在初始化之前就开始，
+     * 如果想保留初始化之前的方法信息，这里必须默认为true
+     */
+    private static boolean isDebug = true;
 
 
     private static ILogInterface logInterface;
@@ -50,15 +61,51 @@ public class JlLog {
      * 刚开始服务有可能还没启动起来，会导致有些生命周期信息丢失，这里用来存储这些丢失的信息
      */
     private static List<LifeVo> mPendingLifes = new ArrayList<>();
+
+    private static Application application;
+
+    private static List<MethodTraceInfo> mPendingMethods = new ArrayList<>();
+    private static int mServiceStatus = STATUS_NOT_READY;
     private static ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             logInterface = ILogInterface.Stub.asInterface(iBinder);
+
+            try {
+                if (mPendingLifes.size() != 0) {
+                    for (LifeVo vo : mPendingLifes) {
+                        TransformData transformData = new TransformData(vo);
+                        logInterface.notifyData(transformData);
+                    }
+                    mPendingLifes.clear();
+                }
+
+
+                String processName = MethodUtils.getProcessName(application);
+                if (processName.contains(":Log")) {
+                    //日志进程本身不参与进来
+                    return;
+                }
+                synchronized (JlLog.class) {
+                    if (mPendingMethods.size() != 0) {
+                        for (MethodTraceInfo vo : mPendingMethods) {
+                            vo.setProcessName(processName);
+                            TransformData transformData = new TransformData(vo);
+                            logInterface.notifyData(transformData);
+                        }
+                        mPendingMethods.clear();
+                    }
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            mServiceStatus = STATUS_CONNECTED;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             logInterface = null;
+            mServiceStatus = STATUS_CLOSED;
         }
     };
 
@@ -84,6 +131,7 @@ public class JlLog {
         if (!isDebug) {
             return;
         }
+        JlLog.application = application;
         JlCrashHandler.getInstance().init(application);
         Intent intent = new Intent(application, JlLogService.class);
         application.startService(intent);
@@ -129,25 +177,17 @@ public class JlLog {
             return;
         }
         if (logInterface != null) {
+            TransformData transformData = new TransformData(lifeVo);
             try {
-                if (mPendingLifes.size() != 0) {
-                    for (LifeVo vo : mPendingLifes) {
-                        TransformData transformData = new TransformData(vo);
-                        logInterface.notifyData(transformData);
-                    }
-                    mPendingLifes.clear();
-                }
-                TransformData transformData = new TransformData(lifeVo);
                 logInterface.notifyData(transformData);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         } else {
             //有可能服务还没启动起来，所以先暂存
-            if (mPendingLifes.size() == MAX_NET_RECORD) {
-                return;
+            if (mServiceStatus == STATUS_NOT_READY) {
+                mPendingLifes.add(lifeVo);
             }
-            mPendingLifes.add(lifeVo);
         }
     }
 
@@ -162,6 +202,34 @@ public class JlLog {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void notifyMethod(MethodTraceInfo info) {
+        if (!isDebug) {
+            return;
+        }
+        if (mServiceStatus == STATUS_NOT_READY) {
+            //有可能服务还没启动起来
+            synchronized (JlLog.class) {
+                mPendingMethods.add(info);
+            }
+            return;
+        }
+        if (logInterface == null) {
+            return;
+        }
+        String processName = MethodUtils.getProcessName(application);
+        if (processName.contains(":Log")) {
+            //日志进程本身不参与进来
+            return;
+        }
+        info.setProcessName(MethodUtils.getProcessName(application));
+        TransformData transformData = new TransformData(info);
+        try {
+            logInterface.notifyData(transformData);
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 

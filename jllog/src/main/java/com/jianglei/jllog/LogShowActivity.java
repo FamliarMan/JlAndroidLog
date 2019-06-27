@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.jianglei.jllog.aidl.CrashVo;
 import com.jianglei.jllog.aidl.ILogInterface;
@@ -18,6 +20,8 @@ import com.jianglei.jllog.aidl.LifeVo;
 import com.jianglei.jllog.aidl.NetInfoVo;
 import com.jianglei.jllog.aidl.TransformData;
 import com.jianglei.jllog.life.LifeCyclerFragment;
+import com.jianglei.jllog.methodtrace.MethodFragment;
+import com.jianglei.jllog.methodtrace.MethodTracer;
 import com.jianglei.jllog.uiblock.UiBlockListFragment;
 import com.jianglei.jllog.uiblock.UiBlockVo;
 
@@ -30,7 +34,7 @@ import java.util.List;
 public class LogShowActivity extends JlBaseActivity implements ILogShowActivity {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private NoScrollViewPager viewPager;
 
     private ILogInterface logInterface;
     private boolean isUnbind;
@@ -51,23 +55,26 @@ public class LogShowActivity extends JlBaseActivity implements ILogShowActivity 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_log_show);
         Intent intent = new Intent(this, JlLogService.class);
         bindService(intent, serviceConnection, 0);
-        setContentView(R.layout.activity_log_show);
-        tabLayout = (TabLayout) findViewById(R.id.tab);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
     }
 
     private void init() {
+
+        tabLayout = findViewById(R.id.tab);
+        viewPager = findViewById(R.id.viewpager);
         List<Fragment> fragments = new ArrayList<>();
         NetInfoFragment netInfoFragment = NetInfoFragment.newInstance();
         CrashListFragment crashListFragment = CrashListFragment.newInstance();
         fragments.add(netInfoFragment);
+        fragments.add(MethodFragment.getInstance());
         fragments.add(crashListFragment);
         fragments.add(UiBlockListFragment.newInstance());
         fragments.add(LifeCyclerFragment.newInstance());
         List<String> tab = new ArrayList<>();
         tab.add(getString(R.string.jl_http_request));
+        tab.add(getString(R.string.jl_method));
         tab.add(getString(R.string.jl_crash_info));
         tab.add(getString(R.string.jl_ui_block));
         tab.add(getString(R.string.jl_life));

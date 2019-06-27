@@ -8,12 +8,11 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.8.0'
+        classpath 'com.novoda:bintray-release:0.9.1'
     }
 }
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
     resourcePrefix 'jl_'
 
     defaultConfig {
@@ -44,21 +43,25 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    testImplementation 'junit:junit:4.12'
     compileOnly 'com.squareup.okhttp3:okhttp:3.10.0'
+
+    testImplementation 'org.powermock:powermock-api-mockito:1.6.3'
+    testImplementation 'org.powermock:powermock-module-junit4:1.6.3'
 }
 
 publish {
     userOrg = 'famliarman'
     groupId = 'com.jianglei'//jcenter上的路径
     artifactId = 'jllog'//项目名称
-    publishVersion = '1.5'//版本号
+    publishVersion = '2.0'//版本号
     desc = 'A library that can monitor http and crash infomation'
     website = 'https://github.com/FamliarMan/JlAndroidLog'
     repoName ='Android-lib'

@@ -3,13 +3,14 @@ apply plugin: 'maven'
 apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
+    implementation gradleApi()
+    implementation localGroovy()
 
-    compile 'com.android.tools.build:gradle:3.0.1'
-    compile 'com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api'
-    compile 'org.javassist:javassist:3.23.1-GA'
-    compile 'commons-io:commons-io:2.5'
+    implementation 'com.android.tools.build:gradle:3.4.1'
+    implementation "commons-io:commons-io:2.4"
+    implementation 'commons-codec:commons-codec:1.10'
+    implementation group: 'org.ow2.asm', name: 'asm', version: '6.0'
+    implementation group:'org.ow2.asm', name: 'asm-commons', version: '6.0'
 }
 
 buildscript {
@@ -17,7 +18,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.8.0'
+        classpath 'com.novoda:bintray-release:0.9.1'
     }
 }
 repositories {
@@ -28,16 +29,16 @@ uploadArchives {
     repositories.mavenDeployer {
         repository(url: uri('/home/jianglei/maven'))
         pom.groupId = 'com.jianglei'//包名
-        pom.artifactId = 'jllog-plugin-test'//在需要引用插件时用到
-        pom.version = '0.2'
+        pom.artifactId = 'jllog-tracer'//在需要引用插件时用到
+        pom.version = '1.0'
     }
 }
 publish {
     userOrg = 'famliarman'
     groupId = 'com.jianglei'//jcenter上的路径
-    artifactId = 'jllog-plugin'//项目名称
-    publishVersion = '0.1'//版本号
-    desc = 'an AOP stub plugin'
+    artifactId = 'jllog-tracer'//项目名称
+    publishVersion = '1.0'//版本号
+    desc = 'a plugin that can create method trace code '
     website = 'https://github.com/FamliarMan/JlAndroidLog'
     repoName ='Android-lib'
 }
