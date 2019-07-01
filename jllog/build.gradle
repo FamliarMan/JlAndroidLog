@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 apply plugin: 'com.novoda.bintray-release'
 buildscript {
     repositories {
@@ -57,11 +58,19 @@ dependencies {
     testImplementation 'org.powermock:powermock-module-junit4:1.6.3'
 }
 
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: uri('/home/jianglei/maven'))
+        pom.groupId = 'com.jianglei'//包名
+        pom.artifactId = 'jllog'//在需要引用插件时用到
+        pom.version = '2.1'
+    }
+}
 publish {
     userOrg = 'famliarman'
     groupId = 'com.jianglei'//jcenter上的路径
     artifactId = 'jllog'//项目名称
-    publishVersion = '2.0'//版本号
+    publishVersion = '2.1'//版本号
     desc = 'A library that can monitor http and crash infomation'
     website = 'https://github.com/FamliarMan/JlAndroidLog'
     repoName ='Android-lib'

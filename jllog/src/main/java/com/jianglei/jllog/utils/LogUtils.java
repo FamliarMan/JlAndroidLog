@@ -7,16 +7,21 @@ import android.util.Log;
  */
 public class LogUtils {
     private static final String TAG = "JL-Log";
+    private static boolean open = false;
 
     public static void w(String msg) {
         Log.w(TAG, msg);
     }
 
     public static void d(String msg) {
-        Log.d(TAG, msg);
+        if(open) {
+            Log.d(TAG, msg);
+        }
     }
     public static void d(String tag,String msg) {
-        Log.d(TAG+"-"+tag, msg);
+        if(open){
+            Log.d(TAG+"-"+tag, msg);
+        }
     }
 
 }
