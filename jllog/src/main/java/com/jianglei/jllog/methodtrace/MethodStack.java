@@ -90,10 +90,12 @@ public class MethodStack {
                 if (lastNode == null) {
                     firstLevelNode.add(node);
                     lastUnFinishedNode = node;
+                    LogUtils.d("add method in first:"+info.getProcessName()+":"+info.getClassNameAndHash()+":"+info.getMethodName());
                 } else {
                     lastNode.inTime = info.getTime();
                     lastUnFinishedNode = lastNode;
                     needIndex = false;
+                    LogUtils.d("add method in append:"+info.getProcessName()+":"+info.getClassNameAndHash()+":"+info.getMethodName());
                 }
             } else {
                 //说明这个方法在某个其他方法内部被第一次调用
@@ -104,10 +106,12 @@ public class MethodStack {
                     lastUnFinishedNode.addNode(node);
                     node.parentNode = lastUnFinishedNode;
                     lastUnFinishedNode = node;
+                    LogUtils.d("add method in other first:"+info.getProcessName()+":"+info.getClassNameAndHash()+":"+info.getMethodName());
                 } else {
                     //这个方法之前已经被调用过一次，我们更新时间即可
                     lastNode.inTime = info.getTime();
                     lastUnFinishedNode = lastNode;
+                    LogUtils.d("add method in update:"+info.getProcessName()+":"+info.getClassNameAndHash()+":"+info.getMethodName());
                 }
             }
         } else {
@@ -129,6 +133,7 @@ public class MethodStack {
             if (time > lastUnFinishedNode.time) {
                 lastUnFinishedNode.time = time;
             }
+            LogUtils.d("add method out :"+info.getProcessName()+":"+info.getClassNameAndHash()+":"+info.getMethodName());
             //清空时间，给下一次使用
             lastUnFinishedNode.inTime = 0;
             lastUnFinishedNode.outTime = 0;

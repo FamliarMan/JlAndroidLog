@@ -241,7 +241,7 @@ public class MethodFragment extends Fragment {
                 LogUtils.w(node.getClassNameAndHash() + ":" + node.getMethodName() + " " + node.getTime() + "ns 小于1ms，不展示");
                 continue;
             }
-            BarEntry barEntry = new BarEntry(++k, node.getTime() / 100000f);
+            BarEntry barEntry = new BarEntry(++k, node.getTime() / 1000000f);
             barEntry.setData(node);
             entries.add(barEntry);
         }
