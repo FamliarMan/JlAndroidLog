@@ -126,6 +126,8 @@ public class MethodStack {
                 LogUtils.w("异常节点，该方法的退出信息和上一个方法的进入信息不符合，此节点会被抛弃:"
                         + info.getProcessName() + " :" + info.getClassNameAndHash()
                         + ":" + info.getMethodName());
+                LogUtils.w("上一个节点的信息:"
+                        + lastUnFinishedNode.getClassNameAndHash() + " :" + lastUnFinishedNode.getMethodName());
                 return;
             }
             lastUnFinishedNode.outTime = info.getTime();

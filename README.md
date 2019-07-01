@@ -1,7 +1,7 @@
 # JlLog使用
 ## 依赖引入
 ```
-compile('com.jianglei:jllog:2.0')
+compile('com.jianglei:jllog:2.1')
 ```
 
 
@@ -85,6 +85,9 @@ JlLog.notifyNetInfo(netInfoVo);
 
 
 ## 更新记录
+
+#### 2.1 修复单位换算错误
+#### 2.0 增加方法耗时监控
 #### 1.5
 增加ui阻塞（anr）的监控
 修改了UI样式

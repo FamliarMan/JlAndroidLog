@@ -238,7 +238,7 @@ public class MethodFragment extends Fragment {
         for (int i = 0; i < nodes.size(); ++i) {
             MethodStack.MethodNode node = nodes.get(i);
             if (node.getTime() < 500000) {
-                LogUtils.w(node.getClassNameAndHash() + ":" + node.getMethodName() + " " + node.getTime() + "ns 小于1ms，不展示");
+                LogUtils.w(node.getClassNameAndHash() + ":" + node.getMethodName() + " " + node.getTime() + "ns 小于5ms，不展示");
                 continue;
             }
             BarEntry barEntry = new BarEntry(++k, node.getTime() / 1000000f);
@@ -250,7 +250,6 @@ public class MethodFragment extends Fragment {
             barChart.clear();
             return;
         }
-        Log.d("longyi", "bar数量：" + entries.size());
         BarDataSet barDataSet;
         if (barChart.getData() != null && barChart.getData().getDataSetCount() > 0) {
             barDataSet = (BarDataSet) barChart.getData().getDataSetByIndex(0);
