@@ -84,6 +84,10 @@ JlLog.notifyNetInfo(netInfoVo);
 <img src="other/example.gif" width="320" height="480"/>
 
 
+## todo
+1. 方法耗时监控内存优化
+2. ANR监控换用帧率监听模式
+3. 增加GPU追踪，做到记录每一帧绘制时间，争取拿到每一帧卡顿时方法调用栈
 ## 更新记录
 
 #### 2.1 修复单位换算错误
